@@ -10,11 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 final class StreamEmitterTest extends TestCase
 {
-    public function testAwake(): void
-    {
-        $this->assertEquals([0], Stream::awakeEvery(0)->take(1)->compile()->toList());
-    }
-
     public function testConstant(): void
     {
         $this->assertEquals([1, 1], Stream::constant(1)->take(2)->compile()->toList());
