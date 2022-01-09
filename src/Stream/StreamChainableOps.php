@@ -9,7 +9,7 @@ use Whsv26\Functional\Core\Option;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface StreamChainableOps
 {
@@ -21,11 +21,11 @@ interface StreamChainableOps
      * => [1, 2, 3]
      * ```
      *
-     * @template TVI
-     * @psalm-param TVI $elem
-     * @psalm-return Stream<TV|TVI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
-    public function appended(mixed $elem): Stream;
+    public function appended(mixed $elem): self;
 
     /**
      * Add elements to the stream end
@@ -35,11 +35,11 @@ interface StreamChainableOps
      * => [1, 2, 3, 4]
      * ```
      *
-     * @template TVI
-     * @psalm-param iterable<TVI> $suffix
-     * @psalm-return Stream<TV|TVI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $suffix
+     * @psalm-return self<TValue|TValueIn>
      */
-    public function appendedAll(iterable $suffix): Stream;
+    public function appendedAll(iterable $suffix): self;
 
     /**
      * Add element to the stream start
@@ -49,11 +49,11 @@ interface StreamChainableOps
      * => [0, 1, 2]
      * ```
      *
-     * @template TVI
-     * @psalm-param TVI $elem
-     * @psalm-return Stream<TV|TVI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
-    public function prepended(mixed $elem): Stream;
+    public function prepended(mixed $elem): self;
 
     /**
      * Add elements to the stream start
@@ -63,11 +63,11 @@ interface StreamChainableOps
      * => [-1, 0, 1, 2]
      * ```
      *
-     * @template TVI
-     * @psalm-param iterable<TVI> $prefix
-     * @psalm-return Stream<TV|TVI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $prefix
+     * @psalm-return self<TValue|TValueIn>
      */
-    public function prependedAll(iterable $prefix): Stream;
+    public function prependedAll(iterable $prefix): self;
 
     /**
      * Filter stream by condition.
@@ -79,10 +79,10 @@ interface StreamChainableOps
      * => [2]
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Stream<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
-    public function filter(callable $predicate): Stream;
+    public function filter(callable $predicate): self;
 
     /**
      * Exclude null elements
@@ -92,9 +92,9 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Stream<TV>
+     * @psalm-return self<TValue>
      */
-    public function filterNotNull(): Stream;
+    public function filterNotNull(): self;
 
     /**
      * Filter elements of given class
@@ -104,18 +104,18 @@ interface StreamChainableOps
      * => [Foo(2)]
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Stream<TVO>
+     * @psalm-return self<TValueOut>
      */
-    public function filterOf(string $fqcn, bool $invariant = false): Stream;
+    public function filterOf(string $fqcn, bool $invariant = false): self;
 
     /**
      * A combined {@see Stream::map} and {@see Stream::filter}.
      *
      * Filtering is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
      * >>> Stream::emits(['zero', '1', '2'])
@@ -124,11 +124,11 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(TV): Option<TVO> $callback
-     * @psalm-return Stream<TVO>
+     * @psalm-template TValueOut
+     * @psalm-param callable(TValue): Option<TValueOut> $callback
+     * @psalm-return self<TValueOut>
      */
-    public function filterMap(callable $callback): Stream;
+    public function filterMap(callable $callback): self;
 
     /**
      * Map stream and then flatten the result
@@ -138,11 +138,11 @@ interface StreamChainableOps
      * => [1, 2, 3, 4, 5, 6]
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(TV): iterable<TVO> $callback
-     * @psalm-return Stream<TVO>
+     * @psalm-template TValueOut
+     * @psalm-param callable(TValue): iterable<TValueOut> $callback
+     * @psalm-return self<TValueOut>
      */
-    public function flatMap(callable $callback): Stream;
+    public function flatMap(callable $callback): self;
 
     /**
      * Produces a new stream of elements by mapping each element in stream
@@ -153,11 +153,51 @@ interface StreamChainableOps
      * => ['1', '2']
      * ```
      *
-     * @template TVO
-     * @psalm-param callable(TV): TVO $callback
-     * @psalm-return Stream<TVO>
+     * @template TValueOut
+     * @psalm-param callable(TValue): TValueOut $callback
+     * @psalm-return self<TValueOut>
      */
-    public function map(callable $callback): Stream;
+    public function map(callable $callback): self;
+
+    /**
+     * Produces a new stream of elements by mapping each key in stream of pairs
+     * through a transformation function (callback)
+     *
+     * ```php
+     * >>> Stream::emits(['a', 'b'])->mapKeys(fn($key) => $key + 1)->compile()->toArray();
+     * => [1 => 'a', 2 => 'b']
+     * ```
+     *
+     * @template TKeyIn
+     * @template TValueIn
+     * @template TKeyOut
+     *
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     *
+     * @psalm-param callable(TKeyIn): TKeyOut $callback
+     * @psalm-return self<array{TKeyOut, TValueIn}>
+     */
+    public function mapKeys(callable $callback): self;
+
+    /**
+     * Produces a new stream of elements by mapping each value in stream of pairs
+     * through a transformation function (callback)
+     *
+     * ```php
+     * >>> Stream::emits([new Foo(1), new Foo(2)])->mapValues(fn(Foo $foo) => $foo->field)->compile()->toArray();
+     * => [1, 2]
+     * ```
+     *
+     * @template TKeyIn
+     * @template TValueIn
+     * @template TValueOut
+     *
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     *
+     * @psalm-param callable(TValueIn): TValueOut $callback
+     * @psalm-return self<array{TKeyIn, TValueOut}>
+     */
+    public function mapValues(callable $callback): self;
 
     /**
      * Returns every stream element except first
@@ -167,9 +207,9 @@ interface StreamChainableOps
      * => [2, 3]
      * ```
      *
-     * @psalm-return Stream<TV>
+     * @psalm-return self<TValue>
      */
-    public function tail(): Stream;
+    public function tail(): self;
 
     /**
      * Take stream elements while predicate is true
@@ -179,10 +219,10 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Stream<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
-    public function takeWhile(callable $predicate): Stream;
+    public function takeWhile(callable $predicate): self;
 
     /**
      * Drop stream elements while predicate is true
@@ -192,10 +232,10 @@ interface StreamChainableOps
      * => [3]
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Stream<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
-    public function dropWhile(callable $predicate): Stream;
+    public function dropWhile(callable $predicate): self;
 
     /**
      * Take N stream elements
@@ -205,9 +245,9 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Stream<TV>
+     * @psalm-return self<TValue>
      */
-    public function take(int $length): Stream;
+    public function take(int $length): self;
 
     /**
      * Drop N stream elements
@@ -217,9 +257,9 @@ interface StreamChainableOps
      * => [3]
      * ```
      *
-     * @psalm-return Stream<TV>
+     * @psalm-return self<TValue>
      */
-    public function drop(int $length): Stream;
+    public function drop(int $length): self;
 
     /**
      * Call a function for every stream element
@@ -232,10 +272,10 @@ interface StreamChainableOps
      * => [2, 3]
      * ```
      *
-     * @param callable(TV): void $callback
-     * @psalm-return Stream<TV>
+     * @param callable(TValue): void $callback
+     * @psalm-return self<TValue>
      */
-    public function tap(callable $callback): Stream;
+    public function tap(callable $callback): self;
 
     /**
      * Emits the specified separator between every pair of elements in the source stream.
@@ -245,11 +285,11 @@ interface StreamChainableOps
      * => [1, 0, 2, 0, 3]
      * ```
      *
-     * @template TVI
-     * @param TVI $separator
-     * @psalm-return Stream<TV|TVI>
+     * @template TValueIn
+     * @param TValueIn $separator
+     * @psalm-return self<TValue|TValueIn>
      */
-    public function intersperse(mixed $separator): Stream;
+    public function intersperse(mixed $separator): self;
 
     /**
      * Writes this stream to the stdout synchronously
@@ -260,9 +300,9 @@ interface StreamChainableOps
      * 2
      * ```
      *
-     * @psalm-return Stream<TV>
+     * @psalm-return self<TValue>
      */
-    public function lines(): Stream;
+    public function lines(): self;
 
     /**
      * Deterministically zips elements, terminating when the end of either branch is reached naturally.
@@ -272,11 +312,11 @@ interface StreamChainableOps
      * => [[1, 4], [2, 5], [3, 6]]
      * ```
      *
-     * @template TVI
-     * @param iterable<TVI> $that
-     * @return Stream<array{TV, TVI}>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return Stream<array{TValue, TValueIn}>
      */
-    public function zip(iterable $that): Stream;
+    public function zip(iterable $that): self;
 
     /**
      * Deterministically interleaves elements, starting on the left, terminating when the end of either branch is reached naturally.
@@ -286,11 +326,11 @@ interface StreamChainableOps
      * => [1, 4, 2, 5, 3, 6]
      * ```
      *
-     * @template TVI
-     * @param iterable<TVI> $that
-     * @return Stream<TV|TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return Stream<TValue|TValueIn>
      */
-    public function interleave(iterable $that): Stream;
+    public function interleave(iterable $that): self;
 
     /**
      * Produce stream of chunks with given size from this stream
@@ -301,9 +341,9 @@ interface StreamChainableOps
      * ```
      *
      * @param positive-int $size
-     * @return Stream<Seq<TV>>
+     * @return Stream<Seq<TValue>>
      */
-    public function chunks(int $size): Stream;
+    public function chunks(int $size): self;
 
     /**
      * Partitions the input into a stream of chunks according to a discriminator function.
@@ -319,10 +359,10 @@ interface StreamChainableOps
      * ```
      *
      * @template D
-     * @param callable(TV): D $discriminator
-     * @return Stream<array{D, Seq<TV>}>
+     * @param callable(TValue): D $discriminator
+     * @return Stream<array{D, Seq<TValue>}>
      */
-    public function groupAdjacentBy(callable $discriminator): Stream;
+    public function groupAdjacentBy(callable $discriminator): self;
 
     /**
      * Sort streamed elements
@@ -335,8 +375,8 @@ interface StreamChainableOps
      * => [3, 2, 1]
      * ```
      *
-     * @psalm-param callable(TV, TV): int $cmp
-     * @psalm-return Stream<TV>
+     * @psalm-param callable(TValue, TValue): int $cmp
+     * @psalm-return self<TValue>
      */
-    public function sorted(callable $cmp): Stream;
+    public function sorted(callable $cmp): self;
 }

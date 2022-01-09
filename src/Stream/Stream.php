@@ -166,6 +166,42 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @template TKeyOut
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TKeyIn): TKeyOut $callback
+     * @psalm-return self<array{TKeyOut, TValueIn}>
+     */
+    public function mapKeys(callable $callback): self
+    {
+        $mapper = MapValuesOperation::of($this->emitter);
+
+        return $this->fork($mapper(function ($pair) use ($callback) {
+            return [$callback($pair[0]), $pair[1]];
+        }));
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @template TValueOut
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TValueIn): TValueOut $callback
+     * @psalm-return self<array{TKeyIn, TValueOut}>
+     */
+    public function mapValues(callable $callback): self
+    {
+        $mapper = MapValuesOperation::of($this->emitter);
+
+        return $this->fork($mapper(function ($pair) use ($callback) {
+            return [$pair[0], $callback($pair[1])];
+        }));
+    }
+
+    /**
+     * @inheritDoc
      * @template TValueI
      * @psalm-param TValueI $elem
      * @psalm-return self<TValue|TValueI>
