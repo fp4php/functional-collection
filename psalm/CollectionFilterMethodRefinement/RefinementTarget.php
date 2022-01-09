@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Psalm\CollectionFilterMethodRefinement;
 
+use Closure;
 use Psalm\Type\Union;
 
 /**
  * @psalm-immutable
  */
-final class RefinementResult
+final class RefinementTarget
 {
+    /**
+     * @param Closure(Union): Union $substitute
+     */
     public function __construct(
-        public Union $collection_key_type,
-        public Union $collection_value_type,
+        public Union $target,
+        public Closure $substitute,
     ) { }
 }

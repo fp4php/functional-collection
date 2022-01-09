@@ -30,20 +30,10 @@ use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Node\Expr\VirtualArrowFunction;
 use Psalm\Plugin\EventHandler\Event\MethodReturnTypeProviderEvent;
 use Psalm\Plugin\EventHandler\MethodReturnTypeProviderInterface;
-use Psalm\Type;
-use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Union;
 
 final class CollectionFilterMethodReturnTypeProvider implements MethodReturnTypeProviderInterface
 {
-    public static function getMethodNames(): array
-    {
-        return [
-            'filter',
-            strtolower('filterNotNull'),
-        ];
-    }
-
     public static function getClassLikeNames(): array
     {
         return [
@@ -67,45 +57,40 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
 
     public static function getMethodReturnType(MethodReturnTypeProviderEvent $event): ?Union
     {
-        $reconciled = Option::do(function() use ($event) {
-            yield Option::some($event->getMethodNameLowercase())
-                ->filter(fn($method) => in_array($method, self::getMethodNames()));
-
+        return Option::do(function() use ($event) {
             $source = yield Option::some($event->getSource())->filterOf(StatementsAnalyzer::class);
+
+            $refinement_target = yield RefineTargetExtractor::extract(
+                $event->getFqClasslikeName(),
+                $event->getMethodNameLowercase(),
+                array_values($event->getTemplateTypeParameters() ?? [])
+            );
 
             $predicate = yield self::extractPredicateArg($event)
                 ->map(fn(Arg $arg) => $arg->value)
                 ->filter(fn(Expr $expr) => $expr instanceof FunctionLike);
 
-            $template_params = yield Option::fromNullable($event->getTemplateTypeParameters());
-
-            $collection_type_params = 2 === count($template_params)
-                ? new CollectionTypeParams($template_params[0], $template_params[1])
-                : new CollectionTypeParams(Type::getArrayKey(), $template_params[0]);
-
             $refinement_context = new RefinementContext(
-                refine_for: $event->getFqClasslikeName(),
                 predicate: $predicate,
                 execution_context: $event->getContext(),
                 codebase: $source->getCodebase(),
                 source: $source,
             );
 
-            $result = RefineByPredicate::for(
+            $refined = RefineByPredicate::refine(
                 $refinement_context,
-                $collection_type_params,
+                $refinement_target,
             );
 
-            return yield self::getReturnType($event, $result);
-        });
+            return ($refinement_target->substitute)($refined);
 
-        return $reconciled->get();
+        })->get();
     }
 
     /**
      * @psalm-return Option<Arg>
      */
-    public static function extractPredicateArg(MethodReturnTypeProviderEvent $event): Option
+    private static function extractPredicateArg(MethodReturnTypeProviderEvent $event): Option
     {
         return ArrayList::collect($event->getCallArgs())
             ->head()
@@ -115,7 +100,7 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
     /**
      * @psalm-return Option<Arg>
      */
-    public static function mockNotNullPredicateArg(MethodReturnTypeProviderEvent $event): Option
+    private static function mockNotNullPredicateArg(MethodReturnTypeProviderEvent $event): Option
     {
         return Option::do(function () use ($event) {
             yield Option::some($event->getMethodNameLowercase())
@@ -132,21 +117,5 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
 
             return new Arg($expr);
         });
-    }
-
-    /**
-     * @psalm-return Option<Union>
-     */
-    private static function getReturnType(MethodReturnTypeProviderEvent $event, RefinementResult $result): Option
-    {
-        $class_name = str_replace('NonEmpty', '', $event->getFqClasslikeName());
-
-        $template_params = is_a($class_name, Map::class, true) || is_a($class_name, NonEmptyMap::class, true)
-            ? [$result->collection_key_type, $result->collection_value_type]
-            : [$result->collection_value_type];
-
-        return Option::some(new Union([
-            new TGenericObject($class_name, $template_params),
-        ]));
     }
 }

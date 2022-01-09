@@ -15,7 +15,6 @@ use Psalm\Internal\Analyzer\StatementsAnalyzer;
 final class RefinementContext
 {
     public function __construct(
-        public string $refine_for,
         public FunctionLike $predicate,
         public Context $execution_context,
         public Codebase $codebase,
