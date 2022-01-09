@@ -14,10 +14,10 @@
     },
     "require": {
         "whsv26/functional-core": "^1.0",
-        "php": "^8.0"
+        "php": "^8.0",
+        "ext-simplexml": "*"
     },
     "require-dev": {
-        "ext-simplexml": "*",
         "vimeo/psalm": "^4.11",
         "phpunit/phpunit": "^9",
         "php-coveralls/php-coveralls": "~2.4.0"

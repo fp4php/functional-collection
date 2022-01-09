@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Immutable\Map;
 
 /**
+ * @todo drop
+ *
  * Public API for Map key-value pair
  * Exists only inside one iteration cycle
  * And destroyed after iteration

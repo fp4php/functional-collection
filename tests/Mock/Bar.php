@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Core\Tests\Mock;
+namespace Whsv26\Functional\Collection\Tests\Mock;
 
 /**
  * @internal
