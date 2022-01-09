@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection;
 
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Collection\Immutable\Map\Entry;
 
 /**
  * @template TKey
@@ -47,14 +46,27 @@ interface MapChainableOps
      * Filter collection by condition
      *
      * ```php
-     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->filter(fn(Entry $e) => $e->value > 1)->toArray();
+     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->filterValues(fn($val) => $val > 1)->toArray();
      * => [['b', 2]]
      * ```
      *
-     * @psalm-param callable(Entry<TKey, TValue>): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      * @psalm-return Map<TKey, TValue>
      */
-    public function filter(callable $predicate): Map;
+    public function filterValues(callable $predicate): Map;
+
+    /**
+     * Filter collection by condition
+     *
+     * ```php
+     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->filterKeys(fn($key) => $key !== 'a')->toArray();
+     * => [['b', 2]]
+     * ```
+     *
+     * @psalm-param callable(TKey): bool $predicate
+     * @psalm-return Map<TKey, TValue>
+     */
+    public function filterKeys(callable $predicate): Map;
 
     /**
      * A combined {@see MapOps::map} and {@see MapOps::filter}.
@@ -64,61 +76,35 @@ interface MapChainableOps
      *
      * ```php
      * >>> HashMap::collectPairs([['a', 'zero'], ['b', '1'], ['c', '2']])
-     * >>>     ->filterMap(fn(Entry $e) => is_numeric($e) ? Option::some((int) $e) : Option::none())
+     * >>>     ->filterMapValues(fn($val) => is_numeric($val) ? Option::some((int) $val) : Option::none())
      * >>>     ->toArray();
      * => [['b', 1], ['c', 2]]
      * ```
      *
      * @psalm-template TValueOut
-     * @psalm-param callable(Entry<TKey, TValue>): Option<TValueOut> $callback
+     * @psalm-param callable(TValue): Option<TValueOut> $callback
      * @psalm-return Map<TKey, TValueOut>
      */
-    public function filterMap(callable $callback): Map;
+    public function filterMapValues(callable $callback): Map;
 
     /**
-     * Map collection and flatten the result
+     * A combined {@see MapOps::map} and {@see MapOps::filter}.
+     *
+     * Filtering is handled via Option instead of Boolean.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
-     * >>> $collection = HashMap::collectPairs([['2', 2], ['5', 5]]);
-     * => HashMap('2' -> 2, '5' -> 5)
-     *
-     * >>> $collection
-     * >>>     ->flatMap(fn(Entry $e) => [
-     * >>>         [$e->value - 1, $e->value - 1],
-     * >>>         [$e->value, $e->value],
-     * >>>         [$e->value + 1, $e->value + 1]
-     * >>>     ])
+     * >>> HashMap::collectPairs([['a', 'zero'], ['b', '1'], ['c', '2']])
+     * >>>     ->filterMapKeys(fn($key) => 'a' !== $key ? Option::some('_' . $key) : Option::none())
      * >>>     ->toArray();
-     * => [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]]
+     * => [['_b', '1'], ['_c', '2']]
      * ```
      *
-     * @experimental
      * @psalm-template TKeyOut
-     * @psalm-template TValueOut
-     * @psalm-param callable(Entry<TKey, TValue>): iterable<array{TKeyOut, TValueOut}> $callback
-     * @psalm-return Map<TKeyOut, TValueOut>
+     * @psalm-param callable(TKey): Option<TKeyOut> $callback
+     * @psalm-return Map<TKeyOut, TValue>
      */
-    public function flatMap(callable $callback): Map;
-
-    /**
-     * Alias for {@see MapOps::mapValues()}
-     *
-     * Produces a new collection of elements by mapping each element in collection
-     * through a transformation function (callback)
-     *
-     * ```php
-     * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
-     * => HashMap('1' -> 1, '2' -> 2)
-     *
-     * >>> $collection->map(fn(Entry $e) => $e->value + 1);
-     * => HashMap('1' -> 2, '2' -> 3)
-     * ```
-     *
-     * @template TValueOut
-     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
-     * @psalm-return Map<TKey, TValueOut>
-     */
-    public function map(callable $callback): Map;
+    public function filterMapKeys(callable $callback): Map;
 
     /**
      * Produces a new collection of elements by mapping each element in collection
@@ -128,12 +114,12 @@ interface MapChainableOps
      * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
      * => HashMap('1' -> 1, '2' -> 2)
      *
-     * >>> $collection->mapValues(fn(Entry $e) => $e->value + 1);
+     * >>> $collection->mapValues(fn($val) => $val + 1);
      * => HashMap('1' -> 2, '2' -> 3)
      * ```
      *
      * @template TValueOut
-     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
+     * @psalm-param callable(TValue): TValueOut $callback
      * @psalm-return Map<TKey, TValueOut>
      */
     public function mapValues(callable $callback): Map;
@@ -145,12 +131,12 @@ interface MapChainableOps
      * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
      * => HashMap('1' -> 1, '2' -> 2)
      *
-     * >>> $collection->mapKeys(fn(Entry $e) => $e->value + 1);
-     * => HashMap(2 -> 1, 3 -> 2)
+     * >>> $collection->mapKeys(fn($key) => '_' . $key);
+     * => HashMap('_1' -> 1, '_2' -> 2)
      * ```
      *
      * @template TKeyOut
-     * @psalm-param callable(Entry<TKey, TValue>): TKeyOut $callback
+     * @psalm-param callable(TKey): TKeyOut $callback
      * @psalm-return Map<TKeyOut, TValue>
      */
     public function mapKeys(callable $callback): Map;

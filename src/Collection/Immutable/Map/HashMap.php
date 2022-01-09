@@ -6,29 +6,17 @@ namespace Whsv26\Functional\Collection\Immutable\Map;
 
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Operations\CountOperation;
-use Whsv26\Functional\Stream\Operations\EveryMapOperation;
-use Whsv26\Functional\Stream\Operations\EveryOperation;
-use Whsv26\Functional\Stream\Operations\FilterMapOperation;
-use Whsv26\Functional\Stream\Operations\FilterOperation;
-use Whsv26\Functional\Stream\Operations\FlatMapOperation;
-use Whsv26\Functional\Stream\Operations\FoldOperation;
-use Whsv26\Functional\Stream\Operations\KeysOperation;
-use Whsv26\Functional\Stream\Operations\MapKeysOperation;
-use Whsv26\Functional\Stream\Operations\MapValuesOperation;
-use Whsv26\Functional\Stream\Operations\ValuesOperation;
 use Generator;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\Mutable\HashTable;
 use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Stream\Stream;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
- * @implements Map<TK, TV>
+ * @implements Map<TKey, TValue>
  */
 final class HashMap implements Map
 {
@@ -36,7 +24,7 @@ final class HashMap implements Map
 
     /**
      * @internal
-     * @psalm-param HashTable<TK, TV> $hashTable
+     * @psalm-param HashTable<TKey, TValue> $hashTable
      */
     public function __construct(private HashTable $hashTable)
     {
@@ -45,10 +33,10 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @template TKI
-     * @template TVI
-     * @param iterable<TKI, TVI> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<TKeyIn, TValueIn> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collect(iterable $source): self
     {
@@ -61,15 +49,15 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @template TKI
-     * @template TVI
-     * @param iterable<array{TKI, TVI}> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<array{TKeyIn, TValueIn}> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectPairs(iterable $source): self
     {
         /**
-         * @psalm-var HashTable<TKI, TVI> $hashTable
+         * @psalm-var HashTable<TKeyIn, TValueIn> $hashTable
          */
         $hashTable = new HashTable();
 
@@ -81,7 +69,7 @@ final class HashMap implements Map
     }
 
     /**
-     * @return Generator<int, array{TK, TV}>
+     * @return Generator<int, array{TKey, TValue}>
      */
     public function getIterator(): Generator
     {
@@ -92,9 +80,6 @@ final class HashMap implements Map
         }
     }
 
-    /**
-     * @return Generator<TK, TV>
-     */
     public function getKeyValueIterator(): Generator
     {
         foreach ($this as [$key, $value]) {
@@ -112,236 +97,147 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @return list<array{TK, TV}>
+     * @return Stream<array{TKey, TValue}>
      */
-    public function toList(): array
+    public function toStream(): Stream
     {
-        $pairs = [];
-
-        foreach ($this->getIterator() as $pair) {
-            $pairs[] = $pair;
-        }
-
-        return $pairs;
+        return Stream::emits($this->getIterator());
     }
 
     /**
      * @inheritDoc
-     * @psalm-return (TK is array-key ? array<TK, TV> : never)
-     */
-    public function toAssocArray(): array
-    {
-        $acc = [];
-
-        foreach ($this->getIterator() as [$key, $val]) {
-            $acc[$key] = $val;
-        }
-
-        return $acc;
-    }
-
-    /**
-     * @inheritDoc
-     * @return LinkedList<array{TK, TV}>
-     */
-    public function toLinkedList(): LinkedList
-    {
-        return LinkedList::collect($this->getIterator());
-    }
-
-    /**
-     * @inheritDoc
-     * @return ArrayList<array{TK, TV}>
-     */
-    public function toArrayList(): ArrayList
-    {
-        return ArrayList::collect($this->getIterator());
-    }
-
-    /**
-     * @inheritDoc
-     * @return HashSet<array{TK, TV}>
-     */
-    public function toHashSet(): HashSet
-    {
-        return HashSet::collect($this->getIterator());
-    }
-
-    /**
-     * @inheritDoc
-     * @return HashMap<TK, TV>
-     */
-    public function toHashMap(): HashMap
-    {
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
-     */
-    public function every(callable $predicate): bool
-    {
-        return EveryOperation::of($this->getKeyValueIterator())(
-            fn($value, $key) => $predicate(new Entry($key, $value))
-        );
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @psalm-return Option<self<TK, TVO>>
-     */
-    public function everyMap(callable $callback): Option
-    {
-        $hs = EveryMapOperation::of($this->getKeyValueIterator())(
-            fn($value, $key) => $callback(new Entry($key, $value))
-        );
-
-        return $hs->map(fn($gen) => HashMap::collect($gen));
-    }
-
-    /**
-     * @inheritDoc
-     * @template TA
-     * @psalm-param TA $init
-     * @psalm-param callable(TA, Entry<TK, TV>): TA $callback
-     * @psalm-return TA
-     */
-    public function fold(mixed $init, callable $callback): mixed
-    {
-        return FoldOperation::of($this->getKeyValueIterator())(
-            $init,
-            function (mixed $acc, $value, $key) use ($callback) {
-                /** @psalm-var TA $acc */
-                return $callback($acc, new Entry($key, $value));
-            }
-        );
-    }
-
-    /**
-     * @inheritDoc
-     * @template TKI
-     * @template TVI
-     * @param TKI $key
-     * @param TVI $value
-     * @return self<TK|TKI, TV|TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param TKeyIn $key
+     * @param TValueIn $value
+     * @return self<TKey|TKeyIn, TValue|TValueIn>
      */
     public function updated(mixed $key, mixed $value): self
     {
-        return self::collectPairs([...$this->toList(), [$key, $value]]);
+        return $this->toStream()
+            ->appended([$key, $value])
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @param TK $key
-     * @return self<TK, TV>
+     * @param TKey $key
+     * @return self<TKey, TValue>
      */
     public function removed(mixed $key): self
     {
-        return $this->filter(fn(Entry $e) => $e->key !== $key);
+        return $this->filterKeys(fn($k) => $k !== $key);
     }
 
     /**
      * @inheritDoc
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
-     * @psalm-return self<TK, TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TKey, TValue>
      */
-    public function filter(callable $predicate): self
+    public function filterValues(callable $predicate): self
     {
-        return self::collect(FilterOperation::of($this->getKeyValueIterator())(
-            fn($value, $key) => $predicate(new Entry($key, $value))
-        ));
+        return $this->toStream()
+            ->filterValues($predicate)
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @template TVO
-     * @param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @return self<TK, TVO>
+     * @psalm-param callable(TKey): bool $predicate
+     * @psalm-return self<TKey, TValue>
      */
-    public function filterMap(callable $callback): self
+    public function filterKeys(callable $predicate): self
     {
-        return self::collect(FilterMapOperation::of($this->getKeyValueIterator())(
-            fn($value, $key) => $callback(new Entry($key, $value))
-        ));
+        return $this->toStream()
+            ->filterKeys($predicate)
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @experimental
-     * @psalm-template TKO
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): iterable<array{TKO, TVO}> $callback
-     * @psalm-return self<TKO, TVO>
+     * @template TValueOut
+     * @param callable(TValue): Option<TValueOut> $callback
+     * @return self<TKey, TValueOut>
      */
-    public function flatMap(callable $callback): self
+    public function filterMapValues(callable $callback): self
     {
-        return self::collectPairs(
-            FlatMapOperation::of($this->getKeyValueIterator())(
-                fn($value, $key) => $callback(new Entry($key, $value))
-            )
-        );
+        return $this->toStream()
+            ->mapValues($callback)
+            ->filterValues(fn(Option $key) => $key->isSome())
+            ->mapValues(fn(Option $some) => $some->getUnsafe()) // TODO refinement
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return self<TK, TVO>
+     * @psalm-template TKeyOut
+     * @psalm-param callable(TKey): Option<TKeyOut> $callback
+     * @psalm-return self<TKeyOut, TValue>
      */
-    public function map(callable $callback): self
+    public function filterMapKeys(callable $callback): self
     {
-        return $this->mapValues($callback);
+        return $this->toStream()
+            ->mapKeys($callback)
+            ->filterKeys(fn(Option $key) => $key->isSome())
+            ->mapKeys(fn(Option $some) => $some->getUnsafe()) // TODO refinement
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return self<TK, TVO>
+     * @template TValueOut
+     * @psalm-param callable(TValue): TValueOut $callback
+     * @psalm-return self<TKey, TValueOut>
      */
     public function mapValues(callable $callback): self
     {
-        return self::collect(
-            MapValuesOperation::of($this->getKeyValueIterator())(
-                fn($value, $key) => $callback(new Entry($key, $value))
-            )
-        );
+        return $this->toStream()
+            ->mapValues($callback)
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @template TKO
-     * @psalm-param callable(Entry<TK, TV>): TKO $callback
-     * @psalm-return self<TKO, TV>
+     * @template TKeyOut
+     * @psalm-param callable(TKey): TKeyOut $callback
+     * @psalm-return self<TKeyOut, TValue>
      */
     public function mapKeys(callable $callback): self
     {
-        return self::collect(
-            MapKeysOperation::of($this->getKeyValueIterator())(
-                fn($value, $key) => $callback(new Entry($key, $value))
-            )
-        );
+        return $this->toStream()
+            ->mapKeys($callback)
+            ->compile()
+            ->toHashMap();
     }
 
     /**
      * @inheritDoc
-     * @psalm-return Seq<TK>
+     * @psalm-return Seq<TKey>
      */
     public function keys(): Seq
     {
-        return ArrayList::collect(KeysOperation::of($this->getKeyValueIterator())());
+        return $this->toStream()
+            ->map(fn($pair) => $pair[0])
+            ->compile()
+            ->toArrayList();
     }
 
     /**
      * @inheritDoc
-     * @psalm-return Seq<TV>
+     * @psalm-return Seq<TValue>
      */
     public function values(): Seq
     {
-        return ArrayList::collect(ValuesOperation::of($this->getKeyValueIterator())());
+        return $this->toStream()
+            ->map(fn($pair) => $pair[1])
+            ->compile()
+            ->toArrayList();
     }
 
     public function isEmpty():bool
@@ -351,8 +247,8 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      */
     public function __invoke(mixed $key): Option
     {
@@ -361,8 +257,8 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      * @psalm-suppress ImpureMethodCall
      */
     public function get(mixed $key): Option
