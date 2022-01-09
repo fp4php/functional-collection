@@ -17,7 +17,7 @@ interface StreamChainableOps
      * Add element to the stream end
      *
      * ```php
-     * >>> Stream::emits([1, 2])->appended(3)->toArray();
+     * >>> Stream::emits([1, 2])->appended(3)->compile()->toArray();
      * => [1, 2, 3]
      * ```
      *
@@ -31,7 +31,7 @@ interface StreamChainableOps
      * Add elements to the stream end
      *
      * ```php
-     * >>> Stream::emits([1, 2])->appendedAll([3, 4])->toArray();
+     * >>> Stream::emits([1, 2])->appendedAll([3, 4])->compile()->toArray();
      * => [1, 2, 3, 4]
      * ```
      *
@@ -45,7 +45,7 @@ interface StreamChainableOps
      * Add element to the stream start
      *
      * ```php
-     * >>> Stream::emits([1, 2])->prepended(0)->toArray();
+     * >>> Stream::emits([1, 2])->prepended(0)->compile()->toArray();
      * => [0, 1, 2]
      * ```
      *
@@ -59,7 +59,7 @@ interface StreamChainableOps
      * Add elements to the stream start
      *
      * ```php
-     * >>> Stream::emits([1, 2])->prependedAll(-1, 0)->toArray();
+     * >>> Stream::emits([1, 2])->prependedAll(-1, 0)->compile()->toArray();
      * => [-1, 0, 1, 2]
      * ```
      *
@@ -75,7 +75,7 @@ interface StreamChainableOps
      * false - exclude element from new stream.
      *
      * ```php
-     * >>> Stream::emits([1, 2])->filter(fn($elem) => $elem > 1)->toArray();
+     * >>> Stream::emits([1, 2])->filter(fn($elem) => $elem > 1)->compile()->toArray();
      * => [2]
      * ```
      *
@@ -88,7 +88,7 @@ interface StreamChainableOps
      * Exclude null elements
      *
      * ```php
-     * >>> Stream::emits([1, 2, null])->filterNotNull()->toArray();
+     * >>> Stream::emits([1, 2, null])->filterNotNull()->compile()->toArray();
      * => [1, 2]
      * ```
      *
@@ -100,7 +100,7 @@ interface StreamChainableOps
      * Filter elements of given class
      *
      * ```php
-     * >>> Stream::emits([1, new Foo(2)])->filterOf(Foo::class)->toArray();
+     * >>> Stream::emits([1, new Foo(2)])->filterOf(Foo::class)->compile()->toArray();
      * => [Foo(2)]
      * ```
      *
@@ -120,7 +120,7 @@ interface StreamChainableOps
      * ```php
      * >>> Stream::emits(['zero', '1', '2'])
      * >>>     ->filterMap(fn($elem) => is_numeric($elem) ? Option::some((int) $elem) : Option::none())
-     * >>>     ->toArray();
+     * >>>     ->compile()->toArray();
      * => [1, 2]
      * ```
      *
@@ -134,7 +134,7 @@ interface StreamChainableOps
      * Map stream and then flatten the result
      *
      * ```php
-     * >>> Stream::emits([2, 5])->flatMap(fn($e) => [$e - 1, $e, $e + 1])->toArray();
+     * >>> Stream::emits([2, 5])->flatMap(fn($e) => [$e - 1, $e, $e + 1])->compile()->toArray();
      * => [1, 2, 3, 4, 5, 6]
      * ```
      *
@@ -149,7 +149,7 @@ interface StreamChainableOps
      * through a transformation function (callback)
      *
      * ```php
-     * >>> Stream::emits([1, 2])->map(fn($elem) => (string) $elem)->toArray();
+     * >>> Stream::emits([1, 2])->map(fn($elem) => (string) $elem)->compile()->toArray();
      * => ['1', '2']
      * ```
      *
@@ -163,7 +163,7 @@ interface StreamChainableOps
      * Returns every stream element except first
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->tail()->toArray();
+     * >>> Stream::emits([1, 2, 3])->tail()->compile()->toArray();
      * => [2, 3]
      * ```
      *
@@ -175,7 +175,7 @@ interface StreamChainableOps
      * Take stream elements while predicate is true
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->takeWhile(fn($e) => $e < 3)->toArray();
+     * >>> Stream::emits([1, 2, 3])->takeWhile(fn($e) => $e < 3)->compile()->toArray();
      * => [1, 2]
      * ```
      *
@@ -188,7 +188,7 @@ interface StreamChainableOps
      * Drop stream elements while predicate is true
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->dropWhile(fn($e) => $e < 3)->toArray();
+     * >>> Stream::emits([1, 2, 3])->dropWhile(fn($e) => $e < 3)->compile()->toArray();
      * => [3]
      * ```
      *
@@ -201,7 +201,7 @@ interface StreamChainableOps
      * Take N stream elements
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->take(2)->toArray();
+     * >>> Stream::emits([1, 2, 3])->take(2)->compile()->toArray();
      * => [1, 2]
      * ```
      *
@@ -213,7 +213,7 @@ interface StreamChainableOps
      * Drop N stream elements
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->drop(2)->toArray();
+     * >>> Stream::emits([1, 2, 3])->drop(2)->compile()->toArray();
      * => [3]
      * ```
      *
@@ -228,7 +228,7 @@ interface StreamChainableOps
      * >>> Stream::emits([new Foo(1), new Foo(2)])
      * >>>     ->tap(fn(Foo $foo) => $foo->a = $foo->a + 1)
      * >>>     ->map(fn(Foo $foo) => $foo->a)
-     * >>>     ->toArray();
+     * >>>     ->compile()->toArray();
      * => [2, 3]
      * ```
      *
@@ -241,7 +241,7 @@ interface StreamChainableOps
      * Emits the specified separator between every pair of elements in the source stream.
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->intersperse(0)->toArray();
+     * >>> Stream::emits([1, 2, 3])->intersperse(0)->compile()->toArray();
      * => [1, 0, 2, 0, 3]
      * ```
      *
@@ -268,7 +268,7 @@ interface StreamChainableOps
      * Deterministically zips elements, terminating when the end of either branch is reached naturally.
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->zip(Stream::emits([4, 5, 6, 7]))->toArray();
+     * >>> Stream::emits([1, 2, 3])->zip(Stream::emits([4, 5, 6, 7]))->compile()->toArray();
      * => [[1, 4], [2, 5], [3, 6]]
      * ```
      *
@@ -282,7 +282,7 @@ interface StreamChainableOps
      * Deterministically interleaves elements, starting on the left, terminating when the end of either branch is reached naturally.
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->interleave(Stream::emits([4, 5, 6, 7]))->toArray();
+     * >>> Stream::emits([1, 2, 3])->interleave(Stream::emits([4, 5, 6, 7]))->compile()->toArray();
      * => [1, 4, 2, 5, 3, 6]
      * ```
      *
@@ -328,10 +328,10 @@ interface StreamChainableOps
      * Sort streamed elements
      *
      * ```php
-     * >>> Stream::emits([2, 1, 3])->sorted(fn($lhs, $rhs) => $lhs - $rhs)->toArray();
+     * >>> Stream::emits([2, 1, 3])->sorted(fn($lhs, $rhs) => $lhs - $rhs)->compile()->toArray();
      * => [1, 2, 3]
      *
-     * >>> Stream::emits([2, 1, 3])->sorted(fn($lhs, $rhs) => $rhs - $lhs)->toArray();
+     * >>> Stream::emits([2, 1, 3])->sorted(fn($lhs, $rhs) => $rhs - $lhs)->compile()->toArray();
      * => [3, 2, 1]
      * ```
      *

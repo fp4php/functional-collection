@@ -17,10 +17,10 @@ interface StreamTerminalOps
      * and false otherwise
      *
      * ```php
-     * >>> Stream::emits([1, 2])->every(fn($elem) => $elem > 0);
+     * >>> Stream::emits([1, 2])->compile()->every(fn($elem) => $elem > 0);
      * => true
      *
-     * >>> Stream::emits([1, 2])->every(fn($elem) => $elem > 1);
+     * >>> Stream::emits([1, 2])->compile()->every(fn($elem) => $elem > 1);
      * => false
      * ```
      *
@@ -33,10 +33,10 @@ interface StreamTerminalOps
      * false otherwise
      *
      * ```php
-     * >>> Stream::emits([new Foo(1), new Foo(2)])->everyOf(Foo::class);
+     * >>> Stream::emits([new Foo(1), new Foo(2)])->compile()->everyOf(Foo::class);
      * => true
      *
-     * >>> Stream::emits([new Foo(1), new Bar(2)])->everyOf(Foo::class);
+     * >>> Stream::emits([new Foo(1), new Bar(2)])->compile()->everyOf(Foo::class);
      * => false
      * ```
      *
@@ -50,10 +50,10 @@ interface StreamTerminalOps
      * Find if there is element which satisfies the condition
      *
      * ```php
-     * >>> Stream::emits([1, 2])->exists(fn($elem) => 2 === $elem);
+     * >>> Stream::emits([1, 2])->compile()->exists(fn($elem) => 2 === $elem);
      * => true
      *
-     * >>> Stream::emits([1, 2])->exists(fn($elem) => 3 === $elem);
+     * >>> Stream::emits([1, 2])->compile()->exists(fn($elem) => 3 === $elem);
      * => false
      * ```
      *
@@ -66,10 +66,10 @@ interface StreamTerminalOps
      * False otherwise
      *
      * ```php
-     * >>> Stream::emits([1, new Foo(2)])->existsOf(Foo::class);
+     * >>> Stream::emits([1, new Foo(2)])->compile()->existsOf(Foo::class);
      * => true
      *
-     * >>> Stream::emits([1, new Foo(2)])->existsOf(Bar::class);
+     * >>> Stream::emits([1, new Foo(2)])->compile()->existsOf(Bar::class);
      * => false
      * ```
      *
@@ -83,7 +83,7 @@ interface StreamTerminalOps
      * Find first element which satisfies the condition
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->first(fn($elem) => $elem > 1)->get();
+     * >>> Stream::emits([1, 2, 3])->compile()->first(fn($elem) => $elem > 1)->get();
      * => 2
      * ```
      *
@@ -96,7 +96,7 @@ interface StreamTerminalOps
      * Find first element of given class
      *
      * ```php
-     * >>> Stream::emits([new Bar(1), new Foo(2), new Foo(3)])->firstOf(Foo::class)->get();
+     * >>> Stream::emits([new Bar(1), new Foo(2), new Foo(3)])->compile()->firstOf(Foo::class)->get();
      * => Foo(2)
      * ```
      *
@@ -111,7 +111,7 @@ interface StreamTerminalOps
      * Fold many elements into one
      *
      * ```php
-     * >>> Stream::emits(['1', '2'])->fold('0', fn($acc, $cur) => $acc . $cur);
+     * >>> Stream::emits(['1', '2'])->compile()->fold('0', fn($acc, $cur) => $acc . $cur);
      * => '012'
      * ```
      *
@@ -127,7 +127,7 @@ interface StreamTerminalOps
      * Returns None for empty stream
      *
      * ```php
-     * >>> Stream::emits(['1', '2'])->reduce(fn($acc, $cur) => $acc . $cur)->get();
+     * >>> Stream::emits(['1', '2'])->compile()->reduce(fn($acc, $cur) => $acc . $cur)->get();
      * => '12'
      * ```
      *
@@ -141,7 +141,7 @@ interface StreamTerminalOps
      * Return first stream element
      *
      * ```php
-     * >>> Stream::emits([1, 2])->head()->get();
+     * >>> Stream::emits([1, 2])->compile()->head()->get();
      * => 1
      * ```
      *
@@ -153,7 +153,7 @@ interface StreamTerminalOps
      * Returns last stream element which satisfies the condition
      *
      * ```php
-     * >>> Stream::emits([1, 0, 2])->last(fn($elem) => $elem > 0)->get();
+     * >>> Stream::emits([1, 0, 2])->compile()->last(fn($elem) => $elem > 0)->get();
      * => 2
      * ```
      *
@@ -167,7 +167,7 @@ interface StreamTerminalOps
      * Alias for {@see SeqOps::head}
      *
      * ```php
-     * >>> Stream::emits([1, 2])->firstElement()->get();
+     * >>> Stream::emits([1, 2])->compile()->firstElement()->get();
      * => 1
      * ```
      *
@@ -179,7 +179,7 @@ interface StreamTerminalOps
      * Returns last stream element
      *
      * ```php
-     * >>> Stream::emits([1, 2])->lastElement()->get();
+     * >>> Stream::emits([1, 2])->compile()->lastElement()->get();
      * => 2
      * ```
      *
@@ -193,7 +193,7 @@ interface StreamTerminalOps
      * This is useful if you care only for side effects.
      *
      * ```php
-     * >>> Stream::drain([1, 2])->lines()->drain();
+     * >>> Stream::emits([1, 2])->lines()->compile()->drain();
      * 1
      * 2
      * ```
@@ -205,10 +205,10 @@ interface StreamTerminalOps
      * using start, end, and separator strings.
      *
      * ```php
-     * >>> Stream::emits([1, 2, 3])->mkString("(", ",", ")")
+     * >>> Stream::emits([1, 2, 3])->compile()->mkString("(", ",", ")")
      * => '(1,2,3)'
      *
-     * >>> Stream::emits([])->mkString("(", ",", ")")
+     * >>> Stream::emits([])->compile()->mkString("(", ",", ")")
      * => '()'
      * ```
      */

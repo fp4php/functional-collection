@@ -19,7 +19,7 @@ interface StreamCastableOps
 {
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->toArray();
+     * >>> Stream::emits([1, 2, 2])->compile()->toArray();
      * => [1, 2, 2]
      * ```
      *
@@ -42,7 +42,7 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([[1, 'a'], [2, 'b']])->toAssocArray(fn($pair) => $pair);
+     * >>> Stream::emits([[1, 'a'], [2, 'b']])->compile()->toAssocArray(fn($pair) => $pair);
      * => [1 => 'a', 2 => 'b']
      * ```
      *
@@ -55,7 +55,7 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->toLinkedList();
+     * >>> Stream::emits([1, 2, 2])->compile()->toLinkedList();
      * => LinkedList(1, 2, 2)
      * ```
      *
@@ -65,7 +65,7 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->toArrayList();
+     * >>> Stream::emits([1, 2, 2])->compile()->toArrayList();
      * => ArrayList(1, 2, 2)
      * ```
      *
@@ -75,9 +75,10 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->toNonEmptyArrayList();
+     * >>> Stream::emits([1, 2, 2])->compile()->toNonEmptyArrayList();
      * => Some(NonEmptyArrayList(1, 2, 2))
-     * >>> Stream::emits([])->toNonEmptyArrayList();
+     *
+     * >>> Stream::emits([])->compile()->toNonEmptyArrayList();
      * => None
      * ```
      *
@@ -87,7 +88,7 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->toHashSet();
+     * >>> Stream::emits([1, 2, 2])->compile()->toHashSet();
      * => HashSet(1, 2)
      * ```
      *
@@ -98,6 +99,7 @@ interface StreamCastableOps
     /**
      * ```php
      * >>> Stream::emits([1, 2])
+     * >>>    ->compile()
      * >>>    ->toHashMap(fn($elem) => [(string) $elem, $elem]);
      * => HashMap('1' -> 1, '2' -> 2)
      * ```

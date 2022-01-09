@@ -103,30 +103,6 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @param 0|positive-int $seconds
-     * @return self<int>
-     */
-    public static function awakeEvery(int $seconds): self
-    {
-        return self::emits((function () use ($seconds) {
-            $elapsed = 0;
-            $prevTime = time();
-
-            while (true) {
-                /** @psalm-suppress PossiblyInvalidArgument */
-                sleep($seconds);
-
-                $curTime = time();
-                $elapsed += $curTime - $prevTime;
-                $prevTime = $curTime;
-
-                yield $elapsed;
-            }
-        })());
-    }
-
-    /**
-     * @inheritDoc
      * @template TValueI
      * @param TValueI $const
      * @return self<TValueI>
