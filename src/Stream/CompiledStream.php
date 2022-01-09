@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
+use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
 use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
+use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyLinkedList;
+use Whsv26\Functional\Collection\Immutable\NonEmptySet\NonEmptyHashSet;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Immutable\Map\HashMap;
 use Whsv26\Functional\Collection\Immutable\Set\HashSet;
@@ -19,7 +22,6 @@ use Whsv26\Functional\Stream\Operations\FirstOperation;
 use Whsv26\Functional\Stream\Operations\FoldOperation;
 use Whsv26\Functional\Stream\Operations\HeadOperation;
 use Whsv26\Functional\Stream\Operations\LastOperation;
-use Whsv26\Functional\Stream\Operations\MapValuesOperation;
 use Whsv26\Functional\Stream\Operations\MkStringOperation;
 use Whsv26\Functional\Stream\Operations\ReduceOperation;
 use Generator;
@@ -244,24 +246,40 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
         return $this->leaf(empty($list) ? Option::none() : Option::some($list));
     }
 
-
     /**
      * @inheritDoc
-     * @template TKO of array-key
-     * @template TValueOut
-     * @param callable(TValue): array{TKO, TValueOut} $callback
-     * @return array<TKO, TValueOut>
+     * @template TKeyIn of array-key
+     * @template TValueIn
+     * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
+     * @psalm-return array<TKeyIn, TValueIn>
      */
-    public function toAssocArray(callable $callback): array
+    public function toAssocArray(): array
     {
         $arr = [];
 
-        foreach ($this->emitter as $val) {
-            $pair = $callback($val);
-            $arr[$pair[0]] = $pair[1];
+        foreach ($this->emitter as [$key, $val]) {
+            $arr[$key] = $val;
         }
 
         return $this->leaf($arr);
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn of array-key
+     * @template TValueIn
+     * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
+     * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
+     */
+    public function toNonEmptyAssocArray(): Option
+    {
+        $arr = [];
+
+        foreach ($this->emitter as [$key, $val]) {
+            $arr[$key] = $val;
+        }
+
+        return $this->leaf(empty($arr) ? Option::none() : Option::some($arr));
     }
 
     /**
@@ -271,6 +289,20 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     public function toLinkedList(): LinkedList
     {
         return $this->leaf(LinkedList::collect($this->emitter));
+    }
+
+    /**
+     * @inheritDoc
+     * @return Option<NonEmptyLinkedList<TValue>>
+     */
+    public function toNonEmptyLinkedList(): Option
+    {
+        $linkedList = $this->toLinkedList();
+
+        return Option::when(
+            $linkedList->isNonEmpty(),
+            fn() => new NonEmptyLinkedList($linkedList->head(), $linkedList->tail())
+        );
     }
 
     /**
@@ -290,8 +322,8 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     {
         $arrayList = $this->leaf(ArrayList::collect($this->emitter));
 
-        return Option::when(
-            $arrayList->isNonEmpty(),
+        return Option::unless(
+            $arrayList->isEmpty(),
             fn() => new NonEmptyArrayList($arrayList)
         );
     }
@@ -307,14 +339,45 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
 
     /**
      * @inheritDoc
+     * @return Option<NonEmptyHashSet<TValue>>
+     */
+    public function toNonEmptyHashSet(): Option
+    {
+        $hashSet = $this->toHashSet();
+
+        return Option::unless(
+            $hashSet->isEmpty(),
+            fn() => new NonEmptyHashSet($hashSet)
+        );
+    }
+
+    /**
+     * @inheritDoc
      * @template TKeyIn
      * @template TValueIn
-     * @param callable(TValue): array{TKeyIn, TValueIn} $callback
-     * @return HashMap<TKeyIn, TValueIn>
+     * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
+     * @psalm-return HashMap<TKeyIn, TValueIn>
      */
-    public function toHashMap(callable $callback): HashMap
+    public function toHashMap(): HashMap
     {
-        return $this->leaf(HashMap::collectPairs(MapValuesOperation::of($this->emitter)($callback)));
+        return $this->leaf(HashMap::collectPairs($this->emitter));
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
+     * @psalm-return Option<NonEmptyHashMap<TKeyIn, TValueIn>>
+     */
+    public function toNonEmptyHashMap(): Option
+    {
+        $hashMap = $this->toHashMap();
+
+        return Option::unless(
+            $hashMap->isEmpty(),
+            fn() => new NonEmptyHashMap($hashMap)
+        );
     }
 
     /**
