@@ -42,9 +42,9 @@ final class NonEmptyHashSet implements NonEmptySet
      * @internal
      * @param HashSet<TV> $set
      */
-    public function __construct(private HashSet $set)
-    {
-    }
+    public function __construct(
+        private HashSet $set
+    ) { }
 
     /**
      * @inheritDoc

@@ -38,9 +38,9 @@ final class NonEmptyHashMap implements NonEmptyMap
      * @internal
      * @param HashMap<TK, TV> $hashMap
      */
-    public function __construct(private HashMap $hashMap)
-    {
-    }
+    public function __construct(
+        private HashMap $hashMap
+    ) { }
 
     /**
      * @inheritDoc

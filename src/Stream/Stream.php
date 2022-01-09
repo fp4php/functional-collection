@@ -202,6 +202,40 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TKeyIn): bool $callback
+     * @psalm-return self<array{TKeyIn, TValueIn}>
+     */
+    public function filterKeys(callable $callback): self
+    {
+        $filter = FilterOperation::of($this->emitter);
+
+        return $this->fork($filter(function ($pair) use ($callback) {
+            return $callback($pair[0]);
+        }));
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TValueIn): bool $callback
+     * @psalm-return self<array{TKeyIn, TValueIn}>
+     */
+    public function filterValues(callable $callback): self
+    {
+        $filter = FilterOperation::of($this->emitter);
+
+        return $this->fork($filter(function ($pair) use ($callback) {
+            return $callback($pair[1]);
+        }));
+    }
+
+    /**
+     * @inheritDoc
      * @template TValueI
      * @psalm-param TValueI $elem
      * @psalm-return self<TValue|TValueI>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Immutable\Map;
 
 use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Core\Option\Some;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Generator;
 use Whsv26\Functional\Collection\Map;
@@ -167,7 +168,7 @@ final class HashMap implements Map
         return $this->toStream()
             ->mapValues($callback)
             ->filterValues(fn(Option $key) => $key->isSome())
-            ->mapValues(fn(Option $some) => $some->getUnsafe()) // TODO refinement
+            ->mapValues(fn(Some $some) => $some->get())
             ->compile()
             ->toHashMap();
     }
@@ -183,7 +184,7 @@ final class HashMap implements Map
         return $this->toStream()
             ->mapKeys($callback)
             ->filterKeys(fn(Option $key) => $key->isSome())
-            ->mapKeys(fn(Option $some) => $some->getUnsafe()) // TODO refinement
+            ->mapKeys(fn(Some $some) => $some->get())
             ->compile()
             ->toHashMap();
     }
