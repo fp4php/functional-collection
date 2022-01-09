@@ -200,6 +200,24 @@ interface StreamChainableOps
     public function mapValues(callable $callback): self;
 
     /**
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TKeyIn): bool $callback
+     * @psalm-return self<array{TKeyIn, TValueIn}>
+     */
+    public function filterKeys(callable $callback): self;
+
+    /**
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     * @psalm-param callable(TValueIn): bool $callback
+     * @psalm-return self<array{TKeyIn, TValueIn}>
+     */
+    public function filterValues(callable $callback): self;
+
+    /**
      * Returns every stream element except first
      *
      * ```php
