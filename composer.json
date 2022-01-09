@@ -1,0 +1,36 @@
+{
+    "name": "whsv26/functional-collection",
+    "description": "Collections and Streams",
+    "type": "library",
+    "authors": [
+        {
+            "name": "whsv26",
+            "email": "whsv26@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "require": {
+        "whsv26/functional-core": "^1.0",
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "ext-simplexml": "*",
+        "vimeo/psalm": "^4.11",
+        "phpunit/phpunit": "^9",
+        "php-coveralls/php-coveralls": "~2.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Whsv26\\Functional\\": "src",
+            "Whsv26\\Functional\\Collection\\Psalm\\": "psalm/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Whsv26\\Functional\\Collection\\Tests\\": "tests/"
+        }
+    }
+}
