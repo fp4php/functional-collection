@@ -13,27 +13,27 @@ final class SetTest extends TestCase
     {
         $this->assertEquals(
             [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toArray(),
+            HashSet::collect([1, 2, 3, 3])->toList(),
         );
 
         $this->assertEquals(
             [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toLinkedList()->toArray(),
+            HashSet::collect([1, 2, 3, 3])->toLinkedList()->toList(),
         );
 
         $this->assertEquals(
             [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toArrayList()->toArray(),
+            HashSet::collect([1, 2, 3, 3])->toArrayList()->toList(),
         );
 
         $this->assertEquals(
             [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toHashSet()->toArray(),
+            HashSet::collect([1, 2, 3, 3])->toHashSet()->toList(),
         );
 
         $this->assertEquals(
             [[1, 1], [2, 2], [3, 3]],
-            HashSet::collect([1, 2, 3])->toHashMap(fn($e) => [$e, $e])->toArray(),
+            HashSet::collect([1, 2, 3])->toHashMap(fn($e) => [$e, $e])->toList(),
         );
     }
 

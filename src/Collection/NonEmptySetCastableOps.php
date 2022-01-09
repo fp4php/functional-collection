@@ -27,7 +27,7 @@ interface NonEmptySetCastableOps
      *
      * @return non-empty-list<TValue>
      */
-    public function toArray(): array;
+    public function toNonEmptyList(): array;
 
     /**
      * ```php

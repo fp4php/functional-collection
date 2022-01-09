@@ -114,7 +114,7 @@ final class HashMap implements Map
      * @inheritDoc
      * @return list<array{TK, TV}>
      */
-    public function toArray(): array
+    public function toList(): array
     {
         $pairs = [];
 
@@ -230,7 +230,7 @@ final class HashMap implements Map
      */
     public function updated(mixed $key, mixed $value): self
     {
-        return self::collectPairs([...$this->toArray(), [$key, $value]]);
+        return self::collectPairs([...$this->toList(), [$key, $value]]);
     }
 
     /**

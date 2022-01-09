@@ -25,7 +25,7 @@ final class NonEmptyMapOpsTest extends TestCase
         $hm = $hm->updated('c', 3);
         $hm = $hm->removed('a');
 
-        $this->assertEquals([['b', 2], ['c', 3]], $hm->toArray());
+        $this->assertEquals([['b', 2], ['c', 3]], $hm->toList());
     }
 
     public function testEvery(): void
@@ -57,7 +57,7 @@ final class NonEmptyMapOpsTest extends TestCase
     public function testFilter(): void
     {
         $hm = NonEmptyHashMap::collectPairsUnsafe([['a', new Foo(1)], ['b', 1], ['c',  new Foo(2)]]);
-        $this->assertEquals([['b', 1]], $hm->filter(fn($e) => $e->value === 1)->toArray());
+        $this->assertEquals([['b', 1]], $hm->filter(fn($e) => $e->value === 1)->toList());
     }
 
     public function testFilterMap(): void
@@ -66,7 +66,7 @@ final class NonEmptyMapOpsTest extends TestCase
             [['b', 1], ['c', 2]],
             NonEmptyHashMap::collectPairsNonEmpty([['a', 'zero'], ['b', '1'], ['c', '2']])
                 ->filterMap(fn($e) => is_numeric($e->value) ? Option::some((int) $e->value) : Option::none())
-                ->toArray()
+                ->toList()
         );
     }
 
@@ -76,17 +76,17 @@ final class NonEmptyMapOpsTest extends TestCase
 
         $this->assertEquals(
             [['2', '2'], ['3', '3']],
-            $hm->map(fn($e) => $e->key)->toArray()
+            $hm->map(fn($e) => $e->key)->toNonEmptyList()
         );
 
         $this->assertEquals(
             [['2', '2'], ['3', '3']],
-            $hm->mapValues(fn($e) => $e->key)->toArray()
+            $hm->mapValues(fn($e) => $e->key)->toNonEmptyList()
         );
 
         $this->assertEquals(
             [[22, 22], [33, 33]],
-            $hm->mapKeys(fn($e) => $e->value)->toArray()
+            $hm->mapKeys(fn($e) => $e->value)->toNonEmptyList()
         );
     }
 
@@ -96,7 +96,7 @@ final class NonEmptyMapOpsTest extends TestCase
 
         $this->assertEquals(
             ['a', 'b'],
-            $hm->keys()->toArray()
+            $hm->keys()->toNonEmptyList()
         );
     }
 
@@ -106,7 +106,7 @@ final class NonEmptyMapOpsTest extends TestCase
 
         $this->assertEquals(
             [22, 33],
-            $hm->values()->toArray()
+            $hm->values()->toNonEmptyList()
         );
     }
 }

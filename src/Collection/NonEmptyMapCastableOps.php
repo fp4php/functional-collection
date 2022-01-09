@@ -28,7 +28,7 @@ interface NonEmptyMapCastableOps
      *
      * @return non-empty-list<array{TKey, TValue}>
      */
-    public function toArray(): array;
+    public function toNonEmptyList(): array;
 
     /**
      * ```php

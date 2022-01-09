@@ -100,7 +100,7 @@ final class NonEmptyHashSet implements NonEmptySet
      * @inheritDoc
      * @return non-empty-list<TV>
      */
-    public function toArray(): array
+    public function toNonEmptyList(): array
     {
         return Stream::emits($this->getIterator())
             ->compile()

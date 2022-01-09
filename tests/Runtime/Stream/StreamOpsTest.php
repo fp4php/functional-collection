@@ -220,7 +220,7 @@ final class StreamOpsTest extends TestCase
             [[1, 2], [3, 4], [5]],
             Stream::emits([1, 2, 3, 4, 5])
                 ->chunks(2)
-                ->map(fn(Seq $seq) => $seq->toArray())
+                ->map(fn(Seq $seq) => $seq->toList())
                 ->compile()
                 ->toList()
         );
@@ -232,7 +232,7 @@ final class StreamOpsTest extends TestCase
             [["H", ["Hello", "Hi"]], ["G", ["Greetings"]], ["H", ["Hey"]]],
             Stream::emits(["Hello", "Hi", "Greetings", "Hey"])
                 ->groupAdjacentBy(fn($str) => $str[0])
-                ->map(fn($pair) => [$pair[0], $pair[1]->toArray()])
+                ->map(fn($pair) => [$pair[0], $pair[1]->toList()])
                 ->compile()
                 ->toList()
         );

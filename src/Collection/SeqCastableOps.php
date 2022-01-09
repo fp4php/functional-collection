@@ -25,7 +25,7 @@ interface SeqCastableOps
      *
      * @return list<TValue>
      */
-    public function toArray(): array;
+    public function toList(): array;
 
     /**
      * ```php

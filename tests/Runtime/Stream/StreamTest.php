@@ -32,12 +32,12 @@ final class StreamTest extends TestCase
         $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toList());
         $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toNonEmptyList()->getUnsafe());
         $this->assertNull(Stream::emits([])->compile()->toNonEmptyList()->get());
-        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toArrayList()->toArray());
-        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toNonEmptyArrayList()->getUnsafe()->toArray());
+        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toArrayList()->toList());
+        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toNonEmptyArrayList()->getUnsafe()->toNonEmptyList());
         $this->assertNull(Stream::emits([])->compile()->toNonEmptyArrayList()->get());
-        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toLinkedList()->toArray());
-        $this->assertEquals([0, 1], Stream::emits([0, 1, 1])->compile()->toHashSet()->toArray());
-        $this->assertEquals([[0, 0], [1, 1]], Stream::emits([0, 1])->compile()->toHashMap(fn($e) => [$e, $e])->toArray());
+        $this->assertEquals([0, 1], Stream::emits([0, 1])->compile()->toLinkedList()->toList());
+        $this->assertEquals([0, 1], Stream::emits([0, 1, 1])->compile()->toHashSet()->toList());
+        $this->assertEquals([[0, 0], [1, 1]], Stream::emits([0, 1])->compile()->toHashMap(fn($e) => [$e, $e])->toList());
         $this->assertInstanceOf(Some::class, Option::try(fn() => Stream::emits([0, 1])->compile()->toFile('/dev/null', false)));
         $this->assertInstanceOf(Some::class, Option::try(fn() => Stream::emits([0, 1])->compile()->toFile('/dev/null', true)));
 

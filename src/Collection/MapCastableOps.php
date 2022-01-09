@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection;
 
-use Fp\Functional\Option\None;
-use Whsv26\Functional\Core\Option;
-use Fp\Functional\Option\Some;
 use Whsv26\Functional\Collection\Immutable\Map\HashMap;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
@@ -27,7 +24,7 @@ interface MapCastableOps
      *
      * @return list<array{TKey, TValue}>
      */
-    public function toArray(): array;
+    public function toList(): array;
 
     /**
      * ```php

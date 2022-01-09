@@ -25,7 +25,7 @@ final class MapOpsTest extends TestCase
         $hm = $hm->updated('c', 3);
         $hm = $hm->removed('a');
 
-        $this->assertEquals([['b', 2], ['c', 3]], $hm->toArray());
+        $this->assertEquals([['b', 2], ['c', 3]], $hm->toList());
     }
 
     public function testEvery(): void
@@ -57,7 +57,7 @@ final class MapOpsTest extends TestCase
     public function testFilter(): void
     {
         $hm = HashMap::collect(['a' => new Foo(1), 'b' => 1, 'c' => new Foo(2)]);
-        $this->assertEquals([['b', 1]], $hm->filter(fn($e) => $e->value === 1)->toArray());
+        $this->assertEquals([['b', 1]], $hm->filter(fn($e) => $e->value === 1)->toList());
     }
 
     public function testFilterMap(): void
@@ -66,7 +66,7 @@ final class MapOpsTest extends TestCase
             [['b', 1], ['c', 2]],
             HashMap::collectPairs([['a', 'zero'], ['b', '1'], ['c', '2']])
                 ->filterMap(fn($e) => is_numeric($e->value) ? Option::some((int) $e->value) : Option::none())
-                ->toArray()
+                ->toList()
         );
     }
 
@@ -80,12 +80,12 @@ final class MapOpsTest extends TestCase
                 [$e->value - 1, $e->value - 1],
                 [$e->value, $e->value],
                 [$e->value + 1, $e->value + 1]
-            ])->toArray()
+            ])->toList()
         );
 
         $this->assertEquals(
             [['2', 20], ['5', 5]],
-            $hm->flatMap(fn($e) => [['2', 20], [$e->key, $e->value]])->toArray()
+            $hm->flatMap(fn($e) => [['2', 20], [$e->key, $e->value]])->toList()
         );
     }
 
@@ -106,17 +106,17 @@ final class MapOpsTest extends TestCase
 
         $this->assertEquals(
             [['2', '2'], ['3', '3']],
-            $hm->map(fn($e) => $e->key)->toArray()
+            $hm->map(fn($e) => $e->key)->toList()
         );
 
         $this->assertEquals(
             [['2', '2'], ['3', '3']],
-            $hm->mapValues(fn($e) => $e->key)->toArray()
+            $hm->mapValues(fn($e) => $e->key)->toList()
         );
 
         $this->assertEquals(
             [[22, 22], [33, 33]],
-            $hm->mapKeys(fn($e) => $e->value)->toArray()
+            $hm->mapKeys(fn($e) => $e->value)->toList()
         );
     }
 
@@ -126,7 +126,7 @@ final class MapOpsTest extends TestCase
 
         $this->assertEquals(
             ['a', 'b'],
-            $hm->keys()->toArray()
+            $hm->keys()->toList()
         );
     }
 
@@ -136,7 +136,7 @@ final class MapOpsTest extends TestCase
 
         $this->assertEquals(
             [22, 33],
-            $hm->values()->toArray()
+            $hm->values()->toList()
         );
     }
 }

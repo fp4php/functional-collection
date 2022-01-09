@@ -482,7 +482,7 @@ final class NonEmptyLinkedList implements NonEmptySeq
      * @inheritDoc
      * @return non-empty-list<TV>
      */
-    public function toArray(): array
+    public function toNonEmptyList(): array
     {
         $buffer = [$this->head()];
 

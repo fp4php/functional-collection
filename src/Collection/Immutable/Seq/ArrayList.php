@@ -122,7 +122,7 @@ final class ArrayList implements Seq
      * @inheritDoc
      * @return list<TV>
      */
-    public function toArray(): array
+    public function toList(): array
     {
         return $this->elements;
     }

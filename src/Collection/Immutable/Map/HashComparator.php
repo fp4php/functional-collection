@@ -41,7 +41,7 @@ final class HashComparator
     {
         $list = LinkedList::collect($arr)
             ->map(fn($elem): mixed => self::computeHash($elem))
-            ->toArray();
+            ->toList();
 
         return json_encode($list) ?: '';
     }

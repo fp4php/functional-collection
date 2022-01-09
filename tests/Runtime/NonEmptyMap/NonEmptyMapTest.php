@@ -13,15 +13,15 @@ final class NonEmptyMapTest extends TestCase
     {
         $expected = [['a', 1], ['b', 2]];
 
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toLinkedList()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyLinkedList()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toArrayList()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyArrayList()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toHashSet()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyHashSet()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toHashMap()->toArray());
-        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyHashMap()->toArray());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toLinkedList()->toList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyLinkedList()->toNonEmptyList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toArrayList()->toList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyArrayList()->toNonEmptyList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toHashSet()->toList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyHashSet()->toNonEmptyList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toHashMap()->toList());
+        $this->assertEquals($expected, NonEmptyHashMap::collectPairsNonEmpty($expected)->toNonEmptyHashMap()->toNonEmptyList());
     }
 
     public function testCount(): void

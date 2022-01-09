@@ -80,7 +80,7 @@ final class HashSet implements Set
      * @inheritDoc
      * @return list<TV>
      */
-    public function toArray(): array
+    public function toList(): array
     {
         return Stream::emits($this->getIterator())->compile()->toList();
     }

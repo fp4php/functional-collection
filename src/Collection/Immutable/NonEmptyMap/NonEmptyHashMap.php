@@ -158,9 +158,9 @@ final class NonEmptyHashMap implements NonEmptyMap
      * @inheritDoc
      * @return non-empty-list<array{TK, TV}>
      */
-    public function toArray(): array
+    public function toNonEmptyList(): array
     {
-        return $this->toNonEmptyArrayList()->toArray();
+        return $this->toNonEmptyArrayList()->toNonEmptyList();
     }
 
     /**
@@ -291,7 +291,7 @@ final class NonEmptyHashMap implements NonEmptyMap
      */
     public function updated(mixed $key, mixed $value): self
     {
-        return self::collectPairsUnsafe([...$this->toArray(), [$key, $value]]);
+        return self::collectPairsUnsafe([...$this->toNonEmptyList(), [$key, $value]]);
     }
 
     /**

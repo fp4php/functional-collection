@@ -33,7 +33,7 @@ final class SeqOpsTest extends TestCase
                 ->appended(4)
                 ->appendedAll([5, 6])
                 ->prependedAll([-2, -1])
-                ->toArray(),
+                ->toList(),
         );
     }
 
@@ -160,7 +160,7 @@ final class SeqOpsTest extends TestCase
      */
     public function testFilter(Seq $seq): void
     {
-        $this->assertEquals([1], $seq->filter(fn($i) => $i === 1)->toArray());
+        $this->assertEquals([1], $seq->filter(fn($i) => $i === 1)->toList());
     }
 
     public function provideTestFilterMapData(): Generator
@@ -177,7 +177,7 @@ final class SeqOpsTest extends TestCase
         $this->assertEquals(
             [1, 2],
             $seq->filterMap(fn($e) => is_numeric($e) ? Option::some((int) $e) : Option::none())
-                ->toArray()
+                ->toList()
         );
     }
 
@@ -192,7 +192,7 @@ final class SeqOpsTest extends TestCase
      */
     public function testFilterNotNull(Seq $seq): void
     {
-        $this->assertEquals([1, 3], $seq->filterNotNull()->toArray());
+        $this->assertEquals([1, 3], $seq->filterNotNull()->toList());
     }
 
     public function provideTestFilterOfData(): Generator
@@ -209,8 +209,8 @@ final class SeqOpsTest extends TestCase
      */
     public function testFilterOf(Seq $seq, Bar $bar, SubBar $subBar): void
     {
-        $this->assertEquals([$bar, $subBar], $seq->filterOf(Bar::class, false)->toArray());
-        $this->assertEquals([$bar], $seq->filterOf(Bar::class, true)->toArray());
+        $this->assertEquals([$bar, $subBar], $seq->filterOf(Bar::class, false)->toList());
+        $this->assertEquals([$bar], $seq->filterOf(Bar::class, true)->toList());
     }
 
     public function provideTestFirstData(): Generator
@@ -263,7 +263,7 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(
             [1, 2, 3, 4, 5, 6],
-            $seq->flatMap(fn($e) => [$e - 1, $e, $e + 1])->toArray()
+            $seq->flatMap(fn($e) => [$e - 1, $e, $e + 1])->toList()
         );
     }
 
@@ -330,7 +330,7 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(
             ['2', '3', '4'],
-            $seq->map(fn($e) => (string) ($e + 1))->toArray()
+            $seq->map(fn($e) => (string) ($e + 1))->toList()
         );
     }
 
@@ -383,7 +383,7 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(
             ['3', '2', '1'],
-            $seq->reverse()->toArray()
+            $seq->reverse()->toList()
         );
     }
 
@@ -398,7 +398,7 @@ final class SeqOpsTest extends TestCase
      */
     public function testTail(Seq $seq): void
     {
-        $this->assertEquals(['2', '3'], $seq->tail()->toArray());
+        $this->assertEquals(['2', '3'], $seq->tail()->toList());
     }
 
     public function provideTestUniqueData(): Generator
@@ -417,7 +417,7 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(
             [$foo1, $foo2],
-            $seq->unique(fn(Foo $e) => $e->a)->toArray()
+            $seq->unique(fn(Foo $e) => $e->a)->toList()
         );
     }
 
@@ -450,17 +450,17 @@ final class SeqOpsTest extends TestCase
     public function testGroupBy(Seq $seq, Foo $f1, Foo $f2, Foo $f3, Foo $f4): void
     {
         $res1 = $seq->groupBy(fn(Foo $foo) => $foo)
-            ->map(fn($entry) => $entry->value->toArray())
-            ->toArray();
+            ->map(fn($entry) => $entry->value->toList())
+            ->toList();
 
         $res2 = $seq->groupBy(fn(Foo $foo) => $foo->a)
-            ->map(fn($entry) => $entry->value->toArray())
-            ->toArray();
+            ->map(fn($entry) => $entry->value->toList())
+            ->toList();
 
         $res3 = $seq->map(fn(Foo $foo) => $foo->a)
             ->groupBy(fn(int $a) => $a)
-            ->map(fn($entry) => $entry->value->toArray())
-            ->toArray();
+            ->map(fn($entry) => $entry->value->toList())
+            ->toList();
 
         $this->assertEquals([[$f1, [$f1, $f3]], [$f2, [$f2]], [$f4, [$f4]]], $res1);
         $this->assertEquals([[1, [$f1, $f3]], [2, [$f2]], [3, [$f4]]], $res2);
@@ -482,7 +482,7 @@ final class SeqOpsTest extends TestCase
             [2, 3],
             $seq->tap(fn(Foo $foo) => $foo->a = $foo->a + 1)
                 ->map(fn(Foo $foo) => $foo->a)
-                ->toArray()
+                ->toList()
         );
     }
 
@@ -500,12 +500,12 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(
             [1, 2, 3],
-            $seq->sorted(fn($lhs, $rhs) => $lhs - $rhs)->toArray()
+            $seq->sorted(fn($lhs, $rhs) => $lhs - $rhs)->toList()
         );
 
         $this->assertEquals(
             [3, 2, 1],
-            $seq->sorted(fn($lhs, $rhs) => $rhs - $lhs)->toArray()
+            $seq->sorted(fn($lhs, $rhs) => $rhs - $lhs)->toList()
         );
     }
 
@@ -537,10 +537,10 @@ final class SeqOpsTest extends TestCase
      */
     public function testTakeAndDrop(Seq $seq): void
     {
-        $this->assertEquals([0, 1], $seq->takeWhile(fn($e) => $e < 2)->toArray());
-        $this->assertEquals([2], $seq->dropWhile(fn($e) => $e < 2)->toArray());
-        $this->assertEquals([0, 1], $seq->take(2)->toArray());
-        $this->assertEquals([2], $seq->drop(2)->toArray());
+        $this->assertEquals([0, 1], $seq->takeWhile(fn($e) => $e < 2)->toList());
+        $this->assertEquals([2], $seq->dropWhile(fn($e) => $e < 2)->toList());
+        $this->assertEquals([0, 1], $seq->take(2)->toList());
+        $this->assertEquals([2], $seq->drop(2)->toList());
     }
 
     public function provideTestIntersperseData(): Generator
@@ -554,7 +554,7 @@ final class SeqOpsTest extends TestCase
      */
     public function testIntersperse(Seq $seq): void
     {
-        $this->assertEquals([0 , ',', 1, ',', 2], $seq->intersperse(',')->toArray());
+        $this->assertEquals([0 , ',', 1, ',', 2], $seq->intersperse(',')->toList());
     }
 
     public function provideTestZipData(): Generator
@@ -568,7 +568,7 @@ final class SeqOpsTest extends TestCase
      */
     public function testZip(Seq $seq): void
     {
-        $this->assertEquals([[0, 'a'], [1, 'b']], $seq->zip(['a', 'b'])->toArray());
+        $this->assertEquals([[0, 'a'], [1, 'b']], $seq->zip(['a', 'b'])->toList());
     }
 
     public function provideTestMkString(): Generator

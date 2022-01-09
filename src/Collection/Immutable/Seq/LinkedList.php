@@ -119,7 +119,7 @@ abstract class LinkedList implements Seq
      * @inheritDoc
      * @return list<TV>
      */
-    public function toArray(): array
+    public function toList(): array
     {
         return Stream::emits($this->getIterator())
             ->compile()
