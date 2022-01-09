@@ -10,16 +10,16 @@ use Iterator;
  * Ordered list of elements
  *
  * @psalm-immutable
- * @template-covariant TV
- * @extends EmptyCollection<TV>
- * @extends SeqOps<TV>
- * @extends SeqCollector<TV>
+ * @template-covariant TValue
+ * @extends EmptyCollection<TValue>
+ * @extends SeqOps<TValue>
+ * @extends SeqCollector<TValue>
  */
 interface Seq extends EmptyCollection, SeqOps, SeqCollector
 {
     /**
      * @inheritDoc
-     * @return Iterator<TV>
+     * @return Iterator<TValue>
      */
     public function getIterator(): Iterator;
 }

@@ -9,8 +9,8 @@ use Whsv26\Functional\Collection\Immutable\Map\Entry;
 use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
  */
 interface NonEmptyMapChainableOps
@@ -23,11 +23,11 @@ interface NonEmptyMapChainableOps
      * => [['a', 1], ['b', 3]]
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param TKI $key
-     * @param TVI $value
-     * @return NonEmptyMap<TK|TKI, TV|TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param TKeyIn $key
+     * @param TValueIn $value
+     * @return NonEmptyMap<TKey|TKeyIn, TValue|TValueIn>
      */
     public function updated(mixed $key, mixed $value): NonEmptyMap;
 
@@ -39,8 +39,8 @@ interface NonEmptyMapChainableOps
      * => [['a', 1]]
      * ```
      *
-     * @param TK $key
-     * @return Map<TK, TV>
+     * @param TKey $key
+     * @return Map<TKey, TValue>
      */
     public function removed(mixed $key): Map;
 
@@ -54,8 +54,8 @@ interface NonEmptyMapChainableOps
      * => [['b', 2]]
      * ```
      *
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
-     * @psalm-return Map<TK, TV>
+     * @psalm-param callable(Entry<TKey, TValue>): bool $predicate
+     * @psalm-return Map<TKey, TValue>
      */
     public function filter(callable $predicate): Map;
 
@@ -63,7 +63,7 @@ interface NonEmptyMapChainableOps
      * A combined {@see NonEmptyHashMap::map} and {@see NonEmptyHashMap::filter}.
      *
      * Filtering is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      * Also, NonEmpty* prefix will be lost.
      *
      * ```php
@@ -73,9 +73,9 @@ interface NonEmptyMapChainableOps
      * => [['b', 1], ['c', 2]]
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @psalm-return Map<TK, TVO>
+     * @psalm-template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): Option<TValueOut> $callback
+     * @psalm-return Map<TKey, TValueOut>
      */
     public function filterMap(callable $callback): Map;
 
@@ -93,9 +93,9 @@ interface NonEmptyMapChainableOps
      * => NonEmptyHashMap('1' -> 2, '2' -> 3)
      * ```
      *
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return NonEmptyMap<TK, TVO>
+     * @template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
+     * @psalm-return NonEmptyMap<TKey, TValueOut>
      */
     public function map(callable $callback): NonEmptyMap;
 
@@ -111,9 +111,9 @@ interface NonEmptyMapChainableOps
      * => NonEmptyHashMap('1' -> 2, '2' -> 3)
      * ```
      *
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return NonEmptyMap<TK, TVO>
+     * @template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
+     * @psalm-return NonEmptyMap<TKey, TValueOut>
      */
     public function mapValues(callable $callback): NonEmptyMap;
 
@@ -128,9 +128,9 @@ interface NonEmptyMapChainableOps
      * => NonEmptyHashMap(2 -> 1, 3 -> 2)
      * ```
      *
-     * @template TKO
-     * @psalm-param callable(Entry<TK, TV>): TKO $callback
-     * @psalm-return NonEmptyMap<TKO, TV>
+     * @template TKeyOut
+     * @psalm-param callable(Entry<TKey, TValue>): TKeyOut $callback
+     * @psalm-return NonEmptyMap<TKeyOut, TValue>
      */
     public function mapKeys(callable $callback): NonEmptyMap;
 
@@ -145,7 +145,7 @@ interface NonEmptyMapChainableOps
      * => ['1', '2']
      * ```
      *
-     * @psalm-return NonEmptySeq<TK>
+     * @psalm-return NonEmptySeq<TKey>
      */
     public function keys(): NonEmptySeq;
 
@@ -160,7 +160,7 @@ interface NonEmptyMapChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return NonEmptySeq<TV>
+     * @psalm-return NonEmptySeq<TValue>
      */
     public function values(): NonEmptySeq;
 }

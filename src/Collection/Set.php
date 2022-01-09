@@ -8,16 +8,16 @@ use Iterator;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
- * @extends EmptyCollection<TV>
- * @extends SetOps<TV>
- * @extends SetCollector<TV>
+ * @template-covariant TValue
+ * @extends EmptyCollection<TValue>
+ * @extends SetOps<TValue>
+ * @extends SetCollector<TValue>
  */
 interface Set extends EmptyCollection, SetOps, SetCollector
 {
     /**
      * @inheritDoc
-     * @return Iterator<TV>
+     * @return Iterator<TValue>
      */
     public function getIterator(): Iterator;
 }

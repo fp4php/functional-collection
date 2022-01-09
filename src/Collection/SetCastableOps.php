@@ -11,7 +11,7 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface SetCastableOps
 {
@@ -21,7 +21,7 @@ interface SetCastableOps
      * => [1, 2]
      * ```
      *
-     * @return list<TV>
+     * @return list<TValue>
      */
     public function toArray(): array;
 
@@ -31,7 +31,7 @@ interface SetCastableOps
      * => LinkedList(1, 2)
      * ```
      *
-     * @return LinkedList<TV>
+     * @return LinkedList<TValue>
      */
     public function toLinkedList(): LinkedList;
 
@@ -41,7 +41,7 @@ interface SetCastableOps
      * => ArrayList(1, 2)
      * ```
      *
-     * @return ArrayList<TV>
+     * @return ArrayList<TValue>
      */
     public function toArrayList(): ArrayList;
 
@@ -51,7 +51,7 @@ interface SetCastableOps
      * => HashSet(1, 2)
      * ```
      *
-     * @return HashSet<TV>
+     * @return HashSet<TValue>
      */
     public function toHashSet(): HashSet;
 
@@ -63,9 +63,9 @@ interface SetCastableOps
      * ```
      *
      * @template TKI
-     * @template TVI
-     * @param callable(TV): array{TKI, TVI} $callback
-     * @return HashMap<TKI, TVI>
+     * @template TValueIn
+     * @param callable(TValue): array{TKI, TValueIn} $callback
+     * @return HashMap<TKI, TValueIn>
      */
     public function toHashMap(callable $callback): HashMap;
 }

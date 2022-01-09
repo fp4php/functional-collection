@@ -8,8 +8,8 @@ use Whsv26\Functional\Core\Option;
 
 /**
  * @psalm-immutable
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  */
 interface NonEmptyMapCollector
 {
@@ -19,10 +19,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<TKI, TVI> $source
-     * @return Option<self<TKI, TVI>>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<TKeyIn, TValueIn> $source
+     * @return Option<self<TKeyIn, TValueIn>>
      */
     public static function collect(iterable $source): Option;
 
@@ -32,10 +32,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<TKI, TVI> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<TKeyIn, TValueIn> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectUnsafe(iterable $source): self;
 
@@ -45,10 +45,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param non-empty-array<TKI, TVI> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param non-empty-array<TKeyIn, TValueIn> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectNonEmpty(array $source): self;
 
@@ -58,10 +58,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<array{TKI, TVI}> $source
-     * @return Option<self<TKI, TVI>>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<array{TKeyIn, TValueIn}> $source
+     * @return Option<self<TKeyIn, TValueIn>>
      */
     public static function collectPairs(iterable $source): Option;
 
@@ -71,10 +71,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<array{TKI, TVI}> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<array{TKeyIn, TValueIn}> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectPairsUnsafe(iterable $source): self;
 
@@ -84,10 +84,10 @@ interface NonEmptyMapCollector
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param non-empty-array<array{TKI, TVI}>|NonEmptyCollection<array{TKI, TVI}> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param non-empty-array<array{TKeyIn, TValueIn}>|NonEmptyCollection<array{TKeyIn, TValueIn}> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectPairsNonEmpty(array|NonEmptyCollection $source): self;
 }

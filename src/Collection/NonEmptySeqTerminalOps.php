@@ -8,7 +8,7 @@ use Whsv26\Functional\Core\Option;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface NonEmptySeqTerminalOps
 {
@@ -21,7 +21,7 @@ interface NonEmptySeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function at(int $index): Option;
 
@@ -36,7 +36,7 @@ interface NonEmptySeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function __invoke(int $index): Option;
 
@@ -52,7 +52,7 @@ interface NonEmptySeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -68,8 +68,8 @@ interface NonEmptySeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool;
@@ -78,7 +78,7 @@ interface NonEmptySeqTerminalOps
      * A combined {@see NonEmptySeq::map} and {@see NonEmptySeq::every}.
      *
      * Predicate satisfying is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
      * >>> NonEmptyArrayList::collect([1, 2, 3])->everyMap(fn($x) => $x >= 1 ? Option::some($x) : Option::none());
@@ -88,9 +88,9 @@ interface NonEmptySeqTerminalOps
      * => None
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(TV): Option<TVO> $callback
-     * @psalm-return Option<NonEmptySeq<TVO>>
+     * @psalm-template TValueOut
+     * @psalm-param callable(TValue): Option<TValueOut> $callback
+     * @psalm-return Option<NonEmptySeq<TValueOut>>
      */
     public function everyMap(callable $callback): Option;
 
@@ -105,7 +105,7 @@ interface NonEmptySeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool;
 
@@ -121,8 +121,8 @@ interface NonEmptySeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool;
@@ -135,8 +135,8 @@ interface NonEmptySeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function first(callable $predicate): Option;
 
@@ -148,10 +148,10 @@ interface NonEmptySeqTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TVO>
+     * @psalm-return Option<TValueOut>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option;
 
@@ -167,10 +167,10 @@ interface NonEmptySeqTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TVO>
+     * @psalm-return Option<TValueOut>
      */
     public function lastOf(string $fqcn, bool $invariant = false): Option;
 
@@ -182,7 +182,7 @@ interface NonEmptySeqTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return TV
+     * @psalm-return TValue
      */
     public function head(): mixed;
 
@@ -194,8 +194,8 @@ interface NonEmptySeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function last(callable $predicate): Option;
 
@@ -208,7 +208,7 @@ interface NonEmptySeqTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return TV
+     * @psalm-return TValue
      */
     public function firstElement(): mixed;
 
@@ -220,7 +220,7 @@ interface NonEmptySeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return TV
+     * @psalm-return TValue
      */
     public function lastElement(): mixed;
 
@@ -233,8 +233,8 @@ interface NonEmptySeqTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param callable(TV|TA, TV): (TV|TA) $callback (accumulator, current value): new accumulator
-     * @psalm-return (TV|TA)
+     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
+     * @psalm-return (TValue|TA)
      */
     public function reduce(callable $callback): mixed;
 }

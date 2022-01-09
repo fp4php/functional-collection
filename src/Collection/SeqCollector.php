@@ -6,7 +6,7 @@ namespace Whsv26\Functional\Collection;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface SeqCollector
 {
@@ -16,9 +16,9 @@ interface SeqCollector
      * => LinkedList(1, 2)
      * ```
      *
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return self<TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function collect(iterable $source): self;
 
@@ -28,9 +28,9 @@ interface SeqCollector
      * => [1]
      * ```
      *
-     * @template TVI
-     * @param TVI $val
-     * @return self<TVI>
+     * @template TValueIn
+     * @param TValueIn $val
+     * @return self<TValueIn>
      */
     public static function singleton(mixed $val): self;
 

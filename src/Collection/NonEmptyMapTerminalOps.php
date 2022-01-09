@@ -8,8 +8,8 @@ use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Collection\Immutable\Map\Entry;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
  */
 interface NonEmptyMapTerminalOps
@@ -26,8 +26,8 @@ interface NonEmptyMapTerminalOps
      * => 0
      * ```
      *
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      */
     public function __invoke(mixed $key): Option;
 
@@ -42,8 +42,8 @@ interface NonEmptyMapTerminalOps
      * => 0
      * ```
      *
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      */
     public function get(mixed $key): Option;
 
@@ -59,7 +59,7 @@ interface NonEmptyMapTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
+     * @psalm-param callable(Entry<TKey, TValue>): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -67,7 +67,7 @@ interface NonEmptyMapTerminalOps
      * A combined {@see NonEmptyMap::map} and {@see NonEmptyMap::every}.
      *
      * Predicate satisfying is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
      * >>> NonEmptyHashMap::collectPairs(['a' => 1, 'b' => 2])->everyMap(fn($x) => $x >= 1 ? Option::some($x) : Option::none());
@@ -77,9 +77,9 @@ interface NonEmptyMapTerminalOps
      * => None
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @psalm-return Option<NonEmptyMap<TK, TVO>>
+     * @psalm-template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): Option<TValueOut> $callback
+     * @psalm-return Option<NonEmptyMap<TKey, TValueOut>>
      */
     public function everyMap(callable $callback): Option;
 }

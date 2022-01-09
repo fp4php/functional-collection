@@ -8,8 +8,8 @@ use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Collection\Immutable\Map\Entry;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
  */
 interface MapChainableOps
@@ -22,11 +22,11 @@ interface MapChainableOps
      * => [['a', 1], ['b', 3]]
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param TKI $key
-     * @param TVI $value
-     * @return Map<TK|TKI, TV|TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param TKeyIn $key
+     * @param TValueIn $value
+     * @return Map<TKey|TKeyIn, TValue|TValueIn>
      */
     public function updated(mixed $key, mixed $value): Map;
 
@@ -38,8 +38,8 @@ interface MapChainableOps
      * => [['a', 1]]
      * ```
      *
-     * @param TK $key
-     * @return Map<TK, TV>
+     * @param TKey $key
+     * @return Map<TKey, TValue>
      */
     public function removed(mixed $key): Map;
 
@@ -51,8 +51,8 @@ interface MapChainableOps
      * => [['b', 2]]
      * ```
      *
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
-     * @psalm-return Map<TK, TV>
+     * @psalm-param callable(Entry<TKey, TValue>): bool $predicate
+     * @psalm-return Map<TKey, TValue>
      */
     public function filter(callable $predicate): Map;
 
@@ -60,7 +60,7 @@ interface MapChainableOps
      * A combined {@see MapOps::map} and {@see MapOps::filter}.
      *
      * Filtering is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
      * >>> HashMap::collectPairs([['a', 'zero'], ['b', '1'], ['c', '2']])
@@ -69,9 +69,9 @@ interface MapChainableOps
      * => [['b', 1], ['c', 2]]
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @psalm-return Map<TK, TVO>
+     * @psalm-template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): Option<TValueOut> $callback
+     * @psalm-return Map<TKey, TValueOut>
      */
     public function filterMap(callable $callback): Map;
 
@@ -93,10 +93,10 @@ interface MapChainableOps
      * ```
      *
      * @experimental
-     * @psalm-template TKO
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): iterable<array{TKO, TVO}> $callback
-     * @psalm-return Map<TKO, TVO>
+     * @psalm-template TKeyOut
+     * @psalm-template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): iterable<array{TKeyOut, TValueOut}> $callback
+     * @psalm-return Map<TKeyOut, TValueOut>
      */
     public function flatMap(callable $callback): Map;
 
@@ -114,9 +114,9 @@ interface MapChainableOps
      * => HashMap('1' -> 2, '2' -> 3)
      * ```
      *
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return Map<TK, TVO>
+     * @template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
+     * @psalm-return Map<TKey, TValueOut>
      */
     public function map(callable $callback): Map;
 
@@ -132,9 +132,9 @@ interface MapChainableOps
      * => HashMap('1' -> 2, '2' -> 3)
      * ```
      *
-     * @template TVO
-     * @psalm-param callable(Entry<TK, TV>): TVO $callback
-     * @psalm-return Map<TK, TVO>
+     * @template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): TValueOut $callback
+     * @psalm-return Map<TKey, TValueOut>
      */
     public function mapValues(callable $callback): Map;
 
@@ -149,9 +149,9 @@ interface MapChainableOps
      * => HashMap(2 -> 1, 3 -> 2)
      * ```
      *
-     * @template TKO
-     * @psalm-param callable(Entry<TK, TV>): TKO $callback
-     * @psalm-return Map<TKO, TV>
+     * @template TKeyOut
+     * @psalm-param callable(Entry<TKey, TValue>): TKeyOut $callback
+     * @psalm-return Map<TKeyOut, TValue>
      */
     public function mapKeys(callable $callback): Map;
 
@@ -166,7 +166,7 @@ interface MapChainableOps
      * => ['1', '2']
      * ```
      *
-     * @psalm-return Seq<TK>
+     * @psalm-return Seq<TKey>
      */
     public function keys(): Seq;
 
@@ -181,7 +181,7 @@ interface MapChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Seq<TV>
+     * @psalm-return Seq<TValue>
      */
     public function values(): Seq;
 }

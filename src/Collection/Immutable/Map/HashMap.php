@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Immutable\Map;
 
-use Whsv26\Functional\Core\Option\None;
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Core\Option\Some;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
@@ -25,16 +23,14 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\Mutable\HashTable;
 use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\StaticStorage;
 
 /**
  * @template TK
  * @template-covariant TV
  * @psalm-immutable
  * @implements Map<TK, TV>
- * @implements StaticStorage<empty>
  */
-final class HashMap implements Map, StaticStorage
+final class HashMap implements Map
 {
     private bool $empty;
 

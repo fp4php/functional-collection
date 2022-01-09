@@ -8,28 +8,28 @@ use Whsv26\Functional\Core\Option;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface NonEmptySetCollector
 {
     /**
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return Option<self<TVI>>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return Option<self<TValueIn>>
      */
     public static function collect(iterable $source): Option;
 
     /**
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return self<TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function collectUnsafe(iterable $source): self;
 
     /**
-     * @template TVI
-     * @param non-empty-array<TVI>|NonEmptyCollection<TVI> $source
-     * @return self<TVI>
+     * @template TValueIn
+     * @param non-empty-array<TValueIn>|NonEmptyCollection<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function collectNonEmpty(array|NonEmptyCollection $source): self;
 

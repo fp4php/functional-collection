@@ -14,8 +14,8 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 
 /**
  * @psalm-immutable
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  */
 interface MapCastableOps
 {
@@ -25,7 +25,7 @@ interface MapCastableOps
      * => [['a', 1], ['b', 2]]
      * ```
      *
-     * @return list<array{TK, TV}>
+     * @return list<array{TKey, TValue}>
      */
     public function toArray(): array;
 
@@ -36,7 +36,7 @@ interface MapCastableOps
      * >>> HashMap::collectPairs([[new Foo(), 1], [new Foo(), 2]])->toAssocArray();
      * => None
      * ```
-     * @psalm-return (TK is array-key ? array<TK, TV> : never)
+     * @psalm-return (TKey is array-key ? array<TKey, TValue> : never)
      */
     public function toAssocArray(): array;
 
@@ -46,7 +46,7 @@ interface MapCastableOps
      * => LinkedList(['a', 1], ['b', 2])
      * ```
      *
-     * @return LinkedList<array{TK, TV}>
+     * @return LinkedList<array{TKey, TValue}>
      */
     public function toLinkedList(): LinkedList;
 
@@ -56,7 +56,7 @@ interface MapCastableOps
      * => ArrayList(['a', 1], ['b', 2])
      * ```
      *
-     * @return ArrayList<array{TK, TV}>
+     * @return ArrayList<array{TKey, TValue}>
      */
     public function toArrayList(): ArrayList;
 
@@ -66,7 +66,7 @@ interface MapCastableOps
      * => HashSet(['a', 1], ['b', 2])
      * ```
      *
-     * @return HashSet<array{TK, TV}>
+     * @return HashSet<array{TKey, TValue}>
      */
     public function toHashSet(): HashSet;
 
@@ -76,7 +76,7 @@ interface MapCastableOps
      * => HashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @return HashMap<TK, TV>
+     * @return HashMap<TKey, TValue>
      */
     public function toHashMap(): HashMap;
 }

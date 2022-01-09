@@ -15,7 +15,7 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface NonEmptySetCastableOps
 {
@@ -25,7 +25,7 @@ interface NonEmptySetCastableOps
      * => [1, 2]
      * ```
      *
-     * @return non-empty-list<TV>
+     * @return non-empty-list<TValue>
      */
     public function toArray(): array;
 
@@ -35,7 +35,7 @@ interface NonEmptySetCastableOps
      * => LinkedList(1, 2)
      * ```
      *
-     * @return LinkedList<TV>
+     * @return LinkedList<TValue>
      */
     public function toLinkedList(): LinkedList;
 
@@ -45,7 +45,7 @@ interface NonEmptySetCastableOps
      * => ArrayList(1, 2)
      * ```
      *
-     * @return ArrayList<TV>
+     * @return ArrayList<TValue>
      */
     public function toArrayList(): ArrayList;
 
@@ -55,7 +55,7 @@ interface NonEmptySetCastableOps
      * => NonEmptyLinkedList(1, 2)
      * ```
      *
-     * @return NonEmptyLinkedList<TV>
+     * @return NonEmptyLinkedList<TValue>
      */
     public function toNonEmptyLinkedList(): NonEmptyLinkedList;
 
@@ -65,7 +65,7 @@ interface NonEmptySetCastableOps
      * => NonEmptyArrayList(1, 2)
      * ```
      *
-     * @return NonEmptyArrayList<TV>
+     * @return NonEmptyArrayList<TValue>
      */
     public function toNonEmptyArrayList(): NonEmptyArrayList;
 
@@ -75,7 +75,7 @@ interface NonEmptySetCastableOps
      * => HashSet(1, 2)
      * ```
      *
-     * @return HashSet<TV>
+     * @return HashSet<TValue>
      */
     public function toHashSet(): HashSet;
 
@@ -85,7 +85,7 @@ interface NonEmptySetCastableOps
      * => NonEmptyHashSet(1, 2)
      * ```
      *
-     * @return NonEmptyHashSet<TV>
+     * @return NonEmptyHashSet<TValue>
      */
     public function toNonEmptyHashSet(): NonEmptyHashSet;
 
@@ -97,9 +97,9 @@ interface NonEmptySetCastableOps
      * ```
      *
      * @template TKI
-     * @template TVI
-     * @param callable(TV): array{TKI, TVI} $callback
-     * @return HashMap<TKI, TVI>
+     * @template TValueIn
+     * @param callable(TValue): array{TKI, TValueIn} $callback
+     * @return HashMap<TKI, TValueIn>
      */
     public function toHashMap(callable $callback): HashMap;
 
@@ -111,9 +111,9 @@ interface NonEmptySetCastableOps
      * ```
      *
      * @template TKI
-     * @template TVI
-     * @param callable(TV): array{TKI, TVI} $callback
-     * @return NonEmptyHashMap<TKI, TVI>
+     * @template TValueIn
+     * @param callable(TValue): array{TKI, TValueIn} $callback
+     * @return NonEmptyHashMap<TKI, TValueIn>
      */
     public function toNonEmptyHashMap(callable $callback): NonEmptyHashMap;
 }

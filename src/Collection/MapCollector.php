@@ -6,8 +6,8 @@ namespace Whsv26\Functional\Collection;
 
 /**
  * @psalm-immutable
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  */
 interface MapCollector
 {
@@ -17,10 +17,10 @@ interface MapCollector
      * => HashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<TKI, TVI> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<TKeyIn, TValueIn> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collect(iterable $source): self;
 
@@ -30,10 +30,10 @@ interface MapCollector
      * => HashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @template TKI
-     * @template TVI
-     * @param iterable<array{TKI, TVI}> $source
-     * @return self<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<array{TKeyIn, TValueIn}> $source
+     * @return self<TKeyIn, TValueIn>
      */
     public static function collectPairs(iterable $source): self;
 }

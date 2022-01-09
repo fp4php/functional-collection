@@ -8,16 +8,16 @@ use Iterator;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
- * @extends NonEmptyCollection<TV>
- * @extends NonEmptySetOps<TV>
- * @extends NonEmptySetCollector<TV>
+ * @template-covariant TValue
+ * @extends NonEmptyCollection<TValue>
+ * @extends NonEmptySetOps<TValue>
+ * @extends NonEmptySetCollector<TValue>
  */
 interface NonEmptySet extends NonEmptyCollection, NonEmptySetOps, NonEmptySetCollector
 {
     /**
      * @inheritDoc
-     * @return Iterator<TV>
+     * @return Iterator<TValue>
      */
     public function getIterator(): Iterator;
 }

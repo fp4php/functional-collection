@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
- * @extends NonEmptyMapChainableOps<TK, TV>
- * @extends NonEmptyMapTerminalOps<TK, TV>
- * @extends NonEmptyMapCastableOps<TK, TV>
+ * @extends NonEmptyMapChainableOps<TKey, TValue>
+ * @extends NonEmptyMapTerminalOps<TKey, TValue>
+ * @extends NonEmptyMapCastableOps<TKey, TValue>
  */
 interface NonEmptyMapOps extends NonEmptyMapChainableOps, NonEmptyMapTerminalOps, NonEmptyMapCastableOps
 {

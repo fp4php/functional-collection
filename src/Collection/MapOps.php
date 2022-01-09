@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
- * @extends MapChainableOps<TK, TV>
- * @extends MapTerminalOps<TK, TV>
- * @extends MapCastableOps<TK, TV>
+ * @extends MapChainableOps<TKey, TValue>
+ * @extends MapTerminalOps<TKey, TValue>
+ * @extends MapCastableOps<TKey, TValue>
  */
 interface MapOps extends MapChainableOps, MapTerminalOps, MapCastableOps
 {

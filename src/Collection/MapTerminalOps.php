@@ -8,8 +8,8 @@ use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Collection\Immutable\Map\Entry;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
  */
 interface MapTerminalOps
@@ -26,8 +26,8 @@ interface MapTerminalOps
      * => 0
      * ```
      *
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      */
     public function __invoke(mixed $key): Option;
 
@@ -42,8 +42,8 @@ interface MapTerminalOps
      * => 0
      * ```
      *
-     * @param TK $key
-     * @return Option<TV>
+     * @param TKey $key
+     * @return Option<TValue>
      */
     public function get(mixed $key): Option;
 
@@ -59,7 +59,7 @@ interface MapTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(Entry<TK, TV>): bool $predicate
+     * @psalm-param callable(Entry<TKey, TValue>): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -67,7 +67,7 @@ interface MapTerminalOps
      * A combined {@see Map::map} and {@see Map::every}.
      *
      * Predicate satisfying is handled via Option instead of Boolean.
-     * So the output type TVO can be different from the input type TV.
+     * So the output type TValueOut can be different from the input type TValue.
      *
      * ```php
      * >>> HashMap::collectPairs(['a' => 1, 'b' => 2])->everyMap(fn($x) => $x >= 1 ? Option::some($x) : Option::none());
@@ -77,9 +77,9 @@ interface MapTerminalOps
      * => None
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param callable(Entry<TK, TV>): Option<TVO> $callback
-     * @psalm-return Option<Map<TK, TVO>>
+     * @psalm-template TValueOut
+     * @psalm-param callable(Entry<TKey, TValue>): Option<TValueOut> $callback
+     * @psalm-return Option<Map<TKey, TValueOut>>
      */
     public function everyMap(callable $callback): Option;
 
@@ -96,7 +96,7 @@ interface MapTerminalOps
      *
      * @template TA
      * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, Entry<TK, TV>): TA $callback (accumulator, current element): new accumulator
+     * @psalm-param callable(TA, Entry<TKey, TValue>): TA $callback (accumulator, current element): new accumulator
      * @psalm-return TA
      */
     public function fold(mixed $init, callable $callback): mixed;

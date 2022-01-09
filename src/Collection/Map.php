@@ -7,18 +7,18 @@ namespace Whsv26\Functional\Collection;
 use Iterator;
 
 /**
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  * @psalm-immutable
- * @extends EmptyCollection<array{TK, TV}>
- * @extends MapOps<TK, TV>
- * @extends MapCollector<TK, TV>
+ * @extends EmptyCollection<array{TKey, TValue}>
+ * @extends MapOps<TKey, TValue>
+ * @extends MapCollector<TKey, TValue>
  */
 interface Map extends EmptyCollection, MapOps, MapCollector
 {
     /**
      * @inheritDoc
-     * @return Iterator<array{TK, TV}>
+     * @return Iterator<array{TKey, TValue}>
      */
     public function getIterator(): Iterator;
 }

@@ -6,7 +6,7 @@ namespace Whsv26\Functional\Collection;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface SetCollector
 {
@@ -16,9 +16,9 @@ interface SetCollector
      * => HashSet(1, 2)
      * ```
      *
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return self<TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function collect(iterable $source): self;
 }

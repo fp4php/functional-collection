@@ -13,7 +13,7 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface SeqCastableOps
 {
@@ -23,7 +23,7 @@ interface SeqCastableOps
      * => [1, 2]
      * ```
      *
-     * @return list<TV>
+     * @return list<TValue>
      */
     public function toArray(): array;
 
@@ -33,7 +33,7 @@ interface SeqCastableOps
      * => LinkedList(1, 2)
      * ```
      *
-     * @return LinkedList<TV>
+     * @return LinkedList<TValue>
      */
     public function toLinkedList(): LinkedList;
 
@@ -43,7 +43,7 @@ interface SeqCastableOps
      * => ArrayList(1, 2)
      * ```
      *
-     * @return ArrayList<TV>
+     * @return ArrayList<TValue>
      */
     public function toArrayList(): ArrayList;
 
@@ -55,7 +55,7 @@ interface SeqCastableOps
      * => None
      * ```
      *
-     * @return Option<NonEmptyArrayList<TV>>
+     * @return Option<NonEmptyArrayList<TValue>>
      */
     public function toNonEmptyArrayList(): Option;
 
@@ -65,7 +65,7 @@ interface SeqCastableOps
      * => HashSet(1, 2)
      * ```
      *
-     * @return HashSet<TV>
+     * @return HashSet<TValue>
      */
     public function toHashSet(): HashSet;
 
@@ -77,9 +77,9 @@ interface SeqCastableOps
      * ```
      *
      * @template TKI
-     * @template TVI
-     * @param callable(TV): array{TKI, TVI} $callback
-     * @return HashMap<TKI, TVI>
+     * @template TValueIn
+     * @param callable(TValue): array{TKI, TValueIn} $callback
+     * @return HashMap<TKI, TValueIn>
      */
     public function toHashMap(callable $callback): HashMap;
 }

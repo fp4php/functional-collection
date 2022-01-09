@@ -15,8 +15,8 @@ use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 
 /**
  * @psalm-immutable
- * @template TK
- * @template-covariant TV
+ * @template TKey
+ * @template-covariant TValue
  */
 interface NonEmptyMapCastableOps
 {
@@ -26,7 +26,7 @@ interface NonEmptyMapCastableOps
      * => [['a', 1], ['b', 2]]
      * ```
      *
-     * @return non-empty-list<array{TK, TV}>
+     * @return non-empty-list<array{TKey, TValue}>
      */
     public function toArray(): array;
 
@@ -36,7 +36,7 @@ interface NonEmptyMapCastableOps
      * => LinkedList(['a', 1], ['b', 2])
      * ```
      *
-     * @return LinkedList<array{TK, TV}>
+     * @return LinkedList<array{TKey, TValue}>
      */
     public function toLinkedList(): LinkedList;
 
@@ -46,7 +46,7 @@ interface NonEmptyMapCastableOps
      * => NonEmptyLinkedList(['a', 1], ['b', 2])
      * ```
      *
-     * @return NonEmptyLinkedList<array{TK, TV}>
+     * @return NonEmptyLinkedList<array{TKey, TValue}>
      */
     public function toNonEmptyLinkedList(): NonEmptyLinkedList;
 
@@ -56,7 +56,7 @@ interface NonEmptyMapCastableOps
      * => ArrayList(['a', 1], ['b', 2])
      * ```
      *
-     * @return ArrayList<array{TK, TV}>
+     * @return ArrayList<array{TKey, TValue}>
      */
     public function toArrayList(): ArrayList;
 
@@ -66,7 +66,7 @@ interface NonEmptyMapCastableOps
      * => NonEmptyArrayList(['a', 1], ['b', 2])
      * ```
      *
-     * @return NonEmptyArrayList<array{TK, TV}>
+     * @return NonEmptyArrayList<array{TKey, TValue}>
      */
     public function toNonEmptyArrayList(): NonEmptyArrayList;
 
@@ -76,7 +76,7 @@ interface NonEmptyMapCastableOps
      * => HashSet(['a', 1], ['b', 2])
      * ```
      *
-     * @return HashSet<array{TK, TV}>
+     * @return HashSet<array{TKey, TValue}>
      */
     public function toHashSet(): HashSet;
 
@@ -86,7 +86,7 @@ interface NonEmptyMapCastableOps
      * => NonEmptyHashSet(['a', 1], ['b', 2])
      * ```
      *
-     * @return NonEmptyHashSet<array{TK, TV}>
+     * @return NonEmptyHashSet<array{TKey, TValue}>
      */
     public function toNonEmptyHashSet(): NonEmptyHashSet;
 
@@ -96,7 +96,7 @@ interface NonEmptyMapCastableOps
      * => HashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @return HashMap<TK, TV>
+     * @return HashMap<TKey, TValue>
      */
     public function toHashMap(): HashMap;
 
@@ -106,7 +106,7 @@ interface NonEmptyMapCastableOps
      * => NonEmptyHashMap('a' -> 1, 'b' -> 2)
      * ```
      *
-     * @return NonEmptyHashMap<TK, TV>
+     * @return NonEmptyHashMap<TKey, TValue>
      */
     public function toNonEmptyHashMap(): NonEmptyHashMap;
 }

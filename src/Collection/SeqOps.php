@@ -6,10 +6,10 @@ namespace Whsv26\Functional\Collection;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
- * @extends SeqChainableOps<TV>
- * @extends SeqTerminalOps<TV>
- * @extends SeqCastableOps<TV>
+ * @template-covariant TValue
+ * @extends SeqChainableOps<TValue>
+ * @extends SeqTerminalOps<TValue>
+ * @extends SeqCastableOps<TValue>
  */
 interface SeqOps extends SeqChainableOps, SeqTerminalOps, SeqCastableOps
 {
