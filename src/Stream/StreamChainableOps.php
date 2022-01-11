@@ -376,9 +376,9 @@ interface StreamChainableOps
      * => )
      * ```
      *
-     * @template D
-     * @param callable(TValue): D $discriminator
-     * @return Stream<array{D, Seq<TValue>}>
+     * @template TDiscriminator
+     * @param callable(TValue): TDiscriminator $discriminator
+     * @return Stream<array{TDiscriminator, Seq<TValue>}>
      */
     public function groupAdjacentBy(callable $discriminator): self;
 

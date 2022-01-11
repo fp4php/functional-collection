@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\Operations\AppendedOperation;
 use Whsv26\Functional\Stream\Operations\ChunksOperation;
 use Whsv26\Functional\Stream\Operations\DropOperation;
 use Whsv26\Functional\Stream\Operations\DropWhileOperation;
-use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\FilterMapOperation;
 use Whsv26\Functional\Stream\Operations\FilterNotNullOperation;
 use Whsv26\Functional\Stream\Operations\FilterOfOperation;
@@ -467,9 +466,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template D
-     * @param callable(TValue): D $discriminator
-     * @return Stream<array{D, Seq<TValue>}>
+     * @template TDiscriminator
+     * @param callable(TValue): TDiscriminator $discriminator
+     * @return Stream<array{TDiscriminator, Seq<TValue>}>
      */
     public function groupAdjacentBy(callable $discriminator): Stream
     {
