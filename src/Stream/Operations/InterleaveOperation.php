@@ -7,17 +7,17 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class InterleaveOperation extends AbstractOperation
 {
     /**
-     * @template TVI
-     * @param iterable<TVI> $that
-     * @return Generator<int, TV|TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return Generator<int, TValue|TValueIn>
      */
     public function __invoke(iterable $that): Generator
     {

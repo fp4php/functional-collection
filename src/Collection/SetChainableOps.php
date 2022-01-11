@@ -162,11 +162,11 @@ interface SetChainableOps
      * => [2, 3]
      * ```
      *
-     * @param Set<TValue>|NonEmptySet<TValue> $that the set to intersect with.
+     * @param Set<TValue> $that the set to intersect with.
      * @return Set<TValue> a new set consisting of all elements that are both in this
      * set and in the given set `that`.
      */
-    public function intersect(Set|NonEmptySet $that): Set;
+    public function intersect(Set $that): Set;
 
     /**
      * Computes the difference of this set and another set.
@@ -177,9 +177,9 @@ interface SetChainableOps
      * => [1]
      * ```
      *
-     * @param Set<TValue>|NonEmptySet<TValue> $that the set of elements to exclude.
+     * @param Set<TValue> $that the set of elements to exclude.
      * @return Set<TValue> a set containing those elements of this
      * set that are not also contained in the given set `that`.
      */
-    public function diff(Set|NonEmptySet $that): Set;
+    public function diff(Set $that): Set;
 }

@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
-use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyLinkedList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySet\NonEmptyHashSet;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Immutable\Map\HashMap;
 use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
 use Whsv26\Functional\Core\Option;
 
 /**
@@ -45,7 +41,7 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([[1, 'a'], [2, 'b']])->compile()->toAssocArray();
+     * >>> Stream::emits([[1, 'a'], [2, 'b']])->compile()->toArray();
      * => [1 => 'a', 2 => 'b']
      * ```
      *
@@ -54,14 +50,14 @@ interface StreamCastableOps
      * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
      * @psalm-return array<TKeyIn, TValueIn>
      */
-    public function toAssocArray(): array;
+    public function toArray(): array;
 
     /**
      * ```php
      * >>> Stream::emits([[1, 'a'], [2, 'b']])->compile()->toNonEmptyAssocArray();
      * => Some([1 => 'a', 2 => 'b'])
      *
-     * >>> Stream::emits([])->compile()->toNonEmptyAssocArray();
+     * >>> Stream::emits([])->compile()->toNonEmptyArray();
      * => None
      * ```
      *
@@ -70,7 +66,7 @@ interface StreamCastableOps
      * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
      * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
      */
-    public function toNonEmptyAssocArray(): Option;
+    public function toNonEmptyArray(): Option;
 
     /**
      * ```php
@@ -84,19 +80,6 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->compile()->toNonEmptyLinkedList();
-     * => Some(NonEmptyLinkedList(1, 2, 2))
-     *
-     * >>> Stream::emits([])->compile()->toNonEmptyLinkedList();
-     * => None
-     * ```
-     *
-     * @return Option<NonEmptyLinkedList<TValue>>
-     */
-    public function toNonEmptyLinkedList(): Option;
-
-    /**
-     * ```php
      * >>> Stream::emits([1, 2, 2])->compile()->toArrayList();
      * => ArrayList(1, 2, 2)
      * ```
@@ -107,19 +90,6 @@ interface StreamCastableOps
 
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->compile()->toNonEmptyArrayList();
-     * => Some(NonEmptyArrayList(1, 2, 2))
-     *
-     * >>> Stream::emits([])->compile()->toNonEmptyArrayList();
-     * => None
-     * ```
-     *
-     * @return Option<NonEmptyArrayList<TValue>>
-     */
-    public function toNonEmptyArrayList(): Option;
-
-    /**
-     * ```php
      * >>> Stream::emits([1, 2, 2])->compile()->toHashSet();
      * => HashSet(1, 2)
      * ```
@@ -127,19 +97,6 @@ interface StreamCastableOps
      * @return HashSet<TValue>
      */
     public function toHashSet(): HashSet;
-
-    /**
-     * ```php
-     * >>> Stream::emits([1, 2, 2])->compile()->toNonEmptyHashSet();
-     * => Some(NonEmptyHashSet(1, 2))
-     *
-     * >>> Stream::emits([])->compile()->toNonEmptyHashSet();
-     * => None
-     * ```
-     *
-     * @return Option<NonEmptyHashSet<TValue>>
-     */
-    public function toNonEmptyHashSet(): Option;
 
     /**
      * ```php
@@ -155,26 +112,6 @@ interface StreamCastableOps
      * @psalm-return HashMap<TKeyIn, TValueIn>
      */
     public function toHashMap(): HashMap;
-
-    /**
-     * ```php
-     * >>> Stream::emits([['a', 1], ['b', 2]])
-     * >>>    ->compile()
-     * >>>    ->toNonEmptyHashMap();
-     * => Some(NonEmptyHashMap('a' -> 1, 'b' -> 2))
-     *
-     * >>> Stream::emits([])
-     * >>>    ->compile()
-     * >>>    ->toNonEmptyHashMap();
-     * => None
-     * ```
-     *
-     * @template TKeyIn
-     * @template TValueIn
-     * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return Option<NonEmptyHashMap<TKeyIn, TValueIn>>
-     */
-    public function toNonEmptyHashMap(): Option;
 
     /**
      * @param string $path file path

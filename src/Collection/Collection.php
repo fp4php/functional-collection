@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection;
 
+use Countable;
 use Iterator;
+use IteratorAggregate;
 
 /**
  * @psalm-immutable
  * @template-covariant TValue
- * @extends NonEmptyCollection<TValue>
- * @extends NonEmptySeqOps<TValue>
- * @extends NonEmptySeqCollector<TValue>
+ * @implements IteratorAggregate<empty, TValue>
  */
-interface NonEmptySeq extends NonEmptyCollection, NonEmptySeqOps, NonEmptySeqCollector
+interface Collection extends IteratorAggregate, Countable
 {
     /**
      * @inheritDoc

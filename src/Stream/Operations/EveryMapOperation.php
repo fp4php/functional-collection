@@ -8,18 +8,18 @@ use Whsv26\Functional\Core\Option;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class EveryMapOperation extends AbstractOperation
 {
     /**
-     * @template TVO
+     * @template TValueIn
      *
-     * @param callable(TV, TK): Option<TVO> $f
-     * @return Option<Generator<TK, TVO>>
+     * @param callable(TValue, TKey): Option<TValueIn> $f
+     * @return Option<Generator<TKey, TValueIn>>
      */
     public function __invoke(callable $f): Option
     {

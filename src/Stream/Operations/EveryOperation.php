@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class EveryOperation extends AbstractOperation
 {
     /**
-     * @param callable(TV, TK): bool $f
+     * @param callable(TValue, TKey): bool $f
      * @return bool
      */
     public function __invoke(callable $f): bool

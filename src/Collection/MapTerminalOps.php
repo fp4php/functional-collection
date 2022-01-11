@@ -45,4 +45,14 @@ interface MapTerminalOps
      * @return Option<TValue>
      */
     public function get(mixed $key): Option;
+
+    /**
+     * Check if at least one collection element is present
+     */
+    public function isNonEmpty(): bool;
+
+    /**
+     * Check if there are no elements in collection
+     */
+    public function isEmpty(): bool;
 }

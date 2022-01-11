@@ -7,8 +7,8 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
@@ -16,13 +16,13 @@ use Generator;
 class AbstractOperation
 {
     /**
-     * @var Generator<TK, TV>
+     * @var Generator<TKey, TValue>
      */
     protected Generator $gen;
 
     /**
      *
-     * @param iterable<TK, TV> $gen
+     * @param iterable<TKey, TValue> $gen
      */
     final public function __construct(iterable $gen)
     {
@@ -37,10 +37,10 @@ class AbstractOperation
 
     /**
      * @psalm-pure
-     * @template TKI
-     * @template TVI
-     * @param iterable<TKI, TVI> $input
-     * @return static<TKI, TVI>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param iterable<TKeyIn, TValueIn> $input
+     * @return static<TKeyIn, TValueIn>
      */
     public static function of(iterable $input): static
     {

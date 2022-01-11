@@ -15,40 +15,7 @@ final class MapTest extends TestCase
     {
         $this->assertEquals(
             [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toList(),
-        );
-
-        $this->assertEquals(
-            [],
-            HashMap::collectPairs([])->toAssocArray(),
-        );
-
-        $this->assertEquals(
-            ['a' => 1, 'b' => 2],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toAssocArray(),
-        );
-
-        $this->expectExceptionMessage('Illegal offset type');
-        HashMap::collectPairs([['a', 1], [new Foo(1), 2]])->toAssocArray();
-
-        $this->assertEquals(
-            [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toLinkedList()->toList(),
-        );
-
-        $this->assertEquals(
-            [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toArrayList()->toList(),
-        );
-
-        $this->assertEquals(
-            [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toHashSet()->toList(),
-        );
-
-        $this->assertEquals(
-            [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->toHashMap()->toList(),
+            HashMap::collectPairs([['a', 1], ['b', 2]])->stream()->compile()->toList(),
         );
     }
 

@@ -8,18 +8,18 @@ use Whsv26\Functional\Core\Option;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class FilterMapOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @template TVO
-     * @psalm-param callable(TV, TK): Option<TVO> $f
-     * @return Generator<TK, TVO>
+     * @template TValueIn
+     * @psalm-param callable(TValue, TKey): Option<TValueIn> $f
+     * @return Generator<TKey, TValueIn>
      */
     public function __invoke(callable $f): Generator
     {

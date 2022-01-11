@@ -7,18 +7,18 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class DropWhileOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @template TKO
-     * @psalm-param callable(TV, TK): bool $f
-     * @return Generator<TK, TV>
+     * @template TKeyOut
+     * @psalm-param callable(TValue, TKey): bool $f
+     * @return Generator<TKey, TValue>
      */
     public function __invoke(callable $f): Generator
     {

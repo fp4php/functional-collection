@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class ExistsOfOperation extends AbstractOperation
 {
     /**
-     * @template TVO
-     * @param class-string<TVO> $fqcn fully qualified class name
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn fully qualified class name
      * @param bool $invariant if turned on then subclasses are not allowed
      * @return bool
      */

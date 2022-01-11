@@ -7,16 +7,16 @@ namespace Whsv26\Functional\Stream\Operations;
 use Whsv26\Functional\Core\Option;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class AtOperation extends AbstractOperation
 {
     /**
-     * @param TK $pos
-     * @return Option<TV>
+     * @param TKey $pos
+     * @return Option<TValue>
      */
     public function __invoke(mixed $pos): Option
     {

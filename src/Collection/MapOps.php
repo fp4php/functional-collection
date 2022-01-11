@@ -10,9 +10,8 @@ namespace Whsv26\Functional\Collection;
  * @psalm-immutable
  * @extends MapChainableOps<TKey, TValue>
  * @extends MapTerminalOps<TKey, TValue>
- * @extends MapCastableOps<TKey, TValue>
  */
-interface MapOps extends MapChainableOps, MapTerminalOps, MapCastableOps
+interface MapOps extends MapChainableOps, MapTerminalOps
 {
 
 }

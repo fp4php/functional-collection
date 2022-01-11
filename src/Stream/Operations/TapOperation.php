@@ -7,17 +7,17 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class TapOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @param callable(TV, TK): void $f
-     * @return Generator<TK, TV>
+     * @param callable(TValue, TKey): void $f
+     * @return Generator<TKey, TValue>
      */
     public function __invoke(callable $f): Generator
     {

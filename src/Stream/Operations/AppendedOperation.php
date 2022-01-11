@@ -7,18 +7,18 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class AppendedOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @template TVI
-     * @psalm-param TVI $elem
-     * @return Generator<TV|TVI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @return Generator<TValue|TValueIn>
      */
     public function __invoke(mixed $elem): Generator
     {

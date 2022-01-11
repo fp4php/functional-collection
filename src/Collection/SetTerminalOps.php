@@ -174,7 +174,7 @@ interface SetTerminalOps
      * => false
      * ```
      */
-    public function subsetOf(Set|NonEmptySet $superset): bool;
+    public function subsetOf(Set $superset): bool;
 
     /**
      * Find first element which satisfies the condition
@@ -253,4 +253,14 @@ interface SetTerminalOps
      * @psalm-return Option<TValue>
      */
     public function lastElement(): Option;
+
+    /**
+     * Check if at least one collection element is present
+     */
+    public function isNonEmpty(): bool;
+
+    /**
+     * Check if there are no elements in collection
+     */
+    public function isEmpty(): bool;
 }

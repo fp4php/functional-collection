@@ -253,7 +253,7 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
      * @psalm-return array<TKeyIn, TValueIn>
      */
-    public function toAssocArray(): array
+    public function toArray(): array
     {
         $arr = [];
 
@@ -271,7 +271,7 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
      * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
      */
-    public function toNonEmptyAssocArray(): Option
+    public function toNonEmptyArray(): Option
     {
         $arr = [];
 

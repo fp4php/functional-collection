@@ -40,9 +40,6 @@ use Whsv26\Functional\Stream\Operations\UniqueOperation;
 use Whsv26\Functional\Stream\Operations\ZipOperation;
 use Whsv26\Functional\Stream\Stream;
 use Iterator;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\Mutable\LinkedListBuffer;
 use Whsv26\Functional\Collection\Mutable\LinkedListIterator;
@@ -53,16 +50,21 @@ use Whsv26\Functional\Collection\Seq;
  * Fast {@see Seq::reverse} operation
  *
  * @psalm-immutable
- * @template-covariant TV
- * @implements Seq<TV>
+ * @template-covariant TValue
+ * @implements Seq<TValue>
  */
 abstract class LinkedList implements Seq
 {
     /**
+     * @psalm-allow-private-mutation
+     */
+    private ?int $knownSize;
+
+    /**
      * @inheritDoc
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return self<TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function collect(iterable $source): self
     {
@@ -77,9 +79,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @param TVI $val
-     * @return self<TVI>
+     * @template TValueIn
+     * @param TValueIn $val
+     * @return self<TValueIn>
      */
     public static function singleton(mixed $val): self
     {
@@ -108,7 +110,7 @@ abstract class LinkedList implements Seq
     }
 
     /**
-     * @return Iterator<int, TV>
+     * @return Iterator<int, TValue>
      */
     public function getIterator(): Iterator
     {
@@ -117,7 +119,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @return list<TV>
+     * @return list<TValue>
      */
     public function toList(): array
     {
@@ -128,64 +130,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @return LinkedList<TV>
-     */
-    public function toLinkedList(): LinkedList
-    {
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     * @return ArrayList<TV>
-     */
-    public function toArrayList(): ArrayList
-    {
-        return ArrayList::collect($this);
-    }
-
-    /**
-     * @inheritDoc
-     * @return Option<NonEmptyArrayList<TV>>
-     */
-    public function toNonEmptyArrayList(): Option
-    {
-        $arrayList = $this->toArrayList();
-
-        return Option::when(
-            $arrayList->isNonEmpty(),
-            fn() => new NonEmptyArrayList($arrayList)
-        );
-    }
-
-    /**
-     * @inheritDoc
-     * @return HashSet<TV>
-     */
-    public function toHashSet(): HashSet
-    {
-        return HashSet::collect($this);
-    }
-
-    /**
-     * @inheritDoc
-     * @template TKI
-     * @template TVI
-     * @param callable(TV): array{TKI, TVI} $callback
-     * @return HashMap<TKI, TVI>
-     */
-    public function toHashMap(callable $callback): HashMap
-    {
-        return HashMap::collectPairs((function () use ($callback) {
-            foreach ($this as $elem) {
-                yield $callback($elem);
-            }
-        })());
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return self<TV>
+     * @psalm-return self<TValue>
      */
     public function reverse(): self
     {
@@ -199,7 +144,7 @@ abstract class LinkedList implements Seq
     }
 
     /**
-     * @psalm-assert-if-true Cons<TV> $this
+     * @psalm-assert-if-true Cons<TValue> $this
      */
     public function isCons(): bool
     {
@@ -224,7 +169,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool
     {
@@ -233,8 +178,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool
@@ -244,9 +189,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVO
-     * @param callable(TV): Option<TVO> $callback
-     * @return Option<self<TVO>>
+     * @template TValueIn
+     * @param callable(TValue): Option<TValueIn> $callback
+     * @return Option<self<TValueIn>>
      */
     public function everyMap(callable $callback): Option
     {
@@ -256,7 +201,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool
     {
@@ -265,8 +210,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool
@@ -276,8 +221,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function first(callable $predicate): Option
     {
@@ -286,10 +231,10 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TVO>
+     * @psalm-return Option<TValueIn>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option
     {
@@ -298,10 +243,10 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TVO>
+     * @psalm-return Option<TValueIn>
      */
     public function lastOf(string $fqcn, bool $invariant = false): Option
     {
@@ -312,7 +257,7 @@ abstract class LinkedList implements Seq
      * @inheritDoc
      * @template TA
      * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TV): TA $callback (accumulator, current element): new accumulator
+     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
      * @psalm-return TA
      */
     public function fold(mixed $init, callable $callback): mixed
@@ -323,8 +268,8 @@ abstract class LinkedList implements Seq
     /**
      * @inheritDoc
      * @template TA
-     * @psalm-param callable(TV|TA, TV): (TV|TA) $callback
-     * @psalm-return Option<TV|TA>
+     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback
+     * @psalm-return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option
     {
@@ -333,7 +278,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function head(): Option
     {
@@ -344,7 +289,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return self<TV>
+     * @psalm-return self<TValue>
      */
     public function tail(): self
     {
@@ -356,8 +301,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function last(callable $predicate): Option
     {
@@ -366,7 +311,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function firstElement(): Option
     {
@@ -375,7 +320,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function lastElement(): Option
     {
@@ -387,12 +332,13 @@ abstract class LinkedList implements Seq
      */
     public function count(): int
     {
-        return CountOperation::of($this->getIterator())();
+        return $this->knownSize = $this->knownSize
+            ?? CountOperation::of($this->getIterator())();
     }
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function __invoke(int $index): Option
     {
@@ -401,7 +347,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function at(int $index): Option
     {
@@ -411,8 +357,8 @@ abstract class LinkedList implements Seq
     /**
      * @inheritDoc
      * @template TKO
-     * @psalm-param callable(TV): TKO $callback
-     * @psalm-return Map<TKO, Seq<TV>>
+     * @psalm-param callable(TValue): TKO $callback
+     * @psalm-return Map<TKO, Seq<TValue>>
      */
     public function groupBy(callable $callback): Map
     {
@@ -421,9 +367,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVO
-     * @psalm-param callable(TV): TVO $callback
-     * @psalm-return self<TVO>
+     * @template TValueIn
+     * @psalm-param callable(TValue): TValueIn $callback
+     * @psalm-return self<TValueIn>
      */
     public function map(callable $callback): self
     {
@@ -432,9 +378,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @psalm-param TVI $elem
-     * @psalm-return self<TV|TVI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
     public function appended(mixed $elem): self
     {
@@ -443,9 +389,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @psalm-param iterable<TVI> $suffix
-     * @psalm-return self<TV|TVI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $suffix
+     * @psalm-return self<TValue|TValueIn>
      */
     public function appendedAll(iterable $suffix): self
     {
@@ -454,9 +400,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @psalm-param TVI $elem
-     * @psalm-return self<TV|TVI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
     public function prepended(mixed $elem): self
     {
@@ -465,9 +411,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @psalm-param iterable<TVI> $prefix
-     * @psalm-return self<TV|TVI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $prefix
+     * @psalm-return self<TValue|TValueIn>
      */
     public function prependedAll(iterable $prefix): self
     {
@@ -476,8 +422,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return self<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
     public function filter(callable $predicate): self
     {
@@ -486,9 +432,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param callable(TV): Option<TVO> $callback
-     * @psalm-return self<TVO>
+     * @psalm-template TValueIn
+     * @psalm-param callable(TValue): Option<TValueIn> $callback
+     * @psalm-return self<TValueIn>
      */
     public function filterMap(callable $callback): self
     {
@@ -497,7 +443,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return self<TV>
+     * @psalm-return self<TValue>
      */
     public function filterNotNull(): self
     {
@@ -506,10 +452,10 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return self<TVO>
+     * @psalm-return self<TValueIn>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self
     {
@@ -518,9 +464,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-template TVO
-     * @psalm-param callable(TV): iterable<TVO> $callback
-     * @psalm-return self<TVO>
+     * @psalm-template TValueIn
+     * @psalm-param callable(TValue): iterable<TValueIn> $callback
+     * @psalm-return self<TValueIn>
      */
     public function flatMap(callable $callback): self
     {
@@ -529,8 +475,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return self<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
     public function takeWhile(callable $predicate): self
     {
@@ -539,8 +485,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return self<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return self<TValue>
      */
     public function dropWhile(callable $predicate): self
     {
@@ -549,7 +495,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return self<TV>
+     * @psalm-return self<TValue>
      */
     public function take(int $length): self
     {
@@ -558,7 +504,7 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return self<TV>
+     * @psalm-return self<TValue>
      */
     public function drop(int $length): self
     {
@@ -567,8 +513,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @param callable(TV): void $callback
-     * @psalm-return self<TV>
+     * @param callable(TValue): void $callback
+     * @psalm-return self<TValue>
      */
     public function tap(callable $callback): self
     {
@@ -582,8 +528,8 @@ abstract class LinkedList implements Seq
     /**
      * @inheritDoc
      * @experimental
-     * @psalm-param callable(TV): (int|string) $callback
-     * @psalm-return self<TV>
+     * @psalm-param callable(TValue): (int|string) $callback
+     * @psalm-return self<TValue>
      */
     public function unique(callable $callback): self
     {
@@ -592,8 +538,8 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TV, TV): int $cmp
-     * @psalm-return self<TV>
+     * @psalm-param callable(TValue, TValue): int $cmp
+     * @psalm-return self<TValue>
      */
     public function sorted(callable $cmp): self
     {
@@ -602,9 +548,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @param TVI $separator
-     * @psalm-return self<TV|TVI>
+     * @template TValueIn
+     * @param TValueIn $separator
+     * @psalm-return self<TValue|TValueIn>
      */
     public function intersperse(mixed $separator): self
     {
@@ -613,9 +559,9 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @template TVI
-     * @param iterable<TVI> $that
-     * @return self<array{TV, TVI}>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return self<array{TValue, TValueIn}>
      */
     public function zip(iterable $that): self
     {

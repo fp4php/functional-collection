@@ -8,7 +8,7 @@ use Whsv26\Functional\Core\Unit;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface StreamEmitter
 {
@@ -20,9 +20,9 @@ interface StreamEmitter
      * => [1]
      * ```
      *
-     * @template TVI
-     * @param TVI $elem
-     * @return Stream<TVI>
+     * @template TValueIn
+     * @param TValueIn $elem
+     * @return Stream<TValueIn>
      */
     public static function emit(mixed $elem): Stream;
 
@@ -34,9 +34,9 @@ interface StreamEmitter
      * => [1, 2]
      * ```
      *
-     * @template TVI
-     * @param iterable<TVI> $source
-     * @return Stream<TVI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return Stream<TValueIn>
      */
     public static function emits(iterable $source): Stream;
 
@@ -48,7 +48,7 @@ interface StreamEmitter
      * => [1, 2, 3, 1, 2, 3, 1, 2]
      * ```
      *
-     * @return Stream<TV>
+     * @return Stream<TValue>
      */
     public function repeat(): Stream;
 
@@ -60,7 +60,7 @@ interface StreamEmitter
      * => [1, 1, 1]
      * ```
      *
-     * @return Stream<TV>
+     * @return Stream<TValue>
      */
     public function repeatN(int $times): Stream;
 
@@ -72,9 +72,9 @@ interface StreamEmitter
      * => [0, 0, 0]
      * ```
      *
-     * @template TVI
-     * @param TVI $const
-     * @return Stream<TVI>
+     * @template TValueIn
+     * @param TValueIn $const
+     * @return Stream<TValueIn>
      */
     public static function constant(mixed $const): Stream;
 

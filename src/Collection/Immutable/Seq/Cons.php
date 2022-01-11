@@ -6,14 +6,14 @@ namespace Whsv26\Functional\Collection\Immutable\Seq;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
- * @extends LinkedList<TV>
+ * @template-covariant TValue
+ * @extends LinkedList<TValue>
  */
 final class Cons extends LinkedList
 {
     /**
-     * @param TV $head
-     * @param LinkedList<TV> $tail
+     * @param TValue $head
+     * @param LinkedList<TValue> $tail
      */
     public function __construct(
         public mixed $head,

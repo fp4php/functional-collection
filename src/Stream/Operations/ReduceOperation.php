@@ -7,21 +7,21 @@ namespace Whsv26\Functional\Stream\Operations;
 use Whsv26\Functional\Core\Option;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class ReduceOperation extends AbstractOperation
 {
     /**
      * @template TA
-     * @psalm-param callable(TV|TA, TV): (TV|TA) $f
-     * @psalm-return Option<TV|TA>
+     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $f
+     * @psalm-return Option<TValue|TA>
      */
     public function __invoke(callable $f): Option
     {
-        /** @var TV|TA $acc */
+        /** @var TValue|TA $acc */
         $acc = null;
         $toggle = true;
 

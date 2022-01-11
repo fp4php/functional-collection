@@ -6,7 +6,7 @@ namespace Whsv26\Functional\Collection\Psalm\CollectionFilterMethodRefinement;
 
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TKeyedArray;
-use Whsv26\Functional\Collection\BaseCollection;
+use Whsv26\Functional\Collection\Collection;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\NonEmptyMap;
@@ -164,7 +164,7 @@ final class RefineTargetExtractor
     private static function whenSimpleFiltering(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($class, $templates, $method) {
-            yield Option::some($class)->filter(fn($c) => is_a($c, BaseCollection::class, true));
+            yield Option::some($class)->filter(fn($c) => is_a($c, Collection::class, true));
             yield Option::some($method)->filter(fn($m) => in_array($m, [
                 'filter',
                 strtolower('filterNotNull'),

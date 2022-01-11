@@ -11,11 +11,11 @@ use Iterator;
  *
  * @psalm-immutable
  * @template-covariant TValue
- * @extends EmptyCollection<TValue>
+ * @extends Collection<TValue>
  * @extends SeqOps<TValue>
  * @extends SeqCollector<TValue>
  */
-interface Seq extends EmptyCollection, SeqOps, SeqCollector
+interface Seq extends Collection, SeqOps, SeqCollector
 {
     /**
      * @inheritDoc

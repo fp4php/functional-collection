@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class MkStringOperation extends AbstractOperation
 {

@@ -7,18 +7,18 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class GroupAdjacentByOperationOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
      * @template D
-     * @param callable(TV): D $discriminator
-     * @return Generator<int, array{D, non-empty-list<TV>}>
+     * @param callable(TValue): D $discriminator
+     * @return Generator<int, array{D, non-empty-list<TValue>}>
      */
     public function __invoke(callable $discriminator): Generator
     {

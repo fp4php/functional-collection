@@ -8,15 +8,15 @@ use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class RepeatOperation extends AbstractOperation
 {
     /**
-     * @return Generator<int, TV>
+     * @return Generator<int, TValue>
      */
     public function __invoke(): Generator
     {

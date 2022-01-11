@@ -7,18 +7,18 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class FlatMapOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @psalm-template TVO
-     * @psalm-param callable(TV, TK): iterable<TVO> $f
-     * @return Generator<int, TVO>
+     * @psalm-template TValueIn
+     * @psalm-param callable(TValue, TKey): iterable<TValueIn> $f
+     * @return Generator<int, TValueIn>
      */
     public function __invoke(callable $f): Generator
     {

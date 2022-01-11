@@ -7,16 +7,16 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class ValuesOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @return Generator<int, TV>
+     * @return Generator<int, TValue>
      */
     public function __invoke(): Generator
     {

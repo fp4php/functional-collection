@@ -8,7 +8,7 @@ use Whsv26\Functional\Core\Option;
 
 /**
  * @psalm-immutable
- * @template-covariant TV
+ * @template-covariant TValue
  */
 interface StreamTerminalOps
 {
@@ -24,7 +24,7 @@ interface StreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -40,8 +40,8 @@ interface StreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool;
@@ -57,7 +57,7 @@ interface StreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
+     * @psalm-param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool;
 
@@ -73,8 +73,8 @@ interface StreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool;
@@ -87,8 +87,8 @@ interface StreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function first(callable $predicate): Option;
 
@@ -100,10 +100,10 @@ interface StreamTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TVO
-     * @psalm-param class-string<TVO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TVO>
+     * @psalm-return Option<TValueIn>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option;
 
@@ -117,7 +117,7 @@ interface StreamTerminalOps
      *
      * @template TA
      * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TV): TA $callback (accumulator, current element): new accumulator
+     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
      * @psalm-return TA
      */
     public function fold(mixed $init, callable $callback): mixed;
@@ -132,8 +132,8 @@ interface StreamTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param callable(TV|TA, TV): (TV|TA) $callback (accumulator, current value): new accumulator
-     * @psalm-return Option<TV|TA>
+     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
+     * @psalm-return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option;
 
@@ -145,7 +145,7 @@ interface StreamTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function head(): Option;
 
@@ -157,8 +157,8 @@ interface StreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TV): bool $predicate
-     * @psalm-return Option<TV>
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
      */
     public function last(callable $predicate): Option;
 
@@ -171,7 +171,7 @@ interface StreamTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function firstElement(): Option;
 
@@ -183,7 +183,7 @@ interface StreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TV>
+     * @psalm-return Option<TValue>
      */
     public function lastElement(): Option;
 

@@ -9,25 +9,25 @@ use Whsv26\Functional\Collection\Immutable\Map\HashComparator;
 
 /**
  * @internal
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-type hash = string
  * @psalm-suppress ImpureMethodCall, ImpurePropertyFetch
  */
 final class HashTable
 {
     /**
-     * @var array<hash, list<array{TK, TV}>>
+     * @var array<hash, list<array{TKey, TValue}>>
      */
     public array $table = [];
 
     /**
      * @psalm-pure
-     * @template TKey
-     * @template TValue
-     * @param HashTable<TKey, TValue> $hashTable
-     * @param TKey $key
-     * @return Option<TValue>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param HashTable<TKeyIn, TValueIn> $hashTable
+     * @param TKeyIn $key
+     * @return Option<TValueIn>
      */
     public static function get(HashTable $hashTable, mixed $key): Option
     {
@@ -45,12 +45,12 @@ final class HashTable
 
     /**
      * @psalm-pure
-     * @template TKey
-     * @template TValue
-     * @param TKey $key
-     * @param TValue $value
-     * @param HashTable<TKey, TValue> $hashTable
-     * @return HashTable<TKey, TValue>
+     * @template TKeyIn
+     * @template TValueIn
+     * @param TKeyIn $key
+     * @param TValueIn $value
+     * @param HashTable<TKeyIn, TValueIn> $hashTable
+     * @return HashTable<TKeyIn, TValueIn>
      * @psalm-suppress PropertyTypeCoercion
      */
     public static function update(HashTable $hashTable, mixed $key, mixed $value): HashTable

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Immutable\Map;
 
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Core\Option\Some;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Generator;
 use Whsv26\Functional\Collection\Map;
@@ -24,12 +23,36 @@ final class HashMap implements Map
     private bool $empty;
 
     /**
+     * @psalm-allow-private-mutation
+     */
+    private ?int $knownSize;
+
+    /**
      * @internal
-     * @psalm-param HashTable<TKey, TValue> $hashTable
+     * @param HashTable<TKey, TValue> $hashTable
      */
     public function __construct(private HashTable $hashTable)
     {
         $this->empty = empty($hashTable->table);
+        $this->knownSize = null;
+    }
+
+    /**
+     * @inheritDoc
+     * @return bool
+     */
+    public function isNonEmpty(): bool
+    {
+        return !$this->empty;
+    }
+
+    /**
+     * @inheritDoc
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return $this->empty;
     }
 
     /**
@@ -70,6 +93,7 @@ final class HashMap implements Map
     }
 
     /**
+     * @inheritDoc
      * @return Generator<int, array{TKey, TValue}>
      */
     public function getIterator(): Generator
@@ -81,26 +105,20 @@ final class HashMap implements Map
         }
     }
 
-    public function getKeyValueIterator(): Generator
-    {
-        foreach ($this as [$key, $value]) {
-            yield $key => $value;
-        }
-    }
-
     /**
      * @inheritDoc
      */
     public function count(): int
     {
-        return CountOperation::of($this->getIterator())();
+        return $this->knownSize = $this->knownSize
+            ?? CountOperation::of($this->getIterator())();
     }
 
     /**
      * @inheritDoc
      * @return Stream<array{TKey, TValue}>
      */
-    public function toStream(): Stream
+    public function stream(): Stream
     {
         return Stream::emits($this->getIterator());
     }
@@ -115,7 +133,7 @@ final class HashMap implements Map
      */
     public function updated(mixed $key, mixed $value): self
     {
-        return $this->toStream()
+        return $this->stream()
             ->appended([$key, $value])
             ->compile()
             ->toHashMap();
@@ -128,91 +146,8 @@ final class HashMap implements Map
      */
     public function removed(mixed $key): self
     {
-        return $this->filterKeys(fn($k) => $k !== $key);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TKey, TValue>
-     */
-    public function filterValues(callable $predicate): self
-    {
-        return $this->toStream()
-            ->filterValues($predicate)
-            ->compile()
-            ->toHashMap();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-param callable(TKey): bool $predicate
-     * @psalm-return self<TKey, TValue>
-     */
-    public function filterKeys(callable $predicate): self
-    {
-        return $this->toStream()
-            ->filterKeys($predicate)
-            ->compile()
-            ->toHashMap();
-    }
-
-    /**
-     * @inheritDoc
-     * @template TValueOut
-     * @param callable(TValue): Option<TValueOut> $callback
-     * @return self<TKey, TValueOut>
-     */
-    public function filterMapValues(callable $callback): self
-    {
-        return $this->toStream()
-            ->mapValues($callback)
-            ->filterValues(fn(Option $key) => $key->isSome())
-            ->mapValues(fn(Some $some) => $some->get())
-            ->compile()
-            ->toHashMap();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-template TKeyOut
-     * @psalm-param callable(TKey): Option<TKeyOut> $callback
-     * @psalm-return self<TKeyOut, TValue>
-     */
-    public function filterMapKeys(callable $callback): self
-    {
-        return $this->toStream()
-            ->mapKeys($callback)
-            ->filterKeys(fn(Option $key) => $key->isSome())
-            ->mapKeys(fn(Some $some) => $some->get())
-            ->compile()
-            ->toHashMap();
-    }
-
-    /**
-     * @inheritDoc
-     * @template TValueOut
-     * @psalm-param callable(TValue): TValueOut $callback
-     * @psalm-return self<TKey, TValueOut>
-     */
-    public function mapValues(callable $callback): self
-    {
-        return $this->toStream()
-            ->mapValues($callback)
-            ->compile()
-            ->toHashMap();
-    }
-
-    /**
-     * @inheritDoc
-     * @template TKeyOut
-     * @psalm-param callable(TKey): TKeyOut $callback
-     * @psalm-return self<TKeyOut, TValue>
-     */
-    public function mapKeys(callable $callback): self
-    {
-        return $this->toStream()
-            ->mapKeys($callback)
+        return $this->stream()
+            ->filterKeys(fn($k) => $k !== $key)
             ->compile()
             ->toHashMap();
     }
@@ -223,7 +158,7 @@ final class HashMap implements Map
      */
     public function keys(): Seq
     {
-        return $this->toStream()
+        return $this->stream()
             ->map(fn($pair) => $pair[0])
             ->compile()
             ->toArrayList();
@@ -235,15 +170,10 @@ final class HashMap implements Map
      */
     public function values(): Seq
     {
-        return $this->toStream()
+        return $this->stream()
             ->map(fn($pair) => $pair[1])
             ->compile()
             ->toArrayList();
-    }
-
-    public function isEmpty():bool
-    {
-        return $this->empty;
     }
 
     /**
@@ -267,8 +197,7 @@ final class HashMap implements Map
         $elem = null;
         $hash = (string) HashComparator::computeHash($key);
 
-        $bucket = Option::fromNullable($this->hashTable->table[$hash] ?? null)
-            ->getOrElse([]);
+        $bucket = $this->hashTable->table[$hash] ?? [];
 
         foreach ($bucket as [$k, $v]) {
             if (HashComparator::hashEquals($key, $k)) {

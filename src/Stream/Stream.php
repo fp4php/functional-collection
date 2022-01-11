@@ -79,9 +79,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param TValueI $elem
-     * @return self<TValueI>
+     * @template TValueIn
+     * @param TValueIn $elem
+     * @return self<TValueIn>
      */
     public static function emit(mixed $elem): self
     {
@@ -92,9 +92,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param iterable<TValueI> $source
-     * @return self<TValueI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $source
+     * @return self<TValueIn>
      */
     public static function emits(iterable $source): self
     {
@@ -103,9 +103,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param TValueI $const
-     * @return self<TValueI>
+     * @template TValueIn
+     * @param TValueIn $const
+     * @return self<TValueIn>
      */
     public static function constant(mixed $const): self
     {
@@ -141,9 +141,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @psalm-template TKO
-     * @psalm-template TValueO
-     * @psalm-param Generator<TValueO> $gen
-     * @psalm-return self<TValueO>
+     * @psalm-template TValueIn
+     * @psalm-param Generator<TValueIn> $gen
+     * @psalm-return self<TValueIn>
      */
     private function fork(Generator $gen): self
     {
@@ -155,9 +155,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
     }
 
     /**
-     * @template TValueO
-     * @psalm-param callable(TValue): TValueO $callback
-     * @psalm-return self<TValueO>
+     * @template TValueIn
+     * @psalm-param callable(TValue): TValueIn $callback
+     * @psalm-return self<TValueIn>
      */
     public function map(callable $callback): self
     {
@@ -236,9 +236,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @psalm-param TValueI $elem
-     * @psalm-return self<TValue|TValueI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
     public function appended(mixed $elem): self
     {
@@ -247,9 +247,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @psalm-param iterable<TValueI> $suffix
-     * @psalm-return self<TValue|TValueI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $suffix
+     * @psalm-return self<TValue|TValueIn>
      */
     public function appendedAll(iterable $suffix): self
     {
@@ -258,9 +258,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @psalm-param TValueI $elem
-     * @psalm-return self<TValue|TValueI>
+     * @template TValueIn
+     * @psalm-param TValueIn $elem
+     * @psalm-return self<TValue|TValueIn>
      */
     public function prepended(mixed $elem): self
     {
@@ -269,9 +269,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @psalm-param iterable<TValueI> $prefix
-     * @psalm-return self<TValue|TValueI>
+     * @template TValueIn
+     * @psalm-param iterable<TValueIn> $prefix
+     * @psalm-return self<TValue|TValueIn>
      */
     public function prependedAll(iterable $prefix): self
     {
@@ -290,9 +290,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueO
-     * @psalm-param callable(TValue): Option<TValueO> $callback
-     * @psalm-return self<TValueO>
+     * @psalm-template TValueIn
+     * @psalm-param callable(TValue): Option<TValueIn> $callback
+     * @psalm-return self<TValueIn>
      */
     public function filterMap(callable $callback): self
     {
@@ -310,10 +310,10 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueO
-     * @psalm-param class-string<TValueO> $fqcn fully qualified class name
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
      * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return self<TValueO>
+     * @psalm-return self<TValueIn>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self
     {
@@ -322,9 +322,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueO
-     * @psalm-param callable(TValue): iterable<TValueO> $callback
-     * @psalm-return self<TValueO>
+     * @psalm-template TValueIn
+     * @psalm-param callable(TValue): iterable<TValueIn> $callback
+     * @psalm-return self<TValueIn>
      */
     public function flatMap(callable $callback): self
     {
@@ -408,9 +408,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param TValueI $separator
-     * @psalm-return self<TValue|TValueI>
+     * @template TValueIn
+     * @param TValueIn $separator
+     * @psalm-return self<TValue|TValueIn>
      */
     public function intersperse(mixed $separator): self
     {
@@ -430,9 +430,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param iterable<TValueI> $that
-     * @return self<TValue|TValueI>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return self<TValue|TValueIn>
      */
     public function interleave(iterable $that): self
     {
@@ -441,9 +441,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @template TValueI
-     * @param iterable<TValueI> $that
-     * @return self<array{TValue, TValueI}>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return self<array{TValue, TValueIn}>
      */
     public function zip(iterable $that): self
     {

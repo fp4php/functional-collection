@@ -11,22 +11,22 @@ use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\Immutable\Seq\Nil;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class GroupByOperation extends AbstractOperation
 {
     /**
-     * @template TKO
-     * @psalm-param callable(TV, TK): TKO $f
-     * @psalm-return HashMap<TKO, LinkedList<TV>>
+     * @template TKeyOut
+     * @psalm-param callable(TValue, TKey): TKeyOut $f
+     * @psalm-return HashMap<TKeyOut, LinkedList<TValue>>
      */
     public function __invoke(callable $f): Map
     {
         /**
-         * @psalm-var HashTable<TKO, LinkedList<TV>> $hashTable
+         * @psalm-var HashTable<TKeyOut, LinkedList<TValue>> $hashTable
          */
         $hashTable = new HashTable();
 

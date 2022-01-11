@@ -43,7 +43,7 @@ final class StreamTest extends TestCase
 
         $this->assertEquals(
             [1 => 'a', 2 => 'b'],
-            Stream::emits([[1, 'a'], [2, 'b']])->compile()->toAssocArray(fn($pair) => $pair)
+            Stream::emits([[1, 'a'], [2, 'b']])->compile()->toArray(fn($pair) => $pair)
         );
     }
 }

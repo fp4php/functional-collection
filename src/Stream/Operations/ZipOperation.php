@@ -8,17 +8,17 @@ use Generator;
 use Iterator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class ZipOperation extends AbstractOperation
 {
     /**
-     * @template TVI
-     * @param iterable<TVI> $that
-     * @return Generator<int, array{TV, TVI}>
+     * @template TValueIn
+     * @param iterable<TValueIn> $that
+     * @return Generator<int, array{TValue, TValueIn}>
      */
     public function __invoke(iterable $that): Generator
     {

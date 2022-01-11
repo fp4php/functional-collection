@@ -7,17 +7,17 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class FilterOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @psalm-param callable(TV, TK): bool $f
-     * @return Generator<TK, TV>
+     * @psalm-param callable(TValue, TKey): bool $f
+     * @return Generator<TKey, TValue>
      */
     public function __invoke(callable $f): Generator
     {

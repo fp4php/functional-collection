@@ -8,17 +8,17 @@ use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Generator;
 
 /**
- * @template TK
- * @template TV
+ * @template TKey
+ * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TK, TV>
+ * @extends AbstractOperation<TKey, TValue>
  */
 class SortedOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @psalm-param callable(TV, TV): int $f
-     * @return Generator<TV>
+     * @psalm-param callable(TValue, TValue): int $f
+     * @return Generator<TValue>
      */
     public function __invoke(callable $f): Generator
     {
