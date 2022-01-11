@@ -8,10 +8,6 @@ use Iterator;
 use Whsv26\Functional\Collection\Map\HashMap;
 use Whsv26\Functional\Collection\Set;
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Stream\Operations\CountOperation;
-use Whsv26\Functional\Stream\Operations\EveryMapOperation;
-use Whsv26\Functional\Stream\Operations\EveryOfOperation;
-use Whsv26\Functional\Stream\Operations\EveryOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOfOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOperation;
 use Whsv26\Functional\Stream\Operations\FilterMapOperation;
@@ -24,7 +20,6 @@ use Whsv26\Functional\Stream\Operations\FlatMapOperation;
 use Whsv26\Functional\Stream\Operations\FoldOperation;
 use Whsv26\Functional\Stream\Operations\HeadOperation;
 use Whsv26\Functional\Stream\Operations\LastOperation;
-use Whsv26\Functional\Stream\Operations\MapValuesOperation;
 use Whsv26\Functional\Stream\Operations\ReduceOperation;
 use Whsv26\Functional\Stream\Operations\TailOperation;
 use Whsv26\Functional\Stream\Operations\TapOperation;
@@ -63,6 +58,26 @@ final class HashSet implements Set
             ->toHashMap();
 
         return new self($hashMap);
+    }
+
+    /**
+     * @inheritDoc
+     * @template TValueIn
+     * @param TValueIn $val
+     * @return self<TValueIn>
+     */
+    public static function singleton(mixed $val): self
+    {
+        return self::collect([$val]);
+    }
+
+    /**
+     * @inheritDoc
+     * @return self<empty>
+     */
+    public static function empty(): self
+    {
+        return self::collect([]);
     }
 
     /**
@@ -142,8 +157,10 @@ final class HashSet implements Set
      */
     public function everyMap(callable $callback): Option
     {
-        return EveryMapOperation::of($this->getIterator())($callback)
-            ->map(fn($gen) => HashSet::collect($gen));
+        return $this->stream()
+            ->compile()
+            ->everyMap($callback)
+            ->map(fn(Stream $stream) => $stream->compile()->toHashSet());
     }
 
     /**

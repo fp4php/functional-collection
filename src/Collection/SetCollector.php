@@ -21,4 +21,26 @@ interface SetCollector
      * @return self<TValueIn>
      */
     public static function collect(iterable $source): self;
+
+    /**
+     * ```php
+     * >>> HashSet::singleton(1)->toArray();
+     * => [1]
+     * ```
+     *
+     * @template TValueIn
+     * @param TValueIn $val
+     * @return self<TValueIn>
+     */
+    public static function singleton(mixed $val): self;
+
+    /**
+     * ```php
+     * >>> HashSet::empty()->toArray();
+     * => []
+     * ```
+     *
+     * @return self<empty>
+     */
+    public static function empty(): self;
 }

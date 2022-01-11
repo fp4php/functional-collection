@@ -215,6 +215,26 @@ interface StreamTerminalOps
     public function mkString(string $start = '', string $sep = ',', string $end = ''): string;
 
     /**
+     * A combined {@see Stream::map} and {@see Stream::every}.
+     *
+     * Predicate satisfying is handled via Option instead of Boolean.
+     * So the output type TValueOut can be different from the input type TValue.
+     *
+     * ```php
+     * >>> Stream::emits([1, 2, 3])->everyMap(fn($x) => $x >= 1 ? Option::some($x) : Option::none());
+     * => Some(Stream(1, 2, 3))
+     *
+     * >>> Stream::emits([0, 1, 2])->everyMap(fn($x) => $x >= 1 ? Option::some($x) : Option::none());
+     * => None
+     * ```
+     *
+     * @psalm-template TValueOut
+     * @psalm-param callable(TValue): Option<TValueOut> $callback
+     * @psalm-return Option<Stream<TValueOut>>
+     */
+    public function everyMap(callable $callback): Option;
+
+    /**
      * Count streamed elements
      *
      * ```php

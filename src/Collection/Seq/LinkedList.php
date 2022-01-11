@@ -14,7 +14,6 @@ use Whsv26\Functional\Stream\Operations\AtOperation;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\DropOperation;
 use Whsv26\Functional\Stream\Operations\DropWhileOperation;
-use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOfOperation;
@@ -202,8 +201,10 @@ abstract class LinkedList implements Seq
      */
     public function everyMap(callable $callback): Option
     {
-        return EveryMapOperation::of($this->getIterator())($callback)
-            ->map(fn($gen) => LinkedList::collect($gen));
+        return $this->stream()
+            ->compile()
+            ->everyMap($callback)
+            ->map(fn(Stream $stream) => $stream->compile()->toLinkedList());
     }
 
     /**

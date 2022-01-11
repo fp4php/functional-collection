@@ -13,6 +13,7 @@ use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Operations\CountOperation;
+use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOfOperation;
@@ -337,5 +338,18 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
         }
 
         $file = null;
+
+        $this->leaf($file);
+    }
+
+    /**
+     * @inheritDoc
+     * @template TValueIn
+     * @param callable(TValue): Option<TValueIn> $callback
+     * @return Option<Stream<TValueIn>>
+     */
+    public function everyMap(callable $callback): Option
+    {
+        return $this->leaf(EveryMapOperation::of($this->emitter)($callback));
     }
 }

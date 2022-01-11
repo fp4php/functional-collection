@@ -15,6 +15,7 @@ use Whsv26\Functional\Stream\Operations\AppendedOperation;
 use Whsv26\Functional\Stream\Operations\ChunksOperation;
 use Whsv26\Functional\Stream\Operations\DropOperation;
 use Whsv26\Functional\Stream\Operations\DropWhileOperation;
+use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\FilterMapOperation;
 use Whsv26\Functional\Stream\Operations\FilterNotNullOperation;
 use Whsv26\Functional\Stream\Operations\FilterOfOperation;

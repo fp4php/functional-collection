@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Whsv26\Functional\Core\Option;
-use Generator;
+use Whsv26\Functional\Stream\Stream;
 
 /**
  * @template TValue
@@ -16,28 +16,23 @@ class EveryMapOperation extends AbstractOperation
 {
     /**
      * @template TValueIn
-     *
      * @param callable(TValue): Option<TValueIn> $f
-     * @return Option<Generator<TValueIn>>
+     * @psalm-return Option<Stream<TValueIn>>
      */
-    public function __invoke(callable $f): Option
+    public function __invoke(callable $f, ?string $class = null): Option
     {
-        $collection = [];
+        $mapped = [];
 
         foreach ($this->gen as $value) {
-            $mapped = $f($value);
+            $option = $f($value);
 
-            if ($mapped->isNone()) {
+            if ($option->isNone()) {
                 return Option::none();
             }
 
-            $collection[] = $mapped->get();
+            $mapped[] = $option->get();
         }
 
-        return Option::some((function() use ($collection) {
-            foreach ($collection as $value) {
-                yield $value;
-            }
-        })());
+        return Option::some(Stream::emits($mapped));
     }
 }

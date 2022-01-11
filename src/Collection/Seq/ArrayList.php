@@ -13,7 +13,6 @@ use Whsv26\Functional\Stream\Operations\AppendedAllOperation;
 use Whsv26\Functional\Stream\Operations\AppendedOperation;
 use Whsv26\Functional\Stream\Operations\DropOperation;
 use Whsv26\Functional\Stream\Operations\DropWhileOperation;
-use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOfOperation;
@@ -223,8 +222,10 @@ final class ArrayList implements Seq
      */
     public function everyMap(callable $callback): Option
     {
-        return EveryMapOperation::of($this->getIterator())($callback)
-            ->map(fn($gen) => ArrayList::collect($gen));
+        return $this->stream()
+            ->compile()
+            ->everyMap($callback)
+            ->map(fn(Stream $stream) => $stream->compile()->toArrayList());
     }
 
     /**
