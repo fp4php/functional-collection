@@ -91,8 +91,9 @@ final class HashSet implements Set
      */
     public function count(): int
     {
-        return $this->knownSize = $this->knownSize
-            ?? CountOperation::of($this->getIterator())();
+        return $this->knownSize = $this->knownSize ?? $this->stream()
+            ->compile()
+            ->count();
     }
 
     /**
@@ -101,7 +102,7 @@ final class HashSet implements Set
      */
     public function toList(): array
     {
-        return Stream::emits($this->getIterator())->compile()->toList();
+        return $this->stream()->compile()->toList();
     }
 
     /**
@@ -119,7 +120,7 @@ final class HashSet implements Set
      */
     public function every(callable $predicate): bool
     {
-        return EveryOperation::of($this)($predicate);
+        return $this->stream()->compile()->every($predicate);
     }
 
     /**
@@ -130,7 +131,7 @@ final class HashSet implements Set
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool
     {
-        return EveryOfOperation::of($this->getIterator())($fqcn, $invariant);
+        return $this->stream()->compile()->everyOf($fqcn, $invariant);
     }
 
     /**
@@ -347,7 +348,10 @@ final class HashSet implements Set
      */
     public function map(callable $callback): self
     {
-        return self::collect(MapValuesOperation::of($this)($callback));
+        return $this->stream()
+            ->map($callback)
+            ->compile()
+            ->toHashSet();
     }
 
     /**

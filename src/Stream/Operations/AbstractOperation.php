@@ -7,7 +7,6 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
  * @psalm-consistent-constructor
@@ -16,21 +15,21 @@ use Generator;
 class AbstractOperation
 {
     /**
-     * @var Generator<TKey, TValue>
+     * @var Generator<int, TValue>
      */
     protected Generator $gen;
 
     /**
      *
-     * @param iterable<TKey, TValue> $gen
+     * @param iterable<TValue> $gen
      */
     final public function __construct(iterable $gen)
     {
         $this->gen = $gen instanceof Generator
             ? $gen
             : (function () use ($gen) {
-                foreach ($gen as $key => $value) {
-                    yield $key => $value;
+                foreach ($gen as $value) {
+                    yield $value;
                 }
             })();
     }
@@ -39,8 +38,8 @@ class AbstractOperation
      * @psalm-pure
      * @template TKeyIn
      * @template TValueIn
-     * @param iterable<TKeyIn, TValueIn> $input
-     * @return static<TKeyIn, TValueIn>
+     * @param iterable<int, TValueIn> $input
+     * @return static<TValueIn>
      */
     public static function of(iterable $input): static
     {

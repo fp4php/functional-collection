@@ -7,17 +7,16 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class IntersperseOperation extends AbstractOperation
 {
     /**
      * @template TValueIn
      * @param TValueIn $separator
-     * @return Generator<TKey|int, TValue|TValueIn>
+     * @return Generator<int, TValue|TValueIn>
      */
     public function __invoke(mixed $separator): Generator
     {

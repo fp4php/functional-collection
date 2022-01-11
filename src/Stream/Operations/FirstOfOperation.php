@@ -7,10 +7,9 @@ namespace Whsv26\Functional\Stream\Operations;
 use Whsv26\Functional\Core\Option;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class FirstOfOperation extends AbstractOperation
 {

@@ -7,10 +7,9 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class ChunksOperation extends AbstractOperation
 {
@@ -20,7 +19,7 @@ class ChunksOperation extends AbstractOperation
      * @psalm-param TPreserve $preserveKeys
      * @psalm-param positive-int $size
      * @psalm-return (TPreserve is true
-     *     ? Generator<int, non-empty-array<TKey, TValue>>
+     *     ? Generator<int, non-empty-array<int, TValue>>
      *     : Generator<int, non-empty-list<TValue>>
      * )
      */

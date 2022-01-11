@@ -12,6 +12,7 @@ use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
 use Whsv26\Functional\Stream\Operations\ExistsOfOperation;
@@ -45,20 +46,6 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     private bool $drained = false;
 
     /**
-     * @template T
-     * @param T $iter
-     * @return T
-     */
-    private function leaf(mixed $iter): mixed
-    {
-        $this->drained = !$this->drained
-            ? true
-            : throw new LogicException('Can not drain already drained stream');
-
-        return $iter;
-    }
-
-    /**
      * @internal
      * @param iterable<TValue> $emitter
      */
@@ -73,6 +60,27 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
         $this->emitter = $gen();
     }
 
+    /**
+     * @template T
+     * @param T $iter
+     * @return T
+     */
+    private function leaf(mixed $iter): mixed
+    {
+        $this->drained = !$this->drained
+            ? true
+            : throw new LogicException('Can not drain already drained stream');
+
+        return $iter;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function count(): int
+    {
+        return $this->leaf(CountOperation::of($this->emitter)());
+    }
 
     /**
      * @inheritDoc

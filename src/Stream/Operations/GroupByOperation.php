@@ -11,16 +11,15 @@ use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Seq\Nil;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class GroupByOperation extends AbstractOperation
 {
     /**
      * @template TKeyOut
-     * @psalm-param callable(TValue, TKey): TKeyOut $f
+     * @psalm-param callable(TValue): TKeyOut $f
      * @psalm-return HashMap<TKeyOut, LinkedList<TValue>>
      */
     public function __invoke(callable $f): Map
@@ -30,8 +29,8 @@ class GroupByOperation extends AbstractOperation
          */
         $hashTable = new HashTable();
 
-        foreach ($this->gen as $key => $value) {
-            $groupKey = $f($value, $key);
+        foreach ($this->gen as $value) {
+            $groupKey = $f($value);
 
             HashTable::update(
                 $hashTable,

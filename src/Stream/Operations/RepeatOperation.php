@@ -8,10 +8,9 @@ use Generator;
 use Whsv26\Functional\Collection\Seq\ArrayList;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class RepeatOperation extends AbstractOperation
 {

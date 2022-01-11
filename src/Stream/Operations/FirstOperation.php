@@ -7,15 +7,14 @@ namespace Whsv26\Functional\Stream\Operations;
 use Whsv26\Functional\Core\Option;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class FirstOperation extends AbstractOperation
 {
     /**
-     * @param null|callable(TValue, TKey): bool $f
+     * @param null|callable(TValue): bool $f
      * @return Option<TValue>
      */
     public function __invoke(?callable $f = null): Option

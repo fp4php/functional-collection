@@ -213,4 +213,14 @@ interface StreamTerminalOps
      * ```
      */
     public function mkString(string $start = '', string $sep = ',', string $end = ''): string;
+
+    /**
+     * Count streamed elements
+     *
+     * ```php
+     * >>> Stream::emits([1, 2])->compile()->count();
+     * => 2
+     * ```
+     */
+    public function count(): int;
 }

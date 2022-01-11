@@ -7,29 +7,28 @@ namespace Whsv26\Functional\Stream\Operations;
 use Generator;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class UniqueOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @psalm-param callable(TValue, TKey): (int|string) $f
-     * @return Generator<TKey, TValue>
+     * @psalm-param callable(TValue): (int|string) $f
+     * @return Generator<TValue>
      */
     public function __invoke(callable $f): Generator
     {
         return (function () use ($f) {
             $hashTable = [];
 
-            foreach ($this->gen as $key => $value) {
-                $disc = $f($value, $key);
+            foreach ($this->gen as $value) {
+                $disc = $f($value);
 
                 if (!array_key_exists($disc, $hashTable)) {
                     $hashTable[$disc] = true;
-                    yield $key => $value;
+                    yield $value;
                 }
             }
         })();

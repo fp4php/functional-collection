@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 /**
- * @template TKey
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TKey, TValue>
+ * @extends AbstractOperation<TValue>
  */
 class CountOperation extends AbstractOperation
 {
