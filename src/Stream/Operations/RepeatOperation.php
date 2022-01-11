@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Generator;
+use Whsv26\Functional\Collection\Seq\ArrayList;
 
 /**
  * @template TKey

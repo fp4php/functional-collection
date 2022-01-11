@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Tests\Runtime\Seq;
 
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Core\Option;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Tests\Mock\Bar;
 use Whsv26\Functional\Collection\Tests\Mock\Foo;
 use Whsv26\Functional\Collection\Tests\Mock\SubBar;
+use Whsv26\Functional\Core\Option;
 
 final class SeqOpsTest extends TestCase
 {

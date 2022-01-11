@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
+use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
 
 /**

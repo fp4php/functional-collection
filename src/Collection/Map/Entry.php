@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Map;
+namespace Whsv26\Functional\Collection\Map;
 
 /**
  * @todo drop

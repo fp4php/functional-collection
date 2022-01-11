@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Tests\Runtime\Map;
 
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
 use PHPUnit\Framework\TestCase;
+use Whsv26\Functional\Collection\Map\HashMap;
 
 final class MapCollectorTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Seq;
+namespace Whsv26\Functional\Collection\Seq;
 
 /**
  * @psalm-immutable

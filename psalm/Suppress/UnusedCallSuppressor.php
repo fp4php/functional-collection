@@ -15,11 +15,11 @@ use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
 use Psalm\StatementsSource;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Union;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Set;
+use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
 

@@ -2,11 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Mutable;
-
-use Whsv26\Functional\Collection\Immutable\Seq\Cons;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Immutable\Seq\Nil;
+namespace Whsv26\Functional\Collection\Seq;
 
 /**
  * Provides constant time append to list

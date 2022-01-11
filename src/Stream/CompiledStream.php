@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
-use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyLinkedList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySet\NonEmptyHashSet;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
+use Generator;
+use LogicException;
+use SplFileObject;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
+use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
 use Whsv26\Functional\Stream\Operations\EveryOperation;
@@ -24,9 +23,6 @@ use Whsv26\Functional\Stream\Operations\HeadOperation;
 use Whsv26\Functional\Stream\Operations\LastOperation;
 use Whsv26\Functional\Stream\Operations\MkStringOperation;
 use Whsv26\Functional\Stream\Operations\ReduceOperation;
-use Generator;
-use LogicException;
-use SplFileObject;
 
 /**
  * Note: stream iteration via foreach is terminal operation

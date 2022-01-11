@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Mutable\HashTable;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
 use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Immutable\Seq\Nil;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Map\HashTable;
+use Whsv26\Functional\Collection\Seq\LinkedList;
+use Whsv26\Functional\Collection\Seq\Nil;
 
 /**
  * @template TKey

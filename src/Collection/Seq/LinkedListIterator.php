@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Mutable;
+namespace Whsv26\Functional\Collection\Seq;
 
 use Iterator;
-use Whsv26\Functional\Collection\Immutable\Seq\Cons;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
 
 /**
  * @internal

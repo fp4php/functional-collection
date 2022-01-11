@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Mutable;
+namespace Whsv26\Functional\Collection\Map;
 
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Collection\Immutable\Map\HashComparator;
 
 /**
  * @internal

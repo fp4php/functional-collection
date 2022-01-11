@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Map;
+namespace Whsv26\Functional\Collection\Map;
 
 use Whsv26\Functional\Collection\HashContract;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
 
 /**
  * @internal

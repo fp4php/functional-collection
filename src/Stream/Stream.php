@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
+use Generator;
+use LogicException;
 use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Core\Unit;
 use Whsv26\Functional\Stream\Operations\AppendedAllOperation;
@@ -32,8 +34,6 @@ use Whsv26\Functional\Stream\Operations\TakeOperation;
 use Whsv26\Functional\Stream\Operations\TakeWhileOperation;
 use Whsv26\Functional\Stream\Operations\TapOperation;
 use Whsv26\Functional\Stream\Operations\ZipOperation;
-use Generator;
-use LogicException;
 
 /**
  * Note: stream iteration via foreach is terminal operation

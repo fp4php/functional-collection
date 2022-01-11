@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Psalm\CollectionFilterMethodRefinement;
 
-use PhpParser\Node\Expr;
-use PhpParser\Node\FunctionLike;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\Set\HashSet;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\Set;
-use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Stream\Stream;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Isset_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Param;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Node\Expr\VirtualArrowFunction;
 use Psalm\Plugin\EventHandler\Event\MethodReturnTypeProviderEvent;
 use Psalm\Plugin\EventHandler\MethodReturnTypeProviderInterface;
 use Psalm\Type\Union;
+use Whsv26\Functional\Collection\Map;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
+use Whsv26\Functional\Collection\Set;
+use Whsv26\Functional\Collection\Set\HashSet;
+use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\Stream;
 
 final class CollectionFilterMethodReturnTypeProvider implements MethodReturnTypeProviderInterface
 {

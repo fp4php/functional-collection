@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Set;
+namespace Whsv26\Functional\Collection\Set;
 
+use Iterator;
+use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\Set;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\EveryMapOperation;
@@ -26,9 +29,6 @@ use Whsv26\Functional\Stream\Operations\ReduceOperation;
 use Whsv26\Functional\Stream\Operations\TailOperation;
 use Whsv26\Functional\Stream\Operations\TapOperation;
 use Whsv26\Functional\Stream\Stream;
-use Iterator;
-use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Set;
 
 /**
  * @template-covariant TValue

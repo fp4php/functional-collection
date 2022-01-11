@@ -6,12 +6,12 @@ namespace Whsv26\Functional\Collection\Psalm\CollectionFilterMethodRefinement;
 
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TKeyedArray;
+use Psalm\Type\Union;
 use Whsv26\Functional\Collection\Collection;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Map;
+use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
-use Psalm\Type\Union;
 
 final class RefineTargetExtractor
 {

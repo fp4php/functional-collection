@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Seq;
+namespace Whsv26\Functional\Collection\Seq;
 
-use ArrayIterator;
+use Iterator;
+use Whsv26\Functional\Collection\Map;
+use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Operations\AppendedAllOperation;
 use Whsv26\Functional\Stream\Operations\AppendedOperation;
+use Whsv26\Functional\Stream\Operations\AtOperation;
+use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\DropOperation;
 use Whsv26\Functional\Stream\Operations\DropWhileOperation;
 use Whsv26\Functional\Stream\Operations\EveryMapOperation;
@@ -30,40 +34,29 @@ use Whsv26\Functional\Stream\Operations\LastOperation;
 use Whsv26\Functional\Stream\Operations\MapValuesOperation;
 use Whsv26\Functional\Stream\Operations\MkStringOperation;
 use Whsv26\Functional\Stream\Operations\PrependedAllOperation;
-use Whsv26\Functional\Stream\Operations\PrependedOperation;
 use Whsv26\Functional\Stream\Operations\ReduceOperation;
 use Whsv26\Functional\Stream\Operations\SortedOperation;
-use Whsv26\Functional\Stream\Operations\TailOperation;
 use Whsv26\Functional\Stream\Operations\TakeOperation;
 use Whsv26\Functional\Stream\Operations\TakeWhileOperation;
 use Whsv26\Functional\Stream\Operations\TapOperation;
 use Whsv26\Functional\Stream\Operations\UniqueOperation;
 use Whsv26\Functional\Stream\Operations\ZipOperation;
 use Whsv26\Functional\Stream\Stream;
-use Iterator;
-use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Seq;
 
 /**
- * O(1) {@see Seq::at()} and {@see Seq::__invoke} operations
+ * O(1) {@see Seq::prepended} operation
+ * Fast {@see Seq::reverse} operation
  *
  * @psalm-immutable
  * @template-covariant TValue
  * @implements Seq<TValue>
  */
-final class ArrayList implements Seq
+abstract class LinkedList implements Seq
 {
     /**
      * @psalm-allow-private-mutation
      */
     private ?int $knownSize;
-
-    /**
-     * @param list<TValue> $elements
-     */
-    public function __construct(
-        public array $elements
-    ) { }
 
     /**
      * @inheritDoc
@@ -73,13 +66,13 @@ final class ArrayList implements Seq
      */
     public static function collect(iterable $source): self
     {
-        $buffer = [];
+        $buffer = new LinkedListBuffer();
 
         foreach ($source as $elem) {
-            $buffer[] = $elem;
+            $buffer->append($elem);
         }
 
-        return new self($buffer);
+        return $buffer->toLinkedList();
     }
 
     /**
@@ -90,7 +83,7 @@ final class ArrayList implements Seq
      */
     public static function singleton(mixed $val): self
     {
-        return new self([$val]);
+        return new Cons($val, Nil::getInstance());
     }
 
     /**
@@ -99,7 +92,7 @@ final class ArrayList implements Seq
      */
     public static function empty(): self
     {
-        return new self([]);
+        return Nil::getInstance();
     }
 
     /**
@@ -111,7 +104,7 @@ final class ArrayList implements Seq
     {
         return Stream::range($start, $stopExclusive, $by)
             ->compile()
-            ->toArrayList();
+            ->toLinkedList();
     }
 
     /**
@@ -119,7 +112,7 @@ final class ArrayList implements Seq
      */
     public function getIterator(): Iterator
     {
-        return new ArrayIterator($this->elements);
+        return new LinkedListIterator($this);
     }
 
     /**
@@ -128,7 +121,7 @@ final class ArrayList implements Seq
      */
     public function stream(): Stream
     {
-       return Stream::emits($this->getIterator());
+        return Stream::emits($this->getIterator());
     }
 
     /**
@@ -137,53 +130,9 @@ final class ArrayList implements Seq
      */
     public function toList(): array
     {
-        return $this->elements;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function count(): int
-    {
-        return $this->knownSize = $this->knownSize ?? count($this->elements);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function __invoke(int $index): Option
-    {
-        return $this->at($index);
-    }
-
-    /**
-     * O(1) time/space complexity
-     *
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function at(int $index): Option
-    {
-        return Option::fromNullable($this->elements[$index] ?? null);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function head(): Option
-    {
-        return Option::fromNullable($this->elements[0] ?? null);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return self<TValue>
-     */
-    public function tail(): self
-    {
-        return self::collect(TailOperation::of($this->getIterator())());
+        return Stream::emits($this->getIterator())
+            ->compile()
+            ->toList();
     }
 
     /**
@@ -192,7 +141,37 @@ final class ArrayList implements Seq
      */
     public function reverse(): self
     {
-        return new self(array_reverse($this->elements));
+        $list = Nil::getInstance();
+
+        foreach ($this as $elem) {
+            $list = $list->prepended($elem);
+        }
+
+        return $list;
+    }
+
+    /**
+     * @psalm-assert-if-true Cons<TValue> $this
+     */
+    public function isCons(): bool
+    {
+        return $this instanceof Cons;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEmpty(): bool
+    {
+        return !$this->isCons();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isNonEmpty(): bool
+    {
+        return $this->isCons();
     }
 
     /**
@@ -224,7 +203,7 @@ final class ArrayList implements Seq
     public function everyMap(callable $callback): Option
     {
         return EveryMapOperation::of($this->getIterator())($callback)
-            ->map(fn($gen) => ArrayList::collect($gen));
+            ->map(fn($gen) => LinkedList::collect($gen));
     }
 
     /**
@@ -283,35 +262,6 @@ final class ArrayList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
-     */
-    public function last(callable $predicate): Option
-    {
-        return LastOperation::of($this->getIterator())($predicate);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function firstElement(): Option
-    {
-        return $this->head();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function lastElement(): Option
-    {
-        // TODO known size optimization
-        return LastOperation::of($this->getIterator())();
-    }
-
-    /**
-     * @inheritDoc
      * @template TA
      * @psalm-param TA $init initial accumulator value
      * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
@@ -335,6 +285,84 @@ final class ArrayList implements Seq
 
     /**
      * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function head(): Option
+    {
+        return $this->isCons()
+            ? Option::some($this)->map(fn(Cons $cons) => $cons->head)
+            : Option::none();
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return self<TValue>
+     */
+    public function tail(): self
+    {
+        return match (true) {
+            $this instanceof Cons => $this->tail,
+            $this instanceof Nil => $this,
+        };
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
+     */
+    public function last(callable $predicate): Option
+    {
+        return LastOperation::of($this->getIterator())($predicate);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function firstElement(): Option
+    {
+        return $this->head();
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function lastElement(): Option
+    {
+        return LastOperation::of($this->getIterator())();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function count(): int
+    {
+        return $this->knownSize = $this->knownSize
+            ?? CountOperation::of($this->getIterator())();
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function __invoke(int $index): Option
+    {
+        return $this->at($index);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function at(int $index): Option
+    {
+        return AtOperation::of($this->getIterator())($index);
+    }
+
+    /**
+     * @inheritDoc
      * @template TKO
      * @psalm-param callable(TValue): TKO $callback
      * @psalm-return Map<TKO, Seq<TValue>>
@@ -342,23 +370,6 @@ final class ArrayList implements Seq
     public function groupBy(callable $callback): Map
     {
         return GroupByOperation::of($this->getIterator())($callback);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isEmpty(): bool
-    {
-        return empty($this->elements);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-assert-if-true non-empty-list<TValue> $this->elements
-     */
-    public function isNonEmpty(): bool
-    {
-        return !$this->isEmpty();
     }
 
     /**
@@ -402,7 +413,7 @@ final class ArrayList implements Seq
      */
     public function prepended(mixed $elem): self
     {
-        return self::collect(PrependedOperation::of($this->getIterator())($elem));
+        return new Cons($elem, $this);
     }
 
     /**

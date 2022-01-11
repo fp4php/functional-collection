@@ -13,7 +13,7 @@ use Psalm\Internal\Algebra\FormulaGenerator;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Type\Reconciler;
 use Psalm\Type\Union;
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Core\Option;
 
 use function spl_object_id;

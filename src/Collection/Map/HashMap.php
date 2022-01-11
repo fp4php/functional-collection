@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Immutable\Map;
+namespace Whsv26\Functional\Collection\Map;
 
-use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Stream\Operations\CountOperation;
 use Generator;
 use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Mutable\HashTable;
 use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Stream;
 
 /**

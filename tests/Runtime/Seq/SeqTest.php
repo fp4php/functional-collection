@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Tests\Runtime\Seq;
 
-use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
-use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
-use Whsv26\Functional\Collection\Seq;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Whsv26\Functional\Collection\Seq;
+use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\Seq\LinkedList;
 
 final class SeqTest extends TestCase
 {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Generator;
-use Iterator;
 
 /**
  * @template TKey
