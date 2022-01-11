@@ -9,7 +9,6 @@ use Psalm\Type\Atomic\TKeyedArray;
 use Whsv26\Functional\Collection\Collection;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\NonEmptyMap;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
 use Psalm\Type\Union;
@@ -36,12 +35,9 @@ final class RefineTargetExtractor
     private static function whenFilteringMapKeys(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($templates, $method, $class) {
+            yield Option::some($templates)->filter(fn($ts) => 2 === count($ts));
             yield Option::some($method)->filter(fn($m) => $m === strtolower('filterKeys'));
-            yield Option::some($class)
-                ->filter(function ($c) {
-                    return is_a($c, Map::class, true)
-                        || is_a($c, NonEmptyMap::class, true);
-                });
+            yield Option::some($class)->filter(fn($c) => is_a($c, Map::class, true));
 
             return new RefinementTarget(
                 target: $templates[0],
@@ -63,12 +59,9 @@ final class RefineTargetExtractor
     private static function whenFilteringMapValues(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($templates, $method, $class) {
+            yield Option::some($templates)->filter(fn($ts) => 2 === count($ts));
             yield Option::some($method)->filter(fn($m) => $m === strtolower('filterValues'));
-            yield Option::some($class)
-                ->filter(function ($c) {
-                    return is_a($c, Map::class, true)
-                        || is_a($c, NonEmptyMap::class, true);
-                });
+            yield Option::some($class)->filter(fn($c) => is_a($c, Map::class, true));
 
             return new RefinementTarget(
                 target: $templates[1],
@@ -92,6 +85,7 @@ final class RefineTargetExtractor
     private static function whenFilteringStreamKeys(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($templates, $method, $class) {
+            yield Option::some($templates)->filter(fn($ts) => 1 === count($ts));
             yield Option::some($class)->filter(fn($c) => is_a($c, Stream::class, true));
             yield Option::some($method)->filter(fn($m) => $m === strtolower('filterKeys'));
 
@@ -128,6 +122,7 @@ final class RefineTargetExtractor
     private static function whenFilteringStreamValues(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($templates, $method, $class) {
+            yield Option::some($templates)->filter(fn($ts) => 1 === count($ts));
             yield Option::some($class)->filter(fn($c) => is_a($c, Stream::class, true));
             yield Option::some($method)->filter(fn($m) => $m === strtolower('filterValues'));
 
@@ -164,7 +159,11 @@ final class RefineTargetExtractor
     private static function whenSimpleFiltering(string $class, string $method, array $templates): Option
     {
         return Option::do(function () use ($class, $templates, $method) {
-            yield Option::some($class)->filter(fn($c) => is_a($c, Collection::class, true));
+            yield Option::some($templates)->filter(fn($ts) => 1 === count($ts));
+            yield Option::some($class)->filter(function ($c) {
+                return is_a($c, Collection::class, true)
+                    || is_a($c, Stream::class, true);
+            });
             yield Option::some($method)->filter(fn($m) => in_array($m, [
                 'filter',
                 strtolower('filterNotNull'),

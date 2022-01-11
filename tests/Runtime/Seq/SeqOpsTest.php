@@ -450,16 +450,22 @@ final class SeqOpsTest extends TestCase
     public function testGroupBy(Seq $seq, Foo $f1, Foo $f2, Foo $f3, Foo $f4): void
     {
         $res1 = $seq->groupBy(fn(Foo $foo) => $foo)
-            ->map(fn($entry) => $entry->value->toList())
+            ->stream()
+            ->mapValues(fn(Seq $grouped) => $grouped->toList())
+            ->compile()
             ->toList();
 
         $res2 = $seq->groupBy(fn(Foo $foo) => $foo->a)
-            ->map(fn($entry) => $entry->value->toList())
+            ->stream()
+            ->mapValues(fn(Seq $grouped) => $grouped->toList())
+            ->compile()
             ->toList();
 
         $res3 = $seq->map(fn(Foo $foo) => $foo->a)
             ->groupBy(fn(int $a) => $a)
-            ->map(fn($entry) => $entry->value->toList())
+            ->stream()
+            ->mapValues(fn(Seq $grouped) => $grouped->toList())
+            ->compile()
             ->toList();
 
         $this->assertEquals([[$f1, [$f1, $f3]], [$f2, [$f2]], [$f4, [$f4]]], $res1);

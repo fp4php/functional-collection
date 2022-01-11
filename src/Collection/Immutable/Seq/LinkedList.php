@@ -119,6 +119,15 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
+     * @return Stream<TValue>
+     */
+    public function stream(): Stream
+    {
+        return Stream::emits($this->getIterator());
+    }
+
+    /**
+     * @inheritDoc
      * @return list<TValue>
      */
     public function toList(): array

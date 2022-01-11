@@ -79,6 +79,15 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
+     * @return Stream<TValue>
+     */
+    public function stream(): Stream
+    {
+        return Stream::emits($this->getIterator());
+    }
+
+    /**
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -357,7 +366,6 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-pure
      */
     public function isEmpty(): bool
     {
@@ -366,7 +374,6 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-pure
      */
     public function isNonEmpty(): bool
     {

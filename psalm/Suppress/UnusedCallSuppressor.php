@@ -16,10 +16,6 @@ use Psalm\StatementsSource;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Union;
 use Whsv26\Functional\Collection\Immutable\Map\HashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyLinkedList;
-use Whsv26\Functional\Collection\Immutable\NonEmptySet\NonEmptyHashSet;
 use Whsv26\Functional\Collection\Immutable\Seq\ArrayList;
 use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
 use Whsv26\Functional\Collection\Immutable\Set\HashSet;
@@ -48,10 +44,6 @@ final class UnusedCallSuppressor implements AfterExpressionAnalysisInterface
                 ArrayList::class.'::tap',
                 HashSet::class.'::tap',
                 HashMap::class.'::tap',
-                NonEmptyLinkedList::class.'::tap',
-                NonEmptyArrayList::class.'::tap',
-                NonEmptyHashSet::class.'::tap',
-                NonEmptyHashMap::class.'::tap',
                 Stream::class.'::tap',
                 Stream::class.'::toFile',
                 Stream::class.'::drain',

@@ -21,17 +21,9 @@ final class SeqTest extends TestCase
     /**
      * @dataProvider provideTestCastsData
      */
-    public function testCasts(Seq $seq, Seq $emptySeq): void
+    public function testCasts(Seq $seq): void
     {
         $this->assertEquals([1, 2, 3], $seq->toList());
-        $this->assertEquals([1, 2, 3], $seq->toLinkedList()->toList());
-        $this->assertEquals([1, 2, 3], $seq->toLinkedList()->toList());
-        $this->assertEquals([1, 2, 3], $seq->toArrayList()->toList());
-        $this->assertEquals([1, 2, 3], $seq->toNonEmptyArrayList()->getUnsafe()->tononEmptyList());
-        $this->assertNull($emptySeq->toNonEmptyArrayList()->get());
-        $this->assertEquals([1, 2, 3], $seq->toArrayList()->toList());
-        $this->assertEquals([1, 2, 3], $seq->toHashSet()->toList());
-        $this->assertEquals([[1, 1], [2, 2], [3, 3]], $seq->toHashMap(fn($e) => [$e, $e])->toList());
     }
 
     /**

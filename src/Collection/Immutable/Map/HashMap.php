@@ -207,4 +207,18 @@ final class HashMap implements Map
 
         return Option::fromNullable($elem);
     }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn of array-key
+     * @template TValueIn
+     * @psalm-if-this-is HashMap<TKeyIn, TValueIn>
+     * @psalm-return array<TKeyIn, TValueIn>
+     */
+    public function toArray(): array
+    {
+        return $this->stream()
+            ->compile()
+            ->toArray();
+    }
 }

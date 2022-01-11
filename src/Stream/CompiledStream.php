@@ -293,39 +293,11 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
 
     /**
      * @inheritDoc
-     * @return Option<NonEmptyLinkedList<TValue>>
-     */
-    public function toNonEmptyLinkedList(): Option
-    {
-        $linkedList = $this->toLinkedList();
-
-        return Option::when(
-            $linkedList->isNonEmpty(),
-            fn() => new NonEmptyLinkedList($linkedList->head(), $linkedList->tail())
-        );
-    }
-
-    /**
-     * @inheritDoc
      * @return ArrayList<TValue>
      */
     public function toArrayList(): ArrayList
     {
         return $this->leaf(ArrayList::collect($this->emitter));
-    }
-
-    /**
-     * @inheritDoc
-     * @return Option<NonEmptyArrayList<TValue>>
-     */
-    public function toNonEmptyArrayList(): Option
-    {
-        $arrayList = $this->leaf(ArrayList::collect($this->emitter));
-
-        return Option::unless(
-            $arrayList->isEmpty(),
-            fn() => new NonEmptyArrayList($arrayList)
-        );
     }
 
     /**
@@ -339,20 +311,6 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
 
     /**
      * @inheritDoc
-     * @return Option<NonEmptyHashSet<TValue>>
-     */
-    public function toNonEmptyHashSet(): Option
-    {
-        $hashSet = $this->toHashSet();
-
-        return Option::unless(
-            $hashSet->isEmpty(),
-            fn() => new NonEmptyHashSet($hashSet)
-        );
-    }
-
-    /**
-     * @inheritDoc
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
@@ -361,23 +319,6 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     public function toHashMap(): HashMap
     {
         return $this->leaf(HashMap::collectPairs($this->emitter));
-    }
-
-    /**
-     * @inheritDoc
-     * @template TKeyIn
-     * @template TValueIn
-     * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
-     * @psalm-return Option<NonEmptyHashMap<TKeyIn, TValueIn>>
-     */
-    public function toNonEmptyHashMap(): Option
-    {
-        $hashMap = $this->toHashMap();
-
-        return Option::unless(
-            $hashMap->isEmpty(),
-            fn() => new NonEmptyHashMap($hashMap)
-        );
     }
 
     /**

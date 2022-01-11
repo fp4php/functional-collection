@@ -15,26 +15,6 @@ final class SetTest extends TestCase
             [1, 2, 3],
             HashSet::collect([1, 2, 3, 3])->toList(),
         );
-
-        $this->assertEquals(
-            [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toLinkedList()->toList(),
-        );
-
-        $this->assertEquals(
-            [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toArrayList()->toList(),
-        );
-
-        $this->assertEquals(
-            [1, 2, 3],
-            HashSet::collect([1, 2, 3, 3])->toHashSet()->toList(),
-        );
-
-        $this->assertEquals(
-            [[1, 1], [2, 2], [3, 3]],
-            HashSet::collect([1, 2, 3])->toHashMap(fn($e) => [$e, $e])->toList(),
-        );
     }
 
     public function testCount(): void

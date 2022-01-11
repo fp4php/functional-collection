@@ -11,13 +11,6 @@ use Whsv26\Functional\Collection\Immutable\Map\HashMap;
 use Whsv26\Functional\Collection\Immutable\Set\HashSet;
 use Whsv26\Functional\Collection\Immutable\Seq\LinkedList;
 use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyArrayList;
-use Whsv26\Functional\Collection\Immutable\NonEmptyMap\NonEmptyHashMap;
-use Whsv26\Functional\Collection\Immutable\NonEmptySet\NonEmptyHashSet;
-use Whsv26\Functional\Collection\Immutable\NonEmptySeq\NonEmptyLinkedList;
-use Whsv26\Functional\Collection\NonEmptyMap;
-use Whsv26\Functional\Collection\NonEmptySeq;
-use Whsv26\Functional\Collection\NonEmptySet;
 use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Collection\Set;
 use Whsv26\Functional\Core\Option;
@@ -38,19 +31,12 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
     {
         return [
             HashMap::class,
-            NonEmptyHashMap::class,
             LinkedList::class,
-            NonEmptyLinkedList::class,
             ArrayList::class,
-            NonEmptyArrayList::class,
             HashSet::class,
-            NonEmptyHashSet::class,
             Seq::class,
-            NonEmptySeq::class,
             Set::class,
-            NonEmptySet::class,
             Map::class,
-            NonEmptyMap::class,
             Stream::class,
         ];
     }
