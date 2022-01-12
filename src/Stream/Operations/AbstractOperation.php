@@ -15,33 +15,20 @@ use Generator;
 class AbstractOperation
 {
     /**
-     * @var Generator<int, TValue>
+     * @param Generator<int, TValue> $gen
      */
-    protected Generator $gen;
-
-    /**
-     *
-     * @param iterable<TValue> $gen
-     */
-    final public function __construct(iterable $gen)
-    {
-        $this->gen = $gen instanceof Generator
-            ? $gen
-            : (function () use ($gen) {
-                foreach ($gen as $value) {
-                    yield $value;
-                }
-            })();
-    }
+    final public function __construct(
+        protected Generator $gen
+    ) { }
 
     /**
      * @psalm-pure
      * @template TKeyIn
      * @template TValueIn
-     * @param iterable<int, TValueIn> $input
+     * @param Generator<int, TValueIn> $input
      * @return static<TValueIn>
      */
-    public static function of(iterable $input): static
+    public static function of(Generator $input): static
     {
         return new static($input);
     }

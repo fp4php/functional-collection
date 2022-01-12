@@ -232,7 +232,7 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
      */
     public function drain(): void
     {
-        foreach ($this->emitter as $ignored) { }
+        foreach ($this->leaf($this->emitter) as $ignored) { }
     }
 
     /**

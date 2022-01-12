@@ -11,19 +11,19 @@ use Generator;
  * @psalm-immutable
  * @extends AbstractOperation<TValue>
  */
-class MapKeysOperation extends AbstractOperation
+class MapOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @template TKeyOut
-     * @param callable(TValue): TKeyOut $f
-     * @return Generator<TKeyOut, TValue>
+     * @template TValueIn
+     * @param callable(TValue): TValueIn $f
+     * @return Generator<TValueIn>
      */
     public function __invoke(callable $f): Generator
     {
         return (function () use ($f) {
             foreach ($this->gen as $value) {
-                yield $f($value) => $value;
+                yield $f($value);
             }
         })();
     }

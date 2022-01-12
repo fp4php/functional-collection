@@ -15,28 +15,19 @@ class ChunksOperation extends AbstractOperation
 {
     /**
      * @psalm-pure
-     * @psalm-template TPreserve of bool
-     * @psalm-param TPreserve $preserveKeys
-     * @psalm-param positive-int $size
-     * @psalm-return (TPreserve is true
-     *     ? Generator<int, non-empty-array<int, TValue>>
-     *     : Generator<int, non-empty-list<TValue>>
-     * )
+     * @param positive-int $size
+     * @return Generator<int, non-empty-list<TValue>>
      */
-    public function __invoke(int $size, bool $preserveKeys = false): Generator
+    public function __invoke(int $size): Generator
     {
-        return (function () use ($preserveKeys, $size) {
+        return (function () use ($size) {
             $chunk = [];
             $i = 0;
 
-            foreach ($this->gen as $key => $value) {
+            foreach ($this->gen as $value) {
                 $i++;
 
-                if ($preserveKeys) {
-                    $chunk[$key] = $value;
-                } else {
-                    $chunk[] = $value;
-                }
+                $chunk[] = $value;
 
                 if (0 === $i % $size) {
                     yield $chunk;

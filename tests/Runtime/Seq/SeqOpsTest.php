@@ -75,11 +75,11 @@ final class SeqOpsTest extends TestCase
     {
         yield ArrayList::class => [
             ArrayList::collect([new Foo(1), new Foo(1)]),
-            ArrayList::collect([new Bar(true), new Foo(1)]),
+            ArrayList::collect([new Bar(true), new SubBar(1)]),
         ];
         yield LinkedList::class => [
             LinkedList::collect([new Foo(1), new Foo(1)]),
-            LinkedList::collect([new Bar(true), new Foo(1)]),
+            LinkedList::collect([new Bar(true), new SubBar(1)]),
         ];
     }
 
@@ -90,6 +90,8 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertTrue($seq1->everyOf(Foo::class));
         $this->assertFalse($seq2->everyOf(Foo::class));
+        $this->assertTrue($seq2->everyOf(Bar::class));
+        $this->assertFalse($seq2->everyOf(Bar::class, true));
     }
 
     public function provideTestExistsData(): Generator
@@ -136,8 +138,8 @@ final class SeqOpsTest extends TestCase
 
     public function provideTestExistsOfData(): Generator
     {
-        yield ArrayList::class => [ArrayList::collect([1, new Foo(1)])];
-        yield LinkedList::class => [LinkedList::collect([1, new Foo(1)])];
+        yield ArrayList::class => [ArrayList::collect([1, new SubBar(1)])];
+        yield LinkedList::class => [LinkedList::collect([1, new SubBar(1)])];
     }
 
     /**
@@ -145,8 +147,8 @@ final class SeqOpsTest extends TestCase
      */
     public function testExistsOf(Seq $seq): void
     {
-        $this->assertTrue($seq->existsOf(Foo::class));
-        $this->assertFalse($seq->existsOf(Bar::class));
+        $this->assertTrue($seq->existsOf(Bar::class));
+        $this->assertFalse($seq->existsOf(Bar::class, true));
     }
 
     public function provideTestFilterData(): Generator

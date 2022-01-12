@@ -417,4 +417,30 @@ interface StreamChainableOps
      * @psalm-return self<TValue>
      */
     public function unique(callable $callback): self;
+
+    /**
+     * ```php
+     * >>> Stream::emits([['a', 1], ['b', 2]])->keys()->compile()->toList();
+     * => ['a', 'b']
+     * ```
+     *
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     * @psalm-return self<TKeyIn>
+     */
+    public function keys(): self;
+
+    /**
+     * ```php
+     * >>> Stream::emits([['a', 1], ['b', 2]])->values()->compile()->toList();
+     * => [1, 2]
+     * ```
+     *
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
+     * @psalm-return self<TValueIn>
+     */
+    public function values(): self;
 }

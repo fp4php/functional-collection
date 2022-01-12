@@ -125,6 +125,26 @@ final class StreamOpsTest extends TestCase
             ['2', '3', '4'],
             Stream::emits([1, 2, 3])->map(fn($e) => (string) ($e + 1))->compile()->toList()
         );
+
+        $this->assertEquals(
+            ['_b'],
+            Stream::emits([['a', 0], ['b', 1]])
+                ->filterKeys(fn($key) => $key !== 'a')
+                ->mapKeys(fn($key) => '_' . $key)
+                ->keys()
+                ->compile()
+                ->toList()
+        );
+
+        $this->assertEquals(
+            [2],
+            Stream::emits([['a', 0], ['b', 1]])
+                ->mapValues(fn($val) => $val + 1)
+                ->filterValues(fn($val) => $val > 1)
+                ->values()
+                ->compile()
+                ->toList()
+        );
     }
 
     public function testTap(): void

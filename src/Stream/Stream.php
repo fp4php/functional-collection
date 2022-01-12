@@ -24,7 +24,7 @@ use Whsv26\Functional\Stream\Operations\GroupAdjacentByOperationOperation;
 use Whsv26\Functional\Stream\Operations\GroupByOperation;
 use Whsv26\Functional\Stream\Operations\InterleaveOperation;
 use Whsv26\Functional\Stream\Operations\IntersperseOperation;
-use Whsv26\Functional\Stream\Operations\MapValuesOperation;
+use Whsv26\Functional\Stream\Operations\MapOperation;
 use Whsv26\Functional\Stream\Operations\PrependedAllOperation;
 use Whsv26\Functional\Stream\Operations\PrependedOperation;
 use Whsv26\Functional\Stream\Operations\RepeatNOperation;
@@ -165,7 +165,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      */
     public function map(callable $callback): self
     {
-        return $this->fork(MapValuesOperation::of($this->emitter)($callback));
+        return $this->fork(MapOperation::of($this->emitter)($callback));
     }
 
     /**
@@ -179,7 +179,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      */
     public function mapKeys(callable $callback): self
     {
-        $mapper = MapValuesOperation::of($this->emitter);
+        $mapper = MapOperation::of($this->emitter);
 
         return $this->fork($mapper(function ($pair) use ($callback) {
             return [$callback($pair[0]), $pair[1]];
@@ -197,7 +197,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      */
     public function mapValues(callable $callback): self
     {
-        $mapper = MapValuesOperation::of($this->emitter);
+        $mapper = MapOperation::of($this->emitter);
 
         return $this->fork($mapper(function ($pair) use ($callback) {
             return [$pair[0], $callback($pair[1])];
@@ -463,7 +463,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
     {
         $chunks = ChunksOperation::of($this->emitter)($size);
 
-        return $this->fork(MapValuesOperation::of($chunks)(function (array $chunk) {
+        return $this->fork(MapOperation::of($chunks)(function (array $chunk) {
             return new ArrayList($chunk);
         }));
     }
@@ -478,7 +478,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
     {
         $adjacent = GroupAdjacentByOperationOperation::of($this->emitter)($discriminator);
 
-        return $this->fork(MapValuesOperation::of($adjacent)(function (array $pair) {
+        return $this->fork(MapOperation::of($adjacent)(function (array $pair) {
             $pair[1] = new ArrayList($pair[1]);
             return $pair;
         }));
@@ -512,5 +512,31 @@ final class Stream implements StreamChainableOps, StreamEmitter
     public function unique(callable $callback): self
     {
         return $this->fork(UniqueOperation::of($this->emitter)($callback));
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-return self<TKeyIn>
+     * @psalm-suppress MixedArgumentTypeCoercion [Psalm bug]
+     */
+    public function keys(): self
+    {
+        return $this->map(fn($pair) => $pair[0]);
+    }
+
+    /**
+     * @inheritDoc
+     * @template TKeyIn
+     * @template TValueIn
+     * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
+     * @psalm-return self<TValueIn>
+     * @psalm-suppress MixedArgumentTypeCoercion [Psalm bug]
+     */
+    public function values(): self
+    {
+        return $this->map(fn($pair) => $pair[1]);
     }
 }
