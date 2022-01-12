@@ -9,38 +9,26 @@
 ### Composer 
 
 ```console
-$ composer require whsv26/functional-collection
+composer require whsv26/functional-collection
 ```
 
 ### Enable psalm plugin (optional)
 To improve type inference
 
 ```console
-$ vendor/bin/psalm-plugin enable Whsv26\\Functional\\Collection\\Psalm\\Plugin
+vendor/bin/psalm-plugin enable Whsv26\\Functional\\Collection\\Psalm\\Plugin
 ```
 
 # Collections
 ## Hierarchy
 
-- ### empty collections
+```php
+Collection<TV> -> Seq<TV>     -> LinkedList<TV>
+Collection<TV> -> Seq<TV>     -> ArrayList<TV>
+Collection<TV> -> Set<TV>     -> HashSet<TV>
+Collection<TV> -> Map<TK, TV> -> HashMap<TK, TV>
+```
 
-      EmptyCollection<TV> -> Seq<TV> -> LinkedList<TV>
-      
-      EmptyCollection<TV> -> Seq<TV> -> ArrayList<TV>
-      
-      EmptyCollection<TV> -> Set<TV> -> HashSet<TV>
-      
-      EmptyCollection<TV> -> Map<TK, TV> -> HashMap<TK, TV>
-
-- ### non-empty collections
-
-      NonEmptyCollection<TV> -> NonEmptySeq<TV> -> NonEmptyLinkedList<TV>
-      
-      NonEmptyCollection<TV> -> NonEmptySeq<TV> -> NonEmptyArrayList<TV>
-      
-      NonEmptyCollection<TV> -> NonEmptySet<TV> -> NonEmptyHashSet<TV>
-      
-      NonEmptyCollection<TV> -> NonEmptyMap<TK, TV> -> NonEmptyHashMap<TK, TV>
 
 ## ArrayList
 
@@ -111,18 +99,12 @@ class Foo implements HashContract
     }
 }
 
-$collection = HashMap::collectPairs([
+$hashMap = HashMap::collectPairs([
     [new Foo(1), 1], [new Foo(2), 2],
     [new Foo(3), 3], [new Foo(4), 4]
 ]);
 
-$collection(new Foo(2))->getOrElse(0); // 2
-
-$collection
-    ->mapValues(fn(Entry $entry) => $entry->value + 1)
-    ->filter(fn(Entry $entry) => $entry->value > 2)
-    ->mapKeys(fn(Entry $entry) => $entry->key->a)
-    ->fold(0, fn(int $acc, Entry $entry) => $acc + $entry->value); // 3+4+5=12 
+$hashMap(new Foo(2))->getOrElse(0); // 2
 ```
 
 ## HashSet
@@ -156,26 +138,25 @@ class Foo implements HashContract
     }
 }
 
-$collection = HashSet::collect([
+$set = HashSet::collect([
     new Foo(1), new Foo(2), new Foo(2), 
     new Foo(3), new Foo(3), new Foo(4),
 ]);
 
-$collection
-    ->map(fn(Foo $elem) => $elem->a)
+$set->map(fn(Foo $elem) => $elem->a)
     ->filter(fn(int $elem) => $elem > 1)
-    ->reduce(fn($acc, $elem) => $acc + $elem)
+    ->reduce(fn($acc, $cur) => $acc + $cur)
     ->getOrElse(0); // 9
 
 /**
  * Check if set contains given element
  */ 
-$collection(new Foo(2)); // true
+$set(new Foo(2)); // true
 
 /**
  * Check if one set is contained in another set 
  */
-$collection->subsetOf(HashSet::collect([
+$set->subsetOf(HashSet::collect([
     new Foo(1), new Foo(2), new Foo(3), 
     new Foo(4), new Foo(5), new Foo(6),
 ])); // true
@@ -214,140 +195,6 @@ HashSet::collect([$developerA, $developerB, $developerC])
     ->tap(fn(Ceo $ceo) => print_r($ceo->name . PHP_EOL)); // CEO. Not CEOCEOCEO
 ```
 
-## NonEmptyArrayList
-
-`NonEmptySeq<TV>` interface implementation.
-
-Collection with O(1) `NonEmptySeq::at()` and `NonEmptySeq::__invoke()`
-operations.
-
-``` php
-$collection = NonEmptyArrayList::collect([
-    new Foo(1), new Foo(2) 
-    new Foo(3), new Foo(4),
-]);
-
-$collection
-    ->map(fn(Foo $elem) => $elem->a)
-    ->reduce(fn($acc, $elem) => $acc + $elem); // 10
-```
-
-## NonEmptyLinkedList
-
-`NonEmptySeq<TV>` interface implementation.
-
-Collection with O(1) prepend operation.
-
-``` php
-$collection = NonEmptyLinkedList::collect([
-    new Foo(1), new Foo(2) 
-    new Foo(3), new Foo(4),
-]);
-
-$collection
-    ->map(fn(Foo $elem) => $elem->a)
-    ->reduce(fn($acc, $elem) => $acc + $elem); // 10
-```
-
-## NonEmptyHashMap
-
-`NonEmptyMap<TK, TV>` interface implementation.
-
-Key-value storage. It's possible to store objects as keys.
-
-Object keys comparison by default uses `spl_object_hash` function. If
-you want to override default comparison behaviour then you need to
-implement HashContract interface for your classes which objects will be
-used as keys in HashMap.
-
-``` php
-class Foo implements HashContract
-{
-    public function __construct(public int $a, public bool $b = true)
-    {
-    }
-
-    public function equals(mixed $that): bool
-    {
-        return $that instanceof self
-            && $this->a === $that->a
-            && $this->b === $that->b;
-    }
-
-    public function hashCode(): string
-    {
-        return md5(implode(',', [$this->a, $this->b]));
-    }
-}
-
-$collection = NonEmptyHashMap::collectPairsNonEmpty([
-    [new Foo(1), 1], [new Foo(2), 2],
-    [new Foo(3), 3], [new Foo(4), 4]
-]);
-
-$collection(new Foo(2))->getOrElse(0); // 2
-
-$collection
-    ->mapValues(fn(Entry $entry) => $entry->value + 1)
-    ->mapKeys(fn(Entry $entry) => $entry->key->a)
-    ->toArray(); // [[1, 2], [2, 3], [3, 4], [4, 5]]
-```
-
-## NonEmptyHashSet
-
-`NonEmptySet<TV>` interface implementation.
-
-Collection of unique elements.
-
-Object comparison by default uses spl\_object\_hash function. If you
-want to override default comparison behaviour then you need to implement
-HashContract interface for your classes which objects will be used as
-elements in HashSet.
-
-``` php
-class Foo implements HashContract
-{
-    public function __construct(public int $a, public bool $b = true)
-    {
-    }
-
-    public function equals(mixed $that): bool
-    {
-        return $that instanceof self
-            && $this->a === $that->a
-            && $this->b === $that->b;
-    }
-
-    public function hashCode(): string
-    {
-        return md5(implode(',', [$this->a, $this->b]));
-    }
-}
-
-$collection = NonEmptyHashSet::collect([
-    new Foo(1), new Foo(2), new Foo(2), 
-    new Foo(3), new Foo(3), new Foo(4),
-]);
-
-$collection
-    ->map(fn(Foo $elem) => $elem->a)
-    ->reduce(fn($acc, $elem) => $acc + $elem); // 10
-    
-/**
- * Check if set contains given element 
- */
-$collection(new Foo(2)); // true
-
-/**
- * Check if one set is contained in another set 
- */
-$collection->subsetOf(NonEmptyHashSet::collect([
-    new Foo(1), new Foo(2), new Foo(3), 
-    new Foo(4), new Foo(5), new Foo(6),
-])); // true
-```
-
-
 
 # Streams
 
@@ -357,7 +204,7 @@ Streams are based on generators. They are immutable generator object
 wrappers.
 
 Their operations are lazy and will be applied only once when stream
-terminal operation like `toArray` will be called.
+terminal operation like `toList` will be called after stream compilation.
 
 Every non-terminal stream operation will produce new stream fork. No
 more than one fork can be made from stream object.
@@ -370,7 +217,8 @@ Stream::emit(1)
     ->repeat() // [1, 1, ...] infinite stream
     ->map(fn(int $i) => $i + 1) // [2, 2, ...] infinite stream
     ->take(5) // [2, 2, 2, 2, 2]
-    ->toArray(); // [2, 2, 2, 2, 2]
+    ->compile()
+    ->toList(); // [2, 2, 2, 2, 2]
 ```
 
 ``` php
@@ -382,6 +230,7 @@ Stream::infinite()
         echo memory_get_usage(true) . PHP_EOL; 
     })
     ->take(50000) // make infinite stream finite
+    ->compile()
     ->fold('', fn(string $acc, $elem) => $acc . $elem); // call terminal operation to run stream
 ```
 
@@ -397,6 +246,7 @@ Stream::emits([0, 2])
     ->repeatN(3) // [0, 2, 0, 2, 0, 2]
     ->filterMap(fn(int $i) => safeDiv($i, $i))  // [1, 1, 1]
     ->take(9999) // [1, 1, 1]
+    ->compile()
     ->toFile('/dev/null');
 ```
 
@@ -409,13 +259,8 @@ Stream::emits([0, 2])
 Stream::emits([1, 2, 3])
     ->interleave(Stream::emits([4, 5, 6, 7])) // [1, 4, 2, 5, 3, 6]
     ->intersperse('+') // [1, '+', 4, '+', 2, '+', 5, '+', 3, '+', 6]
+    ->compile()
     ->fold('', fn(string $acc, $cur) => $acc . $cur) // '1+4+2+5+3+6'
-```
-
-``` php
-Stream::awakeEvery(5) // emit elapsed time every 5 seconds
-    ->map(fn(int $elapsed) => "$elapsed seconds elapsed from stream start")
-    ->lines() // print element every 5 seconds to stdout
 ```
 
 ## Bulk insert into multiple tables
@@ -431,6 +276,7 @@ Stream::emits($iterableDatabaseCursor)
     ->chunks(5000)
     // Insert chunks of 5000 rows to 'events_of_some_type' table
     ->tap(fn(Seq $chunk) => $client->insert('events_of_some_type', $chunk))
+    ->compile()
     ->drain();
 ```
 
@@ -450,6 +296,7 @@ function generateJsonLinesFile(string $path): void
         ->prepended(json_encode(["a", "b", "c"]))
         ->take(10000)
         ->intersperse(PHP_EOL)
+        ->compile()
         ->toFile($path);
 }
 
@@ -473,7 +320,8 @@ function parseJsonLinesFile(string $path): array
         ->map(fn(array $pair) => $pair[1])
         ->map(fn(Seq $line) => $line->mkString(sep: ''))
         ->filterMap(parseFoo(...))
-        ->toArray();
+        ->compile()
+        ->toList();
 }
 
 /**
