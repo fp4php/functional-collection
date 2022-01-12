@@ -6,8 +6,8 @@ namespace Whsv26\Functional\Stream;
 
 use Generator;
 use LogicException;
+use Whsv26\Functional\Collection\ArrayList;
 use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Core\Unit;
 use Whsv26\Functional\Stream\Operations\AppendedAllOperation;

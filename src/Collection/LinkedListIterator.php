@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Seq;
+namespace Whsv26\Functional\Collection;
 
 use Iterator;
 
 /**
  * @internal
- * @template TV
- * @implements Iterator<int, TV>
+ * @template TValue
+ * @implements Iterator<int, TValue>
  */
 final class LinkedListIterator implements Iterator
 {
@@ -18,7 +18,7 @@ final class LinkedListIterator implements Iterator
     private int $idx;
 
     /**
-     * @param LinkedList<TV> $list
+     * @param LinkedList<TValue> $list
      */
     public function __construct(LinkedList $list)
     {

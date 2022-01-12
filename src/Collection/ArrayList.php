@@ -2,28 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Seq;
+namespace Whsv26\Functional\Collection;
 
+use ArrayIterator;
 use Iterator;
-use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
 
 /**
- * O(1) {@see Seq::prepended} operation
- * Fast {@see Seq::reverse} operation
+ * O(1) {@see Seq::at()} and {@see Seq::__invoke} operations
  *
  * @psalm-immutable
  * @template-covariant TValue
  * @implements Seq<TValue>
  */
-abstract class LinkedList implements Seq
+final class ArrayList implements Seq
 {
     /**
      * @psalm-allow-private-mutation
      */
     private ?int $knownSize;
+
+    /**
+     * @param list<TValue> $elements
+     */
+    public function __construct(
+        public array $elements
+    ) {
+        $this->knownSize = null;
+    }
 
     /**
      * @inheritDoc
@@ -33,13 +40,13 @@ abstract class LinkedList implements Seq
      */
     public static function collect(iterable $source): self
     {
-        $buffer = new LinkedListBuffer();
+        $buffer = [];
 
         foreach ($source as $elem) {
-            $buffer->append($elem);
+            $buffer[] = $elem;
         }
 
-        return $buffer->toLinkedList();
+        return new self($buffer);
     }
 
     /**
@@ -50,7 +57,7 @@ abstract class LinkedList implements Seq
      */
     public static function singleton(mixed $val): self
     {
-        return new Cons($val, Nil::getInstance());
+        return new self([$val]);
     }
 
     /**
@@ -59,7 +66,7 @@ abstract class LinkedList implements Seq
      */
     public static function empty(): self
     {
-        return Nil::getInstance();
+        return new self([]);
     }
 
     /**
@@ -71,7 +78,7 @@ abstract class LinkedList implements Seq
     {
         return Stream::range($start, $stopExclusive, $by)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -79,7 +86,7 @@ abstract class LinkedList implements Seq
      */
     public function getIterator(): Iterator
     {
-        return new LinkedListIterator($this);
+        return new ArrayIterator($this->elements);
     }
 
     /**
@@ -88,7 +95,7 @@ abstract class LinkedList implements Seq
      */
     public function stream(): Stream
     {
-        return Stream::emits($this->getIterator());
+       return Stream::emits($this->getIterator());
     }
 
     /**
@@ -97,9 +104,56 @@ abstract class LinkedList implements Seq
      */
     public function toList(): array
     {
-        return Stream::emits($this->getIterator())
-            ->compile()
-            ->toList();
+        return $this->elements;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function count(): int
+    {
+        return $this->knownSize = $this->knownSize ?? count($this->elements);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function __invoke(int $index): Option
+    {
+        return $this->at($index);
+    }
+
+    /**
+     * O(1) time/space complexity
+     *
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function at(int $index): Option
+    {
+        return Option::fromNullable($this->elements[$index] ?? null);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function head(): Option
+    {
+        return Option::fromNullable($this->elements[0] ?? null);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return self<TValue>
+     */
+    public function tail(): self
+    {
+        $elements = $this->elements;
+        array_shift($elements);
+
+        return new self($elements);
     }
 
     /**
@@ -108,37 +162,7 @@ abstract class LinkedList implements Seq
      */
     public function reverse(): self
     {
-        $list = Nil::getInstance();
-
-        foreach ($this as $elem) {
-            $list = $list->prepended($elem);
-        }
-
-        return $list;
-    }
-
-    /**
-     * @psalm-assert-if-true Cons<TValue> $this
-     */
-    public function isCons(): bool
-    {
-        return $this instanceof Cons;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isEmpty(): bool
-    {
-        return !$this->isCons();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isNonEmpty(): bool
-    {
-        return $this->isCons();
+        return new self(array_reverse($this->elements));
     }
 
     /**
@@ -176,7 +200,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->compile()
             ->everyMap($callback)
-            ->map(fn(Stream $stream) => $stream->compile()->toLinkedList());
+            ->map(fn(Stream $stream) => $stream->compile()->toArrayList());
     }
 
     /**
@@ -245,6 +269,42 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
+     * @psalm-param callable(TValue): bool $predicate
+     * @psalm-return Option<TValue>
+     */
+    public function last(callable $predicate): Option
+    {
+        return $this->stream()
+            ->compile()
+            ->last($predicate);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function firstElement(): Option
+    {
+        return $this->head();
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function lastElement(): Option
+    {
+        if ($size = $this->knownSize) {
+            return Option::some($this->elements[$size - 1]);
+        }
+
+        return $this->stream()
+            ->compile()
+            ->lastElement();
+    }
+
+    /**
+     * @inheritDoc
      * @template TA
      * @psalm-param TA $init initial accumulator value
      * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
@@ -272,90 +332,6 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function head(): Option
-    {
-        return $this->isCons()
-            ? Option::some($this)->map(fn(Cons $cons) => $cons->head)
-            : Option::none();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return self<TValue>
-     */
-    public function tail(): self
-    {
-        return match (true) {
-            $this instanceof Cons => $this->tail,
-            $this instanceof Nil => $this,
-        };
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
-     */
-    public function last(callable $predicate): Option
-    {
-        return $this->stream()
-            ->compile()
-            ->last($predicate);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function firstElement(): Option
-    {
-        return $this->head();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function lastElement(): Option
-    {
-        return $this->stream()
-            ->compile()
-            ->lastElement();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function count(): int
-    {
-        return $this->knownSize = $this->knownSize
-            ?? $this->stream()->compile()->count();
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function __invoke(int $index): Option
-    {
-        return $this->at($index);
-    }
-
-    /**
-     * @inheritDoc
-     * @psalm-return Option<TValue>
-     */
-    public function at(int $index): Option
-    {
-        return $this->stream()
-            ->compile()
-            ->at($index);
-    }
-
-    /**
-     * @inheritDoc
      * @template TKO
      * @psalm-param callable(TValue): TKO $callback
      * @psalm-return Map<TKO, Seq<TValue>>
@@ -370,16 +346,30 @@ abstract class LinkedList implements Seq
 
     /**
      * @inheritDoc
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->elements);
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-assert-if-true non-empty-list<TValue> $this->elements
+     */
+    public function isNonEmpty(): bool
+    {
+        return !empty($this->elements);
+    }
+
+    /**
+     * @inheritDoc
      * @template TValueIn
      * @psalm-param callable(TValue): TValueIn $callback
      * @psalm-return self<TValueIn>
      */
     public function map(callable $callback): self
     {
-        return $this->stream()
-            ->map($callback)
-            ->compile()
-            ->toLinkedList();
+        return new self(array_map($callback, $this->elements));
     }
 
     /**
@@ -390,10 +380,10 @@ abstract class LinkedList implements Seq
      */
     public function appended(mixed $elem): self
     {
-        return $this->stream()
-            ->appended($elem)
-            ->compile()
-            ->toLinkedList();
+        $elements = $this->elements;
+        $elements[] = $elem;
+
+        return new self($elements);
     }
 
     /**
@@ -407,7 +397,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->appendedAll($suffix)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -418,7 +408,11 @@ abstract class LinkedList implements Seq
      */
     public function prepended(mixed $elem): self
     {
-        return new Cons($elem, $this);
+        $elements = $this->elements;
+
+        array_unshift($elements, $elem);
+
+        return new self($elements);
     }
 
     /**
@@ -432,7 +426,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->prependedAll($prefix)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -445,7 +439,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->filter($predicate)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -459,7 +453,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->filterMap($callback)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -471,7 +465,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->filterNotNull()
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -486,7 +480,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->filterOf($fqcn, $invariant)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -500,7 +494,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->flatMap($callback)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -513,7 +507,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->takeWhile($predicate)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -526,7 +520,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->dropWhile($predicate)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -535,10 +529,7 @@ abstract class LinkedList implements Seq
      */
     public function take(int $length): self
     {
-        return $this->stream()
-            ->take($length)
-            ->compile()
-            ->toLinkedList();
+        return new self(array_slice($this->elements, 0, $length));
     }
 
     /**
@@ -547,10 +538,7 @@ abstract class LinkedList implements Seq
      */
     public function drop(int $length): self
     {
-        return $this->stream()
-            ->drop($length)
-            ->compile()
-            ->toLinkedList();
+        return new self(array_slice($this->elements, $length));
     }
 
     /**
@@ -578,7 +566,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->unique($callback)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -588,10 +576,11 @@ abstract class LinkedList implements Seq
      */
     public function sorted(callable $cmp): self
     {
-        return $this->stream()
-            ->sorted($cmp)
-            ->compile()
-            ->toLinkedList();
+        $elements = $this->elements;
+
+        usort($elements, $cmp);
+
+        return new self($elements);
     }
 
     /**
@@ -605,7 +594,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->intersperse($separator)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**
@@ -619,7 +608,7 @@ abstract class LinkedList implements Seq
         return $this->stream()
             ->zip($that)
             ->compile()
-            ->toLinkedList();
+            ->toArrayList();
     }
 
     /**

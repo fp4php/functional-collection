@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Tests\Runtime\Seq;
 
 use PHPUnit\Framework\TestCase;
-use Whsv26\Functional\Collection\Seq\ArrayList;
-use Whsv26\Functional\Collection\Seq\LinkedList;
-use Whsv26\Functional\Collection\Seq\Nil;
+use Whsv26\Functional\Collection\ArrayList;
+use Whsv26\Functional\Collection\LinkedList;
+use Whsv26\Functional\Collection\Nil;
 
 final class SeqCollectorTest extends TestCase
 {

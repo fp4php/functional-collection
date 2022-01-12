@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Set;
+namespace Whsv26\Functional\Collection;
 
 use Iterator;
-use Whsv26\Functional\Collection\Map\HashMap;
-use Whsv26\Functional\Collection\Set;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
 

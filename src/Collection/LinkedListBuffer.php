@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Seq;
+namespace Whsv26\Functional\Collection;
 
 /**
  * Provides constant time append to list
  *
  * @internal
- * @template TV
+ * @template TValue
  */
 final class LinkedListBuffer
 {
     /**
-     * @var LinkedList<TV>
+     * @var LinkedList<TValue>
      */
     private LinkedList $first;
 
     /**
-     * @var null|Cons<TV>
+     * @var null|Cons<TValue>
      */
     private ?Cons $last;
 
@@ -30,8 +30,8 @@ final class LinkedListBuffer
     }
 
     /**
-     * @param TV $elem
-     * @return self<TV>
+     * @param TValue $elem
+     * @return self<TValue>
      */
     public function append(mixed $elem): self
     {
@@ -41,20 +41,19 @@ final class LinkedListBuffer
             $this->first = $appended;
         } elseif (isset($this->last)) {
             /**
-             * @dies-from-psalm-suppress
              * @psalm-suppress InaccessibleProperty
              */
             $this->last->tail = $appended;
         }
 
         $this->last = $appended;
-        $this->length += 1;
+        $this->length++;
 
         return $this;
     }
 
     /**
-     * @return LinkedList<TV>
+     * @return LinkedList<TValue>
      */
     public function toLinkedList(): LinkedList
     {

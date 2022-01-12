@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Generator;
-use Whsv26\Functional\Collection\Seq\ArrayList;
+use Whsv26\Functional\Collection\ArrayList;
 use Whsv26\Functional\Stream\AbstractStreamOperation;
 
 /**

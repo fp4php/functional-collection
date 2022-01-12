@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Tests\Runtime\Map;
 
 use PHPUnit\Framework\TestCase;
-use Whsv26\Functional\Collection\Map\HashMap;
+use Whsv26\Functional\Collection\HashMap;
 use Whsv26\Functional\Collection\Tests\Mock\Bar;
 use Whsv26\Functional\Collection\Tests\Mock\Foo;
 

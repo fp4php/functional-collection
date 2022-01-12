@@ -6,9 +6,9 @@ namespace Whsv26\Functional\Collection\Tests\Runtime\Seq;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Whsv26\Functional\Collection\ArrayList;
+use Whsv26\Functional\Collection\LinkedList;
 use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\Seq\ArrayList;
-use Whsv26\Functional\Collection\Seq\LinkedList;
 
 final class SeqTest extends TestCase
 {

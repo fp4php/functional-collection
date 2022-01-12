@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Map;
+namespace Whsv26\Functional\Collection;
 
 use Whsv26\Functional\Core\Option;
 

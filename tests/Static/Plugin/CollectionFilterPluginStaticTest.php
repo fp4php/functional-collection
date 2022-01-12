@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection\Tests\Static\Plugin;
 
+use Whsv26\Functional\Collection\ArrayList;
+use Whsv26\Functional\Collection\HashSet;
+use Whsv26\Functional\Collection\LinkedList;
 use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\Seq\ArrayList;
-use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Set;
-use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Stream\Stream;
 
 final class CollectionFilterPluginStaticTest

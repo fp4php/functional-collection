@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Collection\Tests\Runtime\Set;
 
 use PHPUnit\Framework\TestCase;
-use Whsv26\Functional\Collection\Set\HashSet;
+use Whsv26\Functional\Collection\HashSet;
 use Whsv26\Functional\Collection\Tests\Mock\Bar;
 use Whsv26\Functional\Collection\Tests\Mock\Foo;
 

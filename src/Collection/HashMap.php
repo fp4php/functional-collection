@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Collection\Map;
+namespace Whsv26\Functional\Collection;
 
 use Generator;
-use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Core\Option;
 use Whsv26\Functional\Stream\Stream;
 

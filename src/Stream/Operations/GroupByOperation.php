@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Generator;
-use Whsv26\Functional\Collection\Map\HashTable;
+use Whsv26\Functional\Collection\HashTable;
+use Whsv26\Functional\Collection\LinkedList;
+use Whsv26\Functional\Collection\Nil;
 use Whsv26\Functional\Collection\Seq;
-use Whsv26\Functional\Collection\Seq\LinkedList;
-use Whsv26\Functional\Collection\Seq\Nil;
 use Whsv26\Functional\Stream\AbstractStreamOperation;
 use Whsv26\Functional\Stream\Stream;
 
