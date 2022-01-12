@@ -108,6 +108,21 @@ interface StreamTerminalOps
     public function firstOf(string $fqcn, bool $invariant = false): Option;
 
     /**
+     * Find first element of given class
+     *
+     * ```php
+     * >>> Stream::emits([new Bar(1), new Foo(2), new Foo(3)])->compile()->lastOf(Foo::class)->get();
+     * => Foo(3)
+     * ```
+     *
+     * @psalm-template TValueIn
+     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
+     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @psalm-return Option<TValueIn>
+     */
+    public function lastOf(string $fqcn, bool $invariant = false): Option;
+
+    /**
      * Fold many elements into one
      *
      * ```php
@@ -233,6 +248,18 @@ interface StreamTerminalOps
      * @psalm-return Option<Stream<TValueOut>>
      */
     public function everyMap(callable $callback): Option;
+
+    /**
+     * Find element by its index (Starts from zero)
+     * Returns None if there is no such element
+     *
+     * ```php
+     * >>> Stream::emits([1, 2])->compile()->at(1)->get();
+     * => 2
+     * ```
+     * @psalm-return Option<TValue>
+     */
+    public function at(int $index): Option;
 
     /**
      * Count streamed elements

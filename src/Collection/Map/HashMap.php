@@ -8,7 +8,6 @@ use Generator;
 use Whsv26\Functional\Collection\Map;
 use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Core\Option;
-use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Stream;
 
 /**
@@ -110,7 +109,7 @@ final class HashMap implements Map
     public function count(): int
     {
         return $this->knownSize = $this->knownSize
-            ?? CountOperation::of($this->getIterator())();
+            ?? $this->stream()->compile()->count();
     }
 
     /**

@@ -21,6 +21,7 @@ use Whsv26\Functional\Stream\Operations\FilterOfOperation;
 use Whsv26\Functional\Stream\Operations\FilterOperation;
 use Whsv26\Functional\Stream\Operations\FlatMapOperation;
 use Whsv26\Functional\Stream\Operations\GroupAdjacentByOperationOperation;
+use Whsv26\Functional\Stream\Operations\GroupByOperation;
 use Whsv26\Functional\Stream\Operations\InterleaveOperation;
 use Whsv26\Functional\Stream\Operations\IntersperseOperation;
 use Whsv26\Functional\Stream\Operations\MapValuesOperation;
@@ -33,6 +34,7 @@ use Whsv26\Functional\Stream\Operations\TailOperation;
 use Whsv26\Functional\Stream\Operations\TakeOperation;
 use Whsv26\Functional\Stream\Operations\TakeWhileOperation;
 use Whsv26\Functional\Stream\Operations\TapOperation;
+use Whsv26\Functional\Stream\Operations\UniqueOperation;
 use Whsv26\Functional\Stream\Operations\ZipOperation;
 
 /**
@@ -60,13 +62,13 @@ final class Stream implements StreamChainableOps, StreamEmitter
      */
     private function __construct(iterable $emitter)
     {
-        $gen = function() use ($emitter): Generator {
-            foreach ($emitter as $elem) {
-                yield $elem;
-            }
-        };
-
-        $this->emitter = $gen();
+        $this->emitter = $emitter instanceof Generator
+            ? $emitter
+            : (function() use ($emitter): Generator {
+                foreach ($emitter as $elem) {
+                    yield $elem;
+                }
+            })();
     }
 
     /**
@@ -142,22 +144,24 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @psalm-template TKO
      * @psalm-template TValueIn
-     * @psalm-param Generator<TValueIn> $gen
-     * @psalm-return self<TValueIn>
+     * @param Generator<TValueIn> $gen
+     * @return self<TValueIn>
      */
     private function fork(Generator $gen): self
     {
-        $this->forked = !$this->forked
-            ? $this->forked = true
-            : throw new LogicException('multiple stream forks detected');
+        if (!$this->forked) {
+            $this->forked = true;
+        } else {
+            throw new LogicException('multiple stream forks detected');
+        }
 
         return self::emits($gen);
     }
 
     /**
      * @template TValueIn
-     * @psalm-param callable(TValue): TValueIn $callback
-     * @psalm-return self<TValueIn>
+     * @param callable(TValue): TValueIn $callback
+     * @return self<TValueIn>
      */
     public function map(callable $callback): self
     {
@@ -170,8 +174,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TValueIn
      * @template TKeyOut
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TKeyIn): TKeyOut $callback
-     * @psalm-return self<array{TKeyOut, TValueIn}>
+     * @param callable(TKeyIn): TKeyOut $callback
+     * @return self<array{TKeyOut, TValueIn}>
      */
     public function mapKeys(callable $callback): self
     {
@@ -188,8 +192,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TValueIn
      * @template TValueOut
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TValueIn): TValueOut $callback
-     * @psalm-return self<array{TKeyIn, TValueOut}>
+     * @param callable(TValueIn): TValueOut $callback
+     * @return self<array{TKeyIn, TValueOut}>
      */
     public function mapValues(callable $callback): self
     {
@@ -205,8 +209,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TKeyIn): bool $callback
-     * @psalm-return self<array{TKeyIn, TValueIn}>
+     * @param callable(TKeyIn): bool $callback
+     * @return self<array{TKeyIn, TValueIn}>
      */
     public function filterKeys(callable $callback): self
     {
@@ -222,8 +226,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TValueIn): bool $callback
-     * @psalm-return self<array{TKeyIn, TValueIn}>
+     * @param callable(TValueIn): bool $callback
+     * @return self<array{TKeyIn, TValueIn}>
      */
     public function filterValues(callable $callback): self
     {
@@ -237,8 +241,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return self<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return self<TValue|TValueIn>
      */
     public function appended(mixed $elem): self
     {
@@ -248,8 +252,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $suffix
-     * @psalm-return self<TValue|TValueIn>
+     * @param iterable<TValueIn> $suffix
+     * @return self<TValue|TValueIn>
      */
     public function appendedAll(iterable $suffix): self
     {
@@ -259,8 +263,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return self<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return self<TValue|TValueIn>
      */
     public function prepended(mixed $elem): self
     {
@@ -270,8 +274,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $prefix
-     * @psalm-return self<TValue|TValueIn>
+     * @param iterable<TValueIn> $prefix
+     * @return self<TValue|TValueIn>
      */
     public function prependedAll(iterable $prefix): self
     {
@@ -280,8 +284,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function filter(callable $predicate): self
     {
@@ -291,8 +295,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @psalm-template TValueIn
-     * @psalm-param callable(TValue): Option<TValueIn> $callback
-     * @psalm-return self<TValueIn>
+     * @param callable(TValue): Option<TValueIn> $callback
+     * @return self<TValueIn>
      */
     public function filterMap(callable $callback): self
     {
@@ -301,7 +305,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function filterNotNull(): self
     {
@@ -311,9 +315,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return self<TValueIn>
+     * @param class-string<TValueIn> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return self<TValueIn>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self
     {
@@ -323,8 +327,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @psalm-template TValueIn
-     * @psalm-param callable(TValue): iterable<TValueIn> $callback
-     * @psalm-return self<TValueIn>
+     * @param callable(TValue): iterable<TValueIn> $callback
+     * @return self<TValueIn>
      */
     public function flatMap(callable $callback): self
     {
@@ -333,7 +337,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tail(): self
     {
@@ -342,8 +346,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function takeWhile(callable $predicate): self
     {
@@ -352,8 +356,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function dropWhile(callable $predicate): self
     {
@@ -362,7 +366,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function take(int $length): self
     {
@@ -371,7 +375,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function drop(int $length): self
     {
@@ -381,7 +385,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
     /**
      * @inheritDoc
      * @param callable(TValue): void $callback
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tap(callable $callback): self
     {
@@ -410,7 +414,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @inheritDoc
      * @template TValueIn
      * @param TValueIn $separator
-     * @psalm-return self<TValue|TValueIn>
+     * @return self<TValue|TValueIn>
      */
     public function intersperse(mixed $separator): self
     {
@@ -419,7 +423,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function lines(): self
     {
@@ -481,12 +485,32 @@ final class Stream implements StreamChainableOps, StreamEmitter
     }
 
     /**
+     * @template TDiscriminator
+     * @param callable(TValue): TDiscriminator $discriminator
+     * @return self<array{TDiscriminator, Seq<TValue>}>
+     */
+    public function groupBy(callable $discriminator): self
+    {
+        return $this->fork(GroupByOperation::of($this->emitter)($discriminator));
+    }
+
+    /**
      * @inheritDoc
-     * @psalm-param callable(TValue, TValue): int $cmp
-     * @psalm-return self<TValue>
+     * @param callable(TValue, TValue): int $cmp
+     * @return self<TValue>
      */
     public function sorted(callable $cmp): self
     {
         return $this->fork(SortedOperation::of($this->emitter)($cmp));
+    }
+
+    /**
+     * @inheritDoc
+     * @param callable(TValue): array-key $callback
+     * @return self<TValue>
+     */
+    public function unique(callable $callback): self
+    {
+        return $this->fork(UniqueOperation::of($this->emitter)($callback));
     }
 }

@@ -12,6 +12,7 @@ use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Set\HashSet;
 use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\Operations\AtOperation;
 use Whsv26\Functional\Stream\Operations\CountOperation;
 use Whsv26\Functional\Stream\Operations\EveryMapOperation;
 use Whsv26\Functional\Stream\Operations\EveryOfOperation;
@@ -22,6 +23,7 @@ use Whsv26\Functional\Stream\Operations\FirstOfOperation;
 use Whsv26\Functional\Stream\Operations\FirstOperation;
 use Whsv26\Functional\Stream\Operations\FoldOperation;
 use Whsv26\Functional\Stream\Operations\HeadOperation;
+use Whsv26\Functional\Stream\Operations\LastOfOperation;
 use Whsv26\Functional\Stream\Operations\LastOperation;
 use Whsv26\Functional\Stream\Operations\MkStringOperation;
 use Whsv26\Functional\Stream\Operations\ReduceOperation;
@@ -143,6 +145,18 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     public function firstOf(string $fqcn, bool $invariant = false): Option
     {
         return $this->leaf(FirstOfOperation::of($this->emitter)($fqcn, $invariant));
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-template TValueOut
+     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
+     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @psalm-return Option<TValueOut>
+     */
+    public function lastOf(string $fqcn, bool $invariant = false): Option
+    {
+        return $this->leaf(LastOfOperation::of($this->emitter)($fqcn, $invariant));
     }
 
     /**
@@ -328,6 +342,15 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
 
     /**
      * @inheritDoc
+     * @return Generator<TValue>
+     */
+    public function toGenerator(): Generator
+    {
+        return $this->leaf($this->emitter);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function toFile(string $path, bool $append = false): void
     {
@@ -351,5 +374,14 @@ final class CompiledStream implements StreamTerminalOps, StreamCastableOps
     public function everyMap(callable $callback): Option
     {
         return $this->leaf(EveryMapOperation::of($this->emitter)($callback));
+    }
+
+    /**
+     * @inheritDoc
+     * @psalm-return Option<TValue>
+     */
+    public function at(int $index): Option
+    {
+        return $this->leaf(AtOperation::of($this->emitter)($index));
     }
 }

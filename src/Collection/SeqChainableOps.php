@@ -190,8 +190,7 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @experimental
-     * @psalm-param callable(TValue): (int|string) $callback returns element unique id
+     * @psalm-param callable(TValue): array-key $callback returns element unique id
      * @psalm-return Seq<TValue>
      */
     public function unique(callable $callback): Seq;

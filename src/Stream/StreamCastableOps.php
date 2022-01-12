@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream;
 
+use Generator;
 use Whsv26\Functional\Collection\Map\HashMap;
 use Whsv26\Functional\Collection\Seq\ArrayList;
 use Whsv26\Functional\Collection\Seq\LinkedList;
@@ -112,6 +113,17 @@ interface StreamCastableOps
      * @psalm-return HashMap<TKeyIn, TValueIn>
      */
     public function toHashMap(): HashMap;
+
+    /**
+     * ```php
+     * >>> $gen = Stream::emits([1, 2, 2])->compile()->toGenerator();
+     * >>> Stream::emits($gen)->compile()->toList();
+     * => [1, 2, 2]
+     * ```
+     *
+     * @return Generator<TValue>
+     */
+    public function toGenerator(): Generator;
 
     /**
      * @param string $path file path

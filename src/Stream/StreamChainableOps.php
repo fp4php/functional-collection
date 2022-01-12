@@ -332,7 +332,7 @@ interface StreamChainableOps
      *
      * @template TValueIn
      * @param iterable<TValueIn> $that
-     * @return Stream<array{TValue, TValueIn}>
+     * @return self<array{TValue, TValueIn}>
      */
     public function zip(iterable $that): self;
 
@@ -346,7 +346,7 @@ interface StreamChainableOps
      *
      * @template TValueIn
      * @param iterable<TValueIn> $that
-     * @return Stream<TValue|TValueIn>
+     * @return self<TValue|TValueIn>
      */
     public function interleave(iterable $that): self;
 
@@ -359,7 +359,7 @@ interface StreamChainableOps
      * ```
      *
      * @param positive-int $size
-     * @return Stream<Seq<TValue>>
+     * @return self<Seq<TValue>>
      */
     public function chunks(int $size): self;
 
@@ -378,9 +378,16 @@ interface StreamChainableOps
      *
      * @template TDiscriminator
      * @param callable(TValue): TDiscriminator $discriminator
-     * @return Stream<array{TDiscriminator, Seq<TValue>}>
+     * @return self<array{TDiscriminator, Seq<TValue>}>
      */
     public function groupAdjacentBy(callable $discriminator): self;
+
+    /**
+     * @template TDiscriminator
+     * @psalm-param callable(TValue): TDiscriminator $discriminator
+     * @psalm-return Stream<array{TDiscriminator, Seq<TValue>}>
+     */
+    public function groupBy(callable $discriminator): self;
 
     /**
      * Sort streamed elements
@@ -397,4 +404,17 @@ interface StreamChainableOps
      * @psalm-return self<TValue>
      */
     public function sorted(callable $cmp): self;
+
+    /**
+     * Returns stream unique elements
+     *
+     * ```php
+     * >>> Stream::emits([1, 1, 2])->unique(fn($elem) => $elem)->toArray();
+     * => [1, 2]
+     * ```
+     *
+     * @psalm-param callable(TValue): array-key $callback returns element unique id
+     * @psalm-return self<TValue>
+     */
+    public function unique(callable $callback): self;
 }

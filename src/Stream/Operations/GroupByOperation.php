@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
-use Whsv26\Functional\Collection\Map;
-use Whsv26\Functional\Collection\Map\HashMap;
+use Generator;
 use Whsv26\Functional\Collection\Map\HashTable;
+use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Seq\Nil;
+use Whsv26\Functional\Stream\Stream;
 
 /**
  * @template TValue
@@ -20,9 +21,9 @@ class GroupByOperation extends AbstractOperation
     /**
      * @template TKeyOut
      * @psalm-param callable(TValue): TKeyOut $f
-     * @psalm-return HashMap<TKeyOut, LinkedList<TValue>>
+     * @psalm-return Generator<array{TKeyOut, Seq<TValue>}>
      */
-    public function __invoke(callable $f): Map
+    public function __invoke(callable $f): Generator
     {
         /**
          * @psalm-var HashTable<TKeyOut, LinkedList<TValue>> $hashTable
@@ -41,6 +42,9 @@ class GroupByOperation extends AbstractOperation
             );
         }
 
-        return new HashMap($hashTable);
+        return Stream::emits($hashTable->table)
+            ->flatMap(fn(array $bucket) => $bucket)
+            ->compile()
+            ->toGenerator();
     }
 }
