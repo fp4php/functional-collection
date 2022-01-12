@@ -30,7 +30,9 @@ final class ArrayList implements Seq
      */
     public function __construct(
         public array $elements
-    ) { }
+    ) {
+        $this->knownSize = null;
+    }
 
     /**
      * @inheritDoc

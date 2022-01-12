@@ -429,13 +429,10 @@ abstract class LinkedList implements Seq
      */
     public function prependedAll(iterable $prefix): self
     {
-        $tail = $this;
-
-        foreach ($prefix as $elem) {
-            $tail = new Cons($elem, $tail);
-        }
-
-        return $tail;
+        return $this->stream()
+            ->prependedAll($prefix)
+            ->compile()
+            ->toLinkedList();
     }
 
     /**
@@ -487,7 +484,7 @@ abstract class LinkedList implements Seq
     public function filterOf(string $fqcn, bool $invariant = false): self
     {
         return $this->stream()
-            ->filterOf($fqcn)
+            ->filterOf($fqcn, $invariant)
             ->compile()
             ->toLinkedList();
     }
@@ -564,6 +561,7 @@ abstract class LinkedList implements Seq
     public function tap(callable $callback): self
     {
         $this->stream()
+            ->tap($callback)
             ->compile()
             ->drain();
 
