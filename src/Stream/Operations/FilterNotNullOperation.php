@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class FilterNotNullOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @return Generator<TValue>
      */
     public function __invoke(): Generator

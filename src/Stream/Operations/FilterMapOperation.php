@@ -18,7 +18,7 @@ class FilterMapOperation extends AbstractStreamOperation
     /**
      * @psalm-pure
      * @template TValueIn
-     * @psalm-param callable(TValue): Option<TValueIn> $f
+     * @param callable(TValue): Option<TValueIn> $f
      * @return Generator<TValueIn>
      */
     public function __invoke(callable $f): Generator

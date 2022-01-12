@@ -142,8 +142,8 @@ final class Stream implements StreamChainableOps, StreamEmitter
     }
 
     /**
-     * @psalm-template TKO
-     * @psalm-template TValueIn
+     * @template TKO
+     * @template TValueIn
      * @param Generator<TValueIn> $gen
      * @return self<TValueIn>
      */
@@ -294,7 +294,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
+     * @template TValueIn
      * @param callable(TValue): Option<TValueIn> $callback
      * @return self<TValueIn>
      */
@@ -314,9 +314,9 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @param class-string<TValueIn> $fqcn fully qualified class name
-     * @param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
      * @return self<TValueIn>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self
@@ -326,7 +326,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
+     * @template TValueIn
      * @param callable(TValue): iterable<TValueIn> $callback
      * @return self<TValueIn>
      */
@@ -519,7 +519,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-return self<TKeyIn>
+     * @return self<TKeyIn>
      * @psalm-suppress MixedArgumentTypeCoercion [Psalm bug]
      */
     public function keys(): self
@@ -532,7 +532,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is Stream<array{TKeyIn, TValueIn}>
-     * @psalm-return self<TValueIn>
+     * @return self<TValueIn>
      * @psalm-suppress MixedArgumentTypeCoercion [Psalm bug]
      */
     public function values(): self

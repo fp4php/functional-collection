@@ -22,8 +22,8 @@ interface StreamChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return self<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return self<TValue|TValueIn>
      */
     public function appended(mixed $elem): self;
 
@@ -36,8 +36,8 @@ interface StreamChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $suffix
-     * @psalm-return self<TValue|TValueIn>
+     * @param iterable<TValueIn> $suffix
+     * @return self<TValue|TValueIn>
      */
     public function appendedAll(iterable $suffix): self;
 
@@ -50,8 +50,8 @@ interface StreamChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return self<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return self<TValue|TValueIn>
      */
     public function prepended(mixed $elem): self;
 
@@ -64,8 +64,8 @@ interface StreamChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $prefix
-     * @psalm-return self<TValue|TValueIn>
+     * @param iterable<TValueIn> $prefix
+     * @return self<TValue|TValueIn>
      */
     public function prependedAll(iterable $prefix): self;
 
@@ -79,8 +79,8 @@ interface StreamChainableOps
      * => [2]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function filter(callable $predicate): self;
 
@@ -92,7 +92,7 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function filterNotNull(): self;
 
@@ -104,10 +104,10 @@ interface StreamChainableOps
      * => [Foo(2)]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return self<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return self<TValueOut>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self;
 
@@ -124,9 +124,9 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): Option<TValueOut> $callback
-     * @psalm-return self<TValueOut>
+     * @template TValueOut
+     * @param callable(TValue): Option<TValueOut> $callback
+     * @return self<TValueOut>
      */
     public function filterMap(callable $callback): self;
 
@@ -138,9 +138,9 @@ interface StreamChainableOps
      * => [1, 2, 3, 4, 5, 6]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): iterable<TValueOut> $callback
-     * @psalm-return self<TValueOut>
+     * @template TValueOut
+     * @param callable(TValue): iterable<TValueOut> $callback
+     * @return self<TValueOut>
      */
     public function flatMap(callable $callback): self;
 
@@ -154,8 +154,8 @@ interface StreamChainableOps
      * ```
      *
      * @template TValueOut
-     * @psalm-param callable(TValue): TValueOut $callback
-     * @psalm-return self<TValueOut>
+     * @param callable(TValue): TValueOut $callback
+     * @return self<TValueOut>
      */
     public function map(callable $callback): self;
 
@@ -174,8 +174,8 @@ interface StreamChainableOps
      *
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
      *
-     * @psalm-param callable(TKeyIn): TKeyOut $callback
-     * @psalm-return self<array{TKeyOut, TValueIn}>
+     * @param callable(TKeyIn): TKeyOut $callback
+     * @return self<array{TKeyOut, TValueIn}>
      */
     public function mapKeys(callable $callback): self;
 
@@ -194,8 +194,8 @@ interface StreamChainableOps
      *
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
      *
-     * @psalm-param callable(TValueIn): TValueOut $callback
-     * @psalm-return self<array{TKeyIn, TValueOut}>
+     * @param callable(TValueIn): TValueOut $callback
+     * @return self<array{TKeyIn, TValueOut}>
      */
     public function mapValues(callable $callback): self;
 
@@ -203,8 +203,8 @@ interface StreamChainableOps
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TKeyIn): bool $callback
-     * @psalm-return self<array{TKeyIn, TValueIn}>
+     * @param callable(TKeyIn): bool $callback
+     * @return self<array{TKeyIn, TValueIn}>
      */
     public function filterKeys(callable $callback): self;
 
@@ -212,8 +212,8 @@ interface StreamChainableOps
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
-     * @psalm-param callable(TValueIn): bool $callback
-     * @psalm-return self<array{TKeyIn, TValueIn}>
+     * @param callable(TValueIn): bool $callback
+     * @return self<array{TKeyIn, TValueIn}>
      */
     public function filterValues(callable $callback): self;
 
@@ -225,7 +225,7 @@ interface StreamChainableOps
      * => [2, 3]
      * ```
      *
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tail(): self;
 
@@ -237,8 +237,8 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function takeWhile(callable $predicate): self;
 
@@ -250,8 +250,8 @@ interface StreamChainableOps
      * => [3]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function dropWhile(callable $predicate): self;
 
@@ -263,7 +263,7 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function take(int $length): self;
 
@@ -275,7 +275,7 @@ interface StreamChainableOps
      * => [3]
      * ```
      *
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function drop(int $length): self;
 
@@ -291,7 +291,7 @@ interface StreamChainableOps
      * ```
      *
      * @param callable(TValue): void $callback
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tap(callable $callback): self;
 
@@ -305,7 +305,7 @@ interface StreamChainableOps
      *
      * @template TValueIn
      * @param TValueIn $separator
-     * @psalm-return self<TValue|TValueIn>
+     * @return self<TValue|TValueIn>
      */
     public function intersperse(mixed $separator): self;
 
@@ -318,7 +318,7 @@ interface StreamChainableOps
      * 2
      * ```
      *
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function lines(): self;
 
@@ -384,8 +384,8 @@ interface StreamChainableOps
 
     /**
      * @template TDiscriminator
-     * @psalm-param callable(TValue): TDiscriminator $discriminator
-     * @psalm-return Stream<array{TDiscriminator, Seq<TValue>}>
+     * @param callable(TValue): TDiscriminator $discriminator
+     * @return Stream<array{TDiscriminator, Seq<TValue>}>
      */
     public function groupBy(callable $discriminator): self;
 
@@ -400,8 +400,8 @@ interface StreamChainableOps
      * => [3, 2, 1]
      * ```
      *
-     * @psalm-param callable(TValue, TValue): int $cmp
-     * @psalm-return self<TValue>
+     * @param callable(TValue, TValue): int $cmp
+     * @return self<TValue>
      */
     public function sorted(callable $cmp): self;
 
@@ -413,8 +413,8 @@ interface StreamChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-param callable(TValue): array-key $callback returns element unique id
-     * @psalm-return self<TValue>
+     * @param callable(TValue): array-key $callback returns element unique id
+     * @return self<TValue>
      */
     public function unique(callable $callback): self;
 
@@ -427,7 +427,7 @@ interface StreamChainableOps
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return self<TKeyIn>
+     * @return self<TKeyIn>
      */
     public function keys(): self;
 
@@ -440,7 +440,7 @@ interface StreamChainableOps
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is StreamChainableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return self<TValueIn>
+     * @return self<TValueIn>
      */
     public function values(): self;
 }

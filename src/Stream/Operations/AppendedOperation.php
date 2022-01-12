@@ -17,7 +17,7 @@ class AppendedOperation extends AbstractStreamOperation
     /**
      * @psalm-pure
      * @template TValueIn
-     * @psalm-param TValueIn $elem
+     * @param TValueIn $elem
      * @return Generator<TValue|TValueIn>
      */
     public function __invoke(mixed $elem): Generator

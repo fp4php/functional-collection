@@ -87,7 +87,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool
     {
@@ -96,9 +96,9 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn
+     * @param bool $invariant
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool
     {
@@ -107,7 +107,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool
     {
@@ -116,9 +116,9 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn
+     * @param bool $invariant
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool
     {
@@ -127,8 +127,8 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function first(callable $predicate): Option
     {
@@ -137,10 +137,10 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn
+     * @param bool $invariant
+     * @return Option<TValueOut>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option
     {
@@ -149,10 +149,10 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn
+     * @param bool $invariant
+     * @return Option<TValueOut>
      */
     public function lastOf(string $fqcn, bool $invariant = false): Option
     {
@@ -162,9 +162,9 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
     /**
      * @inheritDoc
      * @template TA
-     * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
-     * @psalm-return TA
+     * @param TA $init initial accumulator value
+     * @param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
+     * @return TA
      */
     public function fold(mixed $init, callable $callback): mixed
     {
@@ -174,8 +174,8 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
     /**
      * @inheritDoc
      * @template TA
-     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback
-     * @psalm-return Option<TValue|TA>
+     * @param callable(TValue|TA, TValue): (TValue|TA) $callback
+     * @return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option
     {
@@ -184,7 +184,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function head(): Option
     {
@@ -193,8 +193,8 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function last(callable $predicate): Option
     {
@@ -203,7 +203,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function firstElement(): Option
     {
@@ -212,7 +212,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function lastElement(): Option
     {
@@ -270,7 +270,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
-     * @psalm-return array<TKeyIn, TValueIn>
+     * @return array<TKeyIn, TValueIn>
      */
     public function toArray(): array
     {
@@ -288,7 +288,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
-     * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
+     * @return Option<non-empty-array<TKeyIn, TValueIn>>
      */
     public function toNonEmptyArray(): Option
     {
@@ -333,7 +333,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is CompiledStream<array{TKeyIn, TValueIn}>
-     * @psalm-return HashMap<TKeyIn, TValueIn>
+     * @return HashMap<TKeyIn, TValueIn>
      */
     public function toHashMap(): HashMap
     {
@@ -378,7 +378,7 @@ final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamC
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function at(int $index): Option
     {

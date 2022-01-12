@@ -18,7 +18,7 @@ class EveryMapOperation extends AbstractStreamOperation
     /**
      * @template TValueIn
      * @param callable(TValue): Option<TValueIn> $f
-     * @psalm-return Option<Stream<TValueIn>>
+     * @return Option<Stream<TValueIn>>
      */
     public function __invoke(callable $f, ?string $class = null): Option
     {

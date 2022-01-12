@@ -17,9 +17,9 @@ class FilterOfOperation extends AbstractStreamOperation
 {
     /**
      * @psalm-pure
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn
-     * @psalm-return Generator<TValueIn>
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @return Generator<TValueIn>
      */
     public function __invoke(string $fqcn, bool $invariant = false): Generator
     {

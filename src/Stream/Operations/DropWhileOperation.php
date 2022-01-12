@@ -15,9 +15,8 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class DropWhileOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TKeyOut
-     * @psalm-param callable(TValue): bool $f
+     * @param callable(TValue): bool $f
      * @return Generator<TValue>
      */
     public function __invoke(callable $f): Generator

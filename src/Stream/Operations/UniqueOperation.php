@@ -16,7 +16,7 @@ class UniqueOperation extends AbstractStreamOperation
 {
     /**
      * @psalm-pure
-     * @psalm-param callable(TValue): (int|string) $f
+     * @param callable(TValue): (int|string) $f
      * @return Generator<TValue>
      */
     public function __invoke(callable $f): Generator

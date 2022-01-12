@@ -20,7 +20,7 @@ interface MapCastableOps
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is MapCastableOps<TKeyIn, TValueIn>
-     * @psalm-return array<TKeyIn, TValueIn>
+     * @return array<TKeyIn, TValueIn>
      */
     public function toArray(): array;
 }

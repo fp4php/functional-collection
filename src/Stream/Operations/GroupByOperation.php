@@ -21,13 +21,13 @@ class GroupByOperation extends AbstractStreamOperation
 {
     /**
      * @template TKeyOut
-     * @psalm-param callable(TValue): TKeyOut $f
-     * @psalm-return Generator<array{TKeyOut, Seq<TValue>}>
+     * @param callable(TValue): TKeyOut $f
+     * @return Generator<array{TKeyOut, Seq<TValue>}>
      */
     public function __invoke(callable $f): Generator
     {
         /**
-         * @psalm-var HashTable<TKeyOut, LinkedList<TValue>> $hashTable
+         * @var HashTable<TKeyOut, LinkedList<TValue>> $hashTable
          */
         $hashTable = new HashTable();
 

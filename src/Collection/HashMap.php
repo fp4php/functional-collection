@@ -77,7 +77,7 @@ final class HashMap implements Map
     public static function collectPairs(iterable $source): self
     {
         /**
-         * @psalm-var HashTable<TKeyIn, TValueIn> $hashTable
+         * @var HashTable<TKeyIn, TValueIn> $hashTable
          */
         $hashTable = new HashTable();
 
@@ -150,7 +150,7 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @psalm-return Seq<TKey>
+     * @return Seq<TKey>
      */
     public function keys(): Seq
     {
@@ -162,7 +162,7 @@ final class HashMap implements Map
 
     /**
      * @inheritDoc
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function values(): Seq
     {
@@ -209,7 +209,7 @@ final class HashMap implements Map
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is HashMap<TKeyIn, TValueIn>
-     * @psalm-return array<TKeyIn, TValueIn>
+     * @return array<TKeyIn, TValueIn>
      */
     public function toArray(): array
     {

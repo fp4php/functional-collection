@@ -15,9 +15,9 @@ class FoldOperation extends AbstractStreamOperation
 {
     /**
      * @template TA
-     * @psalm-param TA $init
-     * @psalm-param callable(TA, TValue): TA $f
-     * @psalm-return TA
+     * @param TA $init
+     * @param callable(TA, TValue): TA $f
+     * @return TA
      */
     public function __invoke(mixed $init, callable $f): mixed
     {

@@ -86,8 +86,8 @@ interface StreamEmitter
      * => [0, 2, 4, 6, 8]
      * ```
      *
-     * @psalm-param positive-int $by
-     * @psalm-return Stream<int>
+     * @param positive-int $by
+     * @return Stream<int>
      */
     public static function range(int $start, int $stopExclusive, int $by = 1): Stream;
 

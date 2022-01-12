@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class GroupAdjacentByOperationOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template D
      * @param callable(TValue): D $discriminator
      * @return Generator<int, array{D, non-empty-list<TValue>}>

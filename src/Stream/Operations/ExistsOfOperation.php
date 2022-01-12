@@ -15,8 +15,8 @@ class ExistsOfOperation extends AbstractStreamOperation
 {
     /**
      * @template TValueIn
-     * @param class-string<TValueIn> $fqcn fully qualified class name
-     * @param bool $invariant if turned on then subclasses are not allowed
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
      * @return bool
      */
     public function __invoke(string $fqcn, bool $invariant = false): bool

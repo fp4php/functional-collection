@@ -21,8 +21,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return Seq<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return Seq<TValue|TValueIn>
      */
     public function appended(mixed $elem): Seq;
 
@@ -35,8 +35,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $suffix
-     * @psalm-return Seq<TValue|TValueIn>
+     * @param iterable<TValueIn> $suffix
+     * @return Seq<TValue|TValueIn>
      */
     public function appendedAll(iterable $suffix): Seq;
 
@@ -49,8 +49,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param TValueIn $elem
-     * @psalm-return Seq<TValue|TValueIn>
+     * @param TValueIn $elem
+     * @return Seq<TValue|TValueIn>
      */
     public function prepended(mixed $elem): Seq;
 
@@ -63,8 +63,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $prefix
-     * @psalm-return Seq<TValue|TValueIn>
+     * @param iterable<TValueIn> $prefix
+     * @return Seq<TValue|TValueIn>
      */
     public function prependedAll(iterable $prefix): Seq;
 
@@ -78,8 +78,8 @@ interface SeqChainableOps
      * => [2]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Seq<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Seq<TValue>
      */
     public function filter(callable $predicate): Seq;
 
@@ -91,7 +91,7 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function filterNotNull(): Seq;
 
@@ -103,10 +103,10 @@ interface SeqChainableOps
      * => [Foo(2)]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Seq<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return Seq<TValueOut>
      */
     public function filterOf(string $fqcn, bool $invariant = false): Seq;
 
@@ -123,9 +123,9 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): Option<TValueOut> $callback
-     * @psalm-return Seq<TValueOut>
+     * @template TValueOut
+     * @param callable(TValue): Option<TValueOut> $callback
+     * @return Seq<TValueOut>
      */
     public function filterMap(callable $callback): Seq;
 
@@ -137,9 +137,9 @@ interface SeqChainableOps
      * => [1, 2, 3, 4, 5, 6]
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): iterable<TValueOut> $callback
-     * @psalm-return Seq<TValueOut>
+     * @template TValueOut
+     * @param callable(TValue): iterable<TValueOut> $callback
+     * @return Seq<TValueOut>
      */
     public function flatMap(callable $callback): Seq;
 
@@ -153,8 +153,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TValueOut
-     * @psalm-param callable(TValue): TValueOut $callback
-     * @psalm-return Seq<TValueOut>
+     * @param callable(TValue): TValueOut $callback
+     * @return Seq<TValueOut>
      */
     public function map(callable $callback): Seq;
 
@@ -166,7 +166,7 @@ interface SeqChainableOps
      * => [2, 1]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function reverse(): Seq;
 
@@ -178,7 +178,7 @@ interface SeqChainableOps
      * => [2, 3]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function tail(): Seq;
 
@@ -190,8 +190,8 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-param callable(TValue): array-key $callback returns element unique id
-     * @psalm-return Seq<TValue>
+     * @param callable(TValue): array-key $callback returns element unique id
+     * @return Seq<TValue>
      */
     public function unique(callable $callback): Seq;
 
@@ -203,8 +203,8 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Seq<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Seq<TValue>
      */
     public function takeWhile(callable $predicate): Seq;
 
@@ -216,8 +216,8 @@ interface SeqChainableOps
      * => [3]
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Seq<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Seq<TValue>
      */
     public function dropWhile(callable $predicate): Seq;
 
@@ -229,7 +229,7 @@ interface SeqChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function take(int $length): Seq;
 
@@ -241,7 +241,7 @@ interface SeqChainableOps
      * => [3]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function drop(int $length): Seq;
 
@@ -256,8 +256,8 @@ interface SeqChainableOps
      * => [3, 2, 1]
      * ```
      *
-     * @psalm-param callable(TValue, TValue): int $cmp
-     * @psalm-return Seq<TValue>
+     * @param callable(TValue, TValue): int $cmp
+     * @return Seq<TValue>
      */
     public function sorted(callable $cmp): Seq;
 
@@ -273,7 +273,7 @@ interface SeqChainableOps
      * ```
      *
      * @param callable(TValue): void $callback
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function tap(callable $callback): Seq;
 
@@ -289,8 +289,8 @@ interface SeqChainableOps
      * ```
      *
      * @template TKO
-     * @psalm-param callable(TValue): TKO $callback
-     * @psalm-return Map<TKO, Seq<TValue>>
+     * @param callable(TValue): TKO $callback
+     * @return Map<TKO, Seq<TValue>>
      */
     public function groupBy(callable $callback): Map;
 
@@ -304,7 +304,7 @@ interface SeqChainableOps
      *
      * @template TValueIn
      * @param TValueIn $separator
-     * @psalm-return Seq<TValue|TValueIn>
+     * @return Seq<TValue|TValueIn>
      */
     public function intersperse(mixed $separator): Seq;
 

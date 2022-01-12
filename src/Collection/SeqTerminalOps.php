@@ -23,7 +23,7 @@ interface SeqTerminalOps
      *
      * Alias for {@see Seq::at()}
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function __invoke(int $index): Option;
 
@@ -36,7 +36,7 @@ interface SeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function at(int $index): Option;
 
@@ -52,7 +52,7 @@ interface SeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -68,9 +68,9 @@ interface SeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool;
 
@@ -88,9 +88,9 @@ interface SeqTerminalOps
      * => None
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): Option<TValueOut> $callback
-     * @psalm-return Option<Seq<TValueOut>>
+     * @template TValueOut
+     * @param callable(TValue): Option<TValueOut> $callback
+     * @return Option<Seq<TValueOut>>
      */
     public function everyMap(callable $callback): Option;
 
@@ -105,7 +105,7 @@ interface SeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool;
 
@@ -121,9 +121,9 @@ interface SeqTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool;
 
@@ -135,8 +135,8 @@ interface SeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function first(callable $predicate): Option;
 
@@ -148,10 +148,10 @@ interface SeqTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return Option<TValueOut>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option;
 
@@ -163,10 +163,10 @@ interface SeqTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param class-string<TValueOut> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueOut>
+     * @template TValueOut
+     * @param class-string<TValueOut> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return Option<TValueOut>
      */
     public function lastOf(string $fqcn, bool $invariant = false): Option;
 
@@ -179,9 +179,9 @@ interface SeqTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
-     * @psalm-return TA
+     * @param TA $init initial accumulator value
+     * @param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
+     * @return TA
      */
     public function fold(mixed $init, callable $callback): mixed;
 
@@ -195,8 +195,8 @@ interface SeqTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
-     * @psalm-return Option<TValue|TA>
+     * @param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
+     * @return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option;
 
@@ -208,7 +208,7 @@ interface SeqTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function head(): Option;
 
@@ -220,8 +220,8 @@ interface SeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function last(callable $predicate): Option;
 
@@ -234,7 +234,7 @@ interface SeqTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function firstElement(): Option;
 
@@ -246,7 +246,7 @@ interface SeqTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function lastElement(): Option;
 

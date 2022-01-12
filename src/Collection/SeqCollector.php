@@ -59,8 +59,8 @@ interface SeqCollector
      * => []
      * ```
      *
-     * @psalm-param positive-int $by
-     * @psalm-return self<int>
+     * @param positive-int $by
+     * @return self<int>
      */
     public static function range(int $start, int $stopExclusive, int $by = 1): self;
 }

@@ -68,7 +68,7 @@ final class CollectionFilterPluginStaticTest
     }
 
     /**
-     * @psalm-param array{
+     * @param array{
      *     ArrayList<1|null|2>,
      *     LinkedList<1|null|2>,
      *     HashSet<1|null|2>,
@@ -76,7 +76,7 @@ final class CollectionFilterPluginStaticTest
      *     Set<1|null|2>,
      *     Stream<1|null|2>,
      * } $in
-     * @psalm-return array{
+     * @return array{
      *     ArrayList<1|2>,
      *     LinkedList<1|2>,
      *     HashSet<1|2>,

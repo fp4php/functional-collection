@@ -15,9 +15,8 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class FlatMapOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
-     * @psalm-template TValueIn
-     * @psalm-param callable(TValue): iterable<TValueIn> $f
+     * @template TValueIn
+     * @param callable(TValue): iterable<TValueIn> $f
      * @return Generator<int, TValueIn>
      */
     public function __invoke(callable $f): Generator

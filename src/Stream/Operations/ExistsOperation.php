@@ -14,7 +14,7 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class ExistsOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-param callable(TValue): bool $f
+     * @param callable(TValue): bool $f
      */
     public function __invoke(callable $f): bool
     {

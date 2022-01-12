@@ -56,7 +56,7 @@ final class RefineByPredicate
     /**
      * Returns value argument name of $predicate that going to be refined.
      *
-     * @psalm-return Option<non-empty-string>
+     * @return Option<non-empty-string>
      */
     private static function getPredicateArgumentName(RefinementContext $context): Option
     {
@@ -73,7 +73,7 @@ final class RefineByPredicate
      * Returns single return expression of $predicate if present.
      * Collection type parameter can be refined only for function with single return.
      *
-     * @psalm-return Option<Expr>
+     * @return Option<Expr>
      */
     private static function getPredicateSingleReturn(RefinementContext $context): Option
     {
@@ -85,7 +85,7 @@ final class RefineByPredicate
     /**
      * Collects assertion for $predicate_arg_name from $return_expr.
      *
-     * @psalm-return PsalmAssertions
+     * @return PsalmAssertions
      */
     private static function collectAssertions(
         RefinementContext $context,
@@ -130,8 +130,8 @@ final class RefineByPredicate
     /**
      * Reconciles $collection_type_param with $assertions using internal Psalm api.
      *
-     * @psalm-param PsalmAssertions $assertions
-     * @psalm-return Option<Union>
+     * @param PsalmAssertions $assertions
+     * @return Option<Union>
      */
     private static function reconcile(
         StatementsAnalyzer $source,

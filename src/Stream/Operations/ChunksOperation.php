@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class ChunksOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @param positive-int $size
      * @return Generator<int, non-empty-list<TValue>>
      */

@@ -15,9 +15,8 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class AppendedAllOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TValueIn
-     * @psalm-param iterable<TValueIn> $suffix
+     * @param iterable<TValueIn> $suffix
      * @return Generator<TValue|TValueIn>
      */
     public function __invoke(iterable $suffix): Generator

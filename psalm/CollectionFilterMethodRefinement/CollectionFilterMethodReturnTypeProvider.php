@@ -74,7 +74,7 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
     }
 
     /**
-     * @psalm-return Option<Arg>
+     * @return Option<Arg>
      */
     private static function extractPredicateArg(MethodReturnTypeProviderEvent $event): Option
     {
@@ -84,7 +84,7 @@ final class CollectionFilterMethodReturnTypeProvider implements MethodReturnType
     }
 
     /**
-     * @psalm-return Option<Arg>
+     * @return Option<Arg>
      */
     private static function mockNotNullPredicateArg(MethodReturnTypeProviderEvent $event): Option
     {

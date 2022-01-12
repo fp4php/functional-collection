@@ -24,7 +24,7 @@ interface CompiledStreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool;
 
@@ -40,9 +40,9 @@ interface CompiledStreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool;
 
@@ -57,7 +57,7 @@ interface CompiledStreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool;
 
@@ -73,9 +73,9 @@ interface CompiledStreamTerminalOps
      * => false
      * ```
      *
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool;
 
@@ -87,8 +87,8 @@ interface CompiledStreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function first(callable $predicate): Option;
 
@@ -100,10 +100,10 @@ interface CompiledStreamTerminalOps
      * => Foo(2)
      * ```
      *
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueIn>
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return Option<TValueIn>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option;
 
@@ -115,10 +115,10 @@ interface CompiledStreamTerminalOps
      * => Foo(3)
      * ```
      *
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueIn>
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn fully qualified class name
+     * @param bool $invariant if turned on then subclasses are not allowed
+     * @return Option<TValueIn>
      */
     public function lastOf(string $fqcn, bool $invariant = false): Option;
 
@@ -131,9 +131,9 @@ interface CompiledStreamTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
-     * @psalm-return TA
+     * @param TA $init initial accumulator value
+     * @param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
+     * @return TA
      */
     public function fold(mixed $init, callable $callback): mixed;
 
@@ -147,8 +147,8 @@ interface CompiledStreamTerminalOps
      * ```
      *
      * @template TA
-     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
-     * @psalm-return Option<TValue|TA>
+     * @param callable(TValue|TA, TValue): (TValue|TA) $callback (accumulator, current value): new accumulator
+     * @return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option;
 
@@ -160,7 +160,7 @@ interface CompiledStreamTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function head(): Option;
 
@@ -172,8 +172,8 @@ interface CompiledStreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function last(callable $predicate): Option;
 
@@ -186,7 +186,7 @@ interface CompiledStreamTerminalOps
      * => 1
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function firstElement(): Option;
 
@@ -198,7 +198,7 @@ interface CompiledStreamTerminalOps
      * => 2
      * ```
      *
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function lastElement(): Option;
 
@@ -243,9 +243,9 @@ interface CompiledStreamTerminalOps
      * => None
      * ```
      *
-     * @psalm-template TValueOut
-     * @psalm-param callable(TValue): Option<TValueOut> $callback
-     * @psalm-return Option<Stream<TValueOut>>
+     * @template TValueOut
+     * @param callable(TValue): Option<TValueOut> $callback
+     * @return Option<Stream<TValueOut>>
      */
     public function everyMap(callable $callback): Option;
 
@@ -257,7 +257,7 @@ interface CompiledStreamTerminalOps
      * >>> Stream::emits([1, 2])->compile()->at(1)->get();
      * => 2
      * ```
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function at(int $index): Option;
 

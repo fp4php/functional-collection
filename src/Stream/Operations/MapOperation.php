@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class MapOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TValueIn
      * @param callable(TValue): TValueIn $f
      * @return Generator<TValueIn>

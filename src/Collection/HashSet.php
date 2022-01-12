@@ -105,7 +105,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param TValue $element
+     * @param TValue $element
      */
     public function __invoke(mixed $element): bool
     {
@@ -114,7 +114,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function every(callable $predicate): bool
     {
@@ -123,9 +123,9 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
      */
     public function everyOf(string $fqcn, bool $invariant = false): bool
     {
@@ -148,7 +148,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
+     * @param callable(TValue): bool $predicate
      */
     public function exists(callable $predicate): bool
     {
@@ -159,9 +159,9 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
      */
     public function existsOf(string $fqcn, bool $invariant = false): bool
     {
@@ -172,8 +172,8 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function first(callable $predicate): Option
     {
@@ -184,10 +184,10 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return Option<TValueIn>
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
+     * @return Option<TValueIn>
      */
     public function firstOf(string $fqcn, bool $invariant = false): Option
     {
@@ -199,9 +199,9 @@ final class HashSet implements Set
     /**
      * @inheritDoc
      * @template TA
-     * @psalm-param TA $init initial accumulator value
-     * @psalm-param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
-     * @psalm-return TA
+     * @param TA $init initial accumulator value
+     * @param callable(TA, TValue): TA $callback (accumulator, current element): new accumulator
+     * @return TA
      */
     public function fold(mixed $init, callable $callback): mixed
     {
@@ -213,8 +213,8 @@ final class HashSet implements Set
     /**
      * @inheritDoc
      * @template TA
-     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $callback
-     * @psalm-return Option<TValue|TA>
+     * @param callable(TValue|TA, TValue): (TValue|TA) $callback
+     * @return Option<TValue|TA>
      */
     public function reduce(callable $callback): Option
     {
@@ -225,7 +225,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function head(): Option
     {
@@ -236,8 +236,8 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return Option<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return Option<TValue>
      */
     public function last(callable $predicate): Option
     {
@@ -248,7 +248,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function firstElement(): Option
     {
@@ -259,7 +259,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-return Option<TValue>
+     * @return Option<TValue>
      */
     public function lastElement(): Option
     {
@@ -270,7 +270,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param TValue $element
+     * @param TValue $element
      */
     public function contains(mixed $element): bool
     {
@@ -300,7 +300,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tail(): self
     {
@@ -312,8 +312,8 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-param callable(TValue): bool $predicate
-     * @psalm-return self<TValue>
+     * @param callable(TValue): bool $predicate
+     * @return self<TValue>
      */
     public function filter(callable $predicate): self
     {
@@ -325,10 +325,10 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param class-string<TValueIn> $fqcn fully qualified class name
-     * @psalm-param bool $invariant if turned on then subclasses are not allowed
-     * @psalm-return self<TValueIn>
+     * @template TValueIn
+     * @param class-string<TValueIn> $fqcn
+     * @param bool $invariant
+     * @return self<TValueIn>
      */
     public function filterOf(string $fqcn, bool $invariant = false): self
     {
@@ -340,7 +340,7 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function filterNotNull(): self
     {
@@ -352,9 +352,9 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param callable(TValue): Option<TValueIn> $callback
-     * @psalm-return self<TValueIn>
+     * @template TValueIn
+     * @param callable(TValue): Option<TValueIn> $callback
+     * @return self<TValueIn>
      */
     public function filterMap(callable $callback): self
     {
@@ -366,9 +366,9 @@ final class HashSet implements Set
 
     /**
      * @inheritDoc
-     * @psalm-template TValueIn
-     * @psalm-param callable(TValue): iterable<TValueIn> $callback
-     * @psalm-return self<TValueIn>
+     * @template TValueIn
+     * @param callable(TValue): iterable<TValueIn> $callback
+     * @return self<TValueIn>
      */
     public function flatMap(callable $callback): self
     {
@@ -381,8 +381,8 @@ final class HashSet implements Set
     /**
      * @inheritDoc
      * @template TValueIn
-     * @psalm-param callable(TValue): TValueIn $callback
-     * @psalm-return self<TValueIn>
+     * @param callable(TValue): TValueIn $callback
+     * @return self<TValueIn>
      */
     public function map(callable $callback): self
     {
@@ -395,7 +395,7 @@ final class HashSet implements Set
     /**
      * @inheritDoc
      * @param callable(TValue): void $callback
-     * @psalm-return self<TValue>
+     * @return self<TValue>
      */
     public function tap(callable $callback): self
     {

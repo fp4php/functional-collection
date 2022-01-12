@@ -16,8 +16,8 @@ class ReduceOperation extends AbstractStreamOperation
 {
     /**
      * @template TA
-     * @psalm-param callable(TValue|TA, TValue): (TValue|TA) $f
-     * @psalm-return Option<TValue|TA>
+     * @param callable(TValue|TA, TValue): (TValue|TA) $f
+     * @return Option<TValue|TA>
      */
     public function __invoke(callable $f): Option
     {

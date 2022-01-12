@@ -49,7 +49,7 @@ interface CompiledStreamCastableOps
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return array<TKeyIn, TValueIn>
+     * @return array<TKeyIn, TValueIn>
      */
     public function toArray(): array;
 
@@ -65,7 +65,7 @@ interface CompiledStreamCastableOps
      * @template TKeyIn of array-key
      * @template TValueIn
      * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
+     * @return Option<non-empty-array<TKeyIn, TValueIn>>
      */
     public function toNonEmptyArray(): Option;
 
@@ -110,7 +110,7 @@ interface CompiledStreamCastableOps
      * @template TKeyIn
      * @template TValueIn
      * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
-     * @psalm-return HashMap<TKeyIn, TValueIn>
+     * @return HashMap<TKeyIn, TValueIn>
      */
     public function toHashMap(): HashMap;
 

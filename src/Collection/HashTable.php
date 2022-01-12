@@ -11,7 +11,6 @@ use Whsv26\Functional\Core\Option;
  * @template TKey
  * @template TValue
  * @psalm-type hash = string
- * @psalm-suppress ImpureMethodCall, ImpurePropertyFetch
  */
 final class HashTable
 {
@@ -21,7 +20,6 @@ final class HashTable
     public array $table = [];
 
     /**
-     * @psalm-pure
      * @template TKeyIn
      * @template TValueIn
      * @param HashTable<TKeyIn, TValueIn> $hashTable
@@ -43,7 +41,6 @@ final class HashTable
     }
 
     /**
-     * @psalm-pure
      * @template TKeyIn
      * @template TValueIn
      * @param TKeyIn $key

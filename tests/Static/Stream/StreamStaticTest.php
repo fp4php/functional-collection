@@ -11,8 +11,8 @@ use Whsv26\Functional\Stream\StreamChainableOps;
 final class StreamStaticTest
 {
     /**
-     * @psalm-param int $input
-     * @psalm-return Stream<int>
+     * @param int $input
+     * @return Stream<int>
      */
     public function testEmit(mixed $input): Stream
     {
@@ -20,8 +20,8 @@ final class StreamStaticTest
     }
 
     /**
-     * @psalm-param array{1, 2, 'a'} $input
-     * @psalm-return Stream<1|2|'a'>
+     * @param array{1, 2, 'a'} $input
+     * @return Stream<1|2|'a'>
      */
     public function testEmits(mixed $input): Stream
     {

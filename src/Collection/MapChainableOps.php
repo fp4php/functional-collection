@@ -51,7 +51,7 @@ interface MapChainableOps
      * => ['1', '2']
      * ```
      *
-     * @psalm-return Seq<TKey>
+     * @return Seq<TKey>
      */
     public function keys(): Seq;
 
@@ -66,7 +66,7 @@ interface MapChainableOps
      * => [1, 2]
      * ```
      *
-     * @psalm-return Seq<TValue>
+     * @return Seq<TValue>
      */
     public function values(): Seq;
 }

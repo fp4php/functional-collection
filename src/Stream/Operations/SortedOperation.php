@@ -17,7 +17,7 @@ class SortedOperation extends AbstractStreamOperation
 {
     /**
      * @psalm-pure
-     * @psalm-param callable(TValue, TValue): int $f
+     * @param callable(TValue, TValue): int $f
      * @return Generator<TValue>
      */
     public function __invoke(callable $f): Generator
