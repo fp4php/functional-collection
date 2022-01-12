@@ -16,7 +16,7 @@ interface StreamEmitter
      * Create singleton stream with one element
      *
      * ```php
-     * >>> Stream::emit(1)->compile()->toArray();
+     * >>> Stream::emit(1)->compile()->toList();
      * => [1]
      * ```
      *
@@ -30,7 +30,7 @@ interface StreamEmitter
      * Emits elements from iterable source
      *
      * ```php
-     * >>> Stream::emits([1, 2])->compile()->toArray();
+     * >>> Stream::emits([1, 2])->compile()->toList();
      * => [1, 2]
      * ```
      *
@@ -44,7 +44,7 @@ interface StreamEmitter
      * Repeat this stream an infinite number of times.
      *
      * ```php
-     * >>> Stream::emits([1,2,3])->repeat()->take(8)->compile()->toArray();
+     * >>> Stream::emits([1,2,3])->repeat()->take(8)->compile()->toList();
      * => [1, 2, 3, 1, 2, 3, 1, 2]
      * ```
      *
@@ -56,7 +56,7 @@ interface StreamEmitter
      * Repeat this stream N times
      *
      * ```php
-     * >>> Stream::emit(1)->repeatN(3)->compile()->toArray();
+     * >>> Stream::emit(1)->repeatN(3)->compile()->toList();
      * => [1, 1, 1]
      * ```
      *
@@ -68,7 +68,7 @@ interface StreamEmitter
      * Creates an infinite stream that always returns the supplied value
      *
      * ```php
-     * >>> Stream::constant(0)->take(3)->compile()->toArray();
+     * >>> Stream::constant(0)->take(3)->compile()->toList();
      * => [0, 0, 0]
      * ```
      *
@@ -82,7 +82,7 @@ interface StreamEmitter
      * Creates int stream of given range
      *
      * ```php
-     * >>> Stream::range(0, 10, 2)->compile()->toArray();
+     * >>> Stream::range(0, 10, 2)->compile()->toList();
      * => [0, 2, 4, 6, 8]
      * ```
      *
@@ -95,7 +95,7 @@ interface StreamEmitter
      * Creates an infinite stream
      *
      * ```php
-     * >>> Stream::infinite()->map(fn() => rand(0, 1))->take(2)->compile()->toArray();
+     * >>> Stream::infinite()->map(fn() => rand(0, 1))->take(2)->compile()->toList();
      * => [0, 1]
      * ```
      *

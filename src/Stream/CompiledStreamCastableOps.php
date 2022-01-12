@@ -19,7 +19,7 @@ interface CompiledStreamCastableOps
 {
     /**
      * ```php
-     * >>> Stream::emits([1, 2, 2])->compile()->toArray();
+     * >>> Stream::emits([1, 2, 2])->compile()->toList();
      * => [1, 2, 2]
      * ```
      *

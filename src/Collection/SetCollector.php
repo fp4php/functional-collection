@@ -24,7 +24,7 @@ interface SetCollector
 
     /**
      * ```php
-     * >>> HashSet::singleton(1)->toArray();
+     * >>> HashSet::singleton(1)->toList();
      * => [1]
      * ```
      *
@@ -36,7 +36,7 @@ interface SetCollector
 
     /**
      * ```php
-     * >>> HashSet::empty()->toArray();
+     * >>> HashSet::empty()->toList();
      * => []
      * ```
      *

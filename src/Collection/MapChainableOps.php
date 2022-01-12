@@ -16,7 +16,7 @@ interface MapChainableOps
      *
      * ```php
      * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->updated('b', 3)->toArray();
-     * => [['a', 1], ['b', 3]]
+     * => ['a' => 1, 'b' => 3]
      * ```
      *
      * @template TKeyIn
@@ -32,7 +32,7 @@ interface MapChainableOps
      *
      * ```php
      * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->removed('b')->toArray();
-     * => [['a', 1]]
+     * => ['a' => 1]
      * ```
      *
      * @param TKey $key
@@ -47,7 +47,7 @@ interface MapChainableOps
      * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
      * => HashMap('1' -> 1, '2' -> 2)
      *
-     * >>> $collection->keys(fn($elem) => $elem + 1)->toArray();
+     * >>> $collection->keys(fn($elem) => $elem + 1)->toList();
      * => ['1', '2']
      * ```
      *
@@ -62,7 +62,7 @@ interface MapChainableOps
      * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
      * => HashMap('1' -> 1, '2' -> 2)
      *
-     * >>> $collection->values(fn($elem) => $elem + 1)->toArray();
+     * >>> $collection->values(fn($elem) => $elem + 1)->toList();
      * => [1, 2]
      * ```
      *
