@@ -12,8 +12,8 @@ interface SetCollector
 {
     /**
      * ```php
-     * >>> HashSet::collect([1, 2]);
-     * => HashSet(1, 2)
+     * >>> HashSet::collect([1, 2])->toList();
+     * => [1, 2]
      * ```
      *
      * @template TValueIn

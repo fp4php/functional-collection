@@ -283,9 +283,9 @@ interface SeqChainableOps
      * ```php
      * >>> LinkedList::collect([1, 1, 3])
      * >>>     ->groupBy(fn($e) => $e)
-     * >>>     ->map(fn(Seq $e) => $e->toList())
-     * >>>     ->toList();
-     * => [[1, [1, 1]], [3, [3]]]
+     * >>>     ->map(fn(Seq $group) => $group->toList())
+     * >>>     ->toArray();
+     * => [1 => [1, 1], 3 => [3]]
      * ```
      *
      * @template TKO
@@ -298,8 +298,8 @@ interface SeqChainableOps
      * Add specified separator between every pair of elements in the source collection.
      *
      * ```php
-     * >>> ArrayList::collect([1, 2, 3])->intersperse(0)->toList();
-     * => [1, 0, 2, 0, 3]
+     * >>> ArrayList::collect([1, 2, 3])->intersperse('+')->toList();
+     * => [1, '+', 2, '+', 3]
      * ```
      *
      * @template TValueIn

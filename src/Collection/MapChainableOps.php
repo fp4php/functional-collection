@@ -15,7 +15,7 @@ interface MapChainableOps
      * Produces new collection with given element
      *
      * ```php
-     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->updated('b', 3)->toArray();
+     * >>> HashMap::collect(['a' => 1, 'b' => 2])->updated('b', 3)->toArray();
      * => ['a' => 1, 'b' => 3]
      * ```
      *
@@ -31,7 +31,7 @@ interface MapChainableOps
      * Produces new collection without an element with given key
      *
      * ```php
-     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->removed('b')->toArray();
+     * >>> HashMap::collect(['a' => 1, 'b' => 2])->removed('b')->toArray();
      * => ['a' => 1]
      * ```
      *
@@ -44,11 +44,8 @@ interface MapChainableOps
      * Returns sequence of collection keys
      *
      * ```php
-     * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
-     * => HashMap('1' -> 1, '2' -> 2)
-     *
-     * >>> $collection->keys(fn($elem) => $elem + 1)->toList();
-     * => ['1', '2']
+     * >>> HashMap::collect(['a' => 1, 'b' => 2])->keys()->toList();
+     * => ['a', 'b']
      * ```
      *
      * @return Seq<TKey>
@@ -59,10 +56,7 @@ interface MapChainableOps
      * Returns sequence of collection values
      *
      * ```php
-     * >>> $collection = HashMap::collectPairs([['1', 1], ['2', 2]]);
-     * => HashMap('1' -> 1, '2' -> 2)
-     *
-     * >>> $collection->values(fn($elem) => $elem + 1)->toList();
+     * >>> HashMap::collect(['a' => 1, 'b' => 2])->values()->toList();
      * => [1, 2]
      * ```
      *

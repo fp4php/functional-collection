@@ -13,8 +13,8 @@ interface MapCollector
 {
     /**
      * ```php
-     * >>> HashMap::collect(['a' =>  1, 'b' => 2]);
-     * => HashMap('a' -> 1, 'b' -> 2)
+     * >>> HashMap::collect(['a' =>  1, 'b' => 2])->toArray();
+     * => ['a' =>  1, 'b' => 2]
      * ```
      *
      * @template TKeyIn
@@ -26,8 +26,8 @@ interface MapCollector
 
     /**
      * ```php
-     * >>> HashMap::collectPairs([['a', 1], ['b', 2]]);
-     * => HashMap('a' -> 1, 'b' -> 2)
+     * >>> HashMap::collectPairs([['a', 1], ['b', 2]])->toArray();
+     * => ['a' =>  1, 'b' => 2]
      * ```
      *
      * @template TKeyIn

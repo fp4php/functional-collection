@@ -12,8 +12,8 @@ interface SeqCollector
 {
     /**
      * ```php
-     * >>> LinkedList::collect([1, 2]);
-     * => LinkedList(1, 2)
+     * >>> LinkedList::collect([1, 2])->toList();
+     * => [1, 2]
      * ```
      *
      * @template TValueIn
