@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class UniqueOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @param callable(TValue): (int|string) $f
      * @return Generator<TValue>
      */

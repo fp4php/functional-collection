@@ -16,7 +16,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class FilterOfOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TValueIn
      * @param class-string<TValueIn> $fqcn
      * @return Generator<TValueIn>

@@ -186,7 +186,6 @@ final class HashMap implements Map
      * @inheritDoc
      * @param TKey $key
      * @return Option<TValue>
-     * @psalm-suppress ImpureMethodCall
      */
     public function get(mixed $key): Option
     {

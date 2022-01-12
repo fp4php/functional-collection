@@ -16,7 +16,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class SortedOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @param callable(TValue, TValue): int $f
      * @return Generator<TValue>
      */

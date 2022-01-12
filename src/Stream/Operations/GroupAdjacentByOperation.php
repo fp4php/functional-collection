@@ -12,7 +12,7 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
  * @psalm-immutable
  * @extends AbstractStreamOperation<TValue>
  */
-class GroupAdjacentByOperationOperation extends AbstractStreamOperation
+class GroupAdjacentByOperation extends AbstractStreamOperation
 {
     /**
      * @template D

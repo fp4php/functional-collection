@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class PrependedOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TValueIn
      * @param TValueIn $elem
      * @return Generator<TValue|TValueIn>

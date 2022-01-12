@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class FilterOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @param callable(TValue): bool $f
      * @return Generator<TValue>
      */

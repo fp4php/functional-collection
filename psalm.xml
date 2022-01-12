@@ -58,5 +58,6 @@
         </UnusedVariable>
         <ImpureFunctionCall errorLevel="suppress"/>
         <ImpureMethodCall errorLevel="suppress"/>
+        <ImpureStaticProperty errorLevel="suppress"/>
     </issueHandlers>
 </psalm>

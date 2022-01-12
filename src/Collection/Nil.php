@@ -14,7 +14,6 @@ final class Nil extends LinkedList
 
     /**
      * @psalm-pure
-     * @psalm-suppress ImpureStaticProperty
      */
     public static function getInstance(): self
     {

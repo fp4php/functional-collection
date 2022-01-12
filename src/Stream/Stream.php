@@ -20,7 +20,7 @@ use Whsv26\Functional\Stream\Operations\FilterNotNullOperation;
 use Whsv26\Functional\Stream\Operations\FilterOfOperation;
 use Whsv26\Functional\Stream\Operations\FilterOperation;
 use Whsv26\Functional\Stream\Operations\FlatMapOperation;
-use Whsv26\Functional\Stream\Operations\GroupAdjacentByOperationOperation;
+use Whsv26\Functional\Stream\Operations\GroupAdjacentByOperation;
 use Whsv26\Functional\Stream\Operations\GroupByOperation;
 use Whsv26\Functional\Stream\Operations\InterleaveOperation;
 use Whsv26\Functional\Stream\Operations\IntersperseOperation;
@@ -476,7 +476,7 @@ final class Stream implements StreamChainableOps, StreamEmitter
      */
     public function groupAdjacentBy(callable $discriminator): Stream
     {
-        $adjacent = GroupAdjacentByOperationOperation::of($this->emitter)($discriminator);
+        $adjacent = GroupAdjacentByOperation::of($this->emitter)($discriminator);
 
         return $this->fork(MapOperation::of($adjacent)(function (array $pair) {
             $pair[1] = new ArrayList($pair[1]);

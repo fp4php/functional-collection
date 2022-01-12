@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class TakeWhileOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @template TKeyOut
      * @param callable(TValue): bool $f
      * @return Generator<TValue>

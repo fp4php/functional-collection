@@ -22,7 +22,6 @@ class AbstractStreamOperation
     ) { }
 
     /**
-     * @psalm-pure
      * @template TKeyIn
      * @template TValueIn
      * @param Generator<int, TValueIn> $input

@@ -15,7 +15,6 @@ use Whsv26\Functional\Stream\AbstractStreamOperation;
 class TapOperation extends AbstractStreamOperation
 {
     /**
-     * @psalm-pure
      * @param callable(TValue): void $f
      * @return Generator<TValue>
      */
