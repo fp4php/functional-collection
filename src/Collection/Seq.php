@@ -20,7 +20,7 @@ interface Seq extends Collection, SeqOps, SeqCollector
 {
     /**
      * @inheritDoc
-     * @return Iterator<TValue>
+     * @return Iterator<int, TValue>
      */
     public function getIterator(): Iterator;
 

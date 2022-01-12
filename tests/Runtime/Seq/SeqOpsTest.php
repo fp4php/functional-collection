@@ -316,6 +316,7 @@ final class SeqOpsTest extends TestCase
     {
         $this->assertEquals(1, $seq->firstElement()->get());
         $this->assertEquals(3, $seq->lastElement()->get());
+        $this->assertEquals($seq->count(), $seq->lastElement()->get());
     }
 
     public function provideTestMapData(): Generator

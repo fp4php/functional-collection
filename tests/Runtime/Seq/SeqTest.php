@@ -12,14 +12,29 @@ use Whsv26\Functional\Collection\Seq\LinkedList;
 
 final class SeqTest extends TestCase
 {
-    public function provideTestCastsData(): Generator
+    public function provideSeqOfNaturalNumbers(): Generator
     {
         yield ArrayList::class => [ArrayList::collect([1, 2, 3]), ArrayList::collect([])];
         yield LinkedList::class => [LinkedList::collect([1, 2, 3]), LinkedList::collect([])];
     }
 
     /**
-     * @dataProvider provideTestCastsData
+     * @dataProvider provideSeqOfNaturalNumbers
+     * @param Seq<int> $seq
+     */
+    public function testTraverse(Seq $seq): void
+    {
+        $num = 0;
+
+        foreach ($seq as $key => $value) {
+            $this->assertEquals($num, $key);
+            $this->assertEquals($num + 1, $value);
+            $num++;
+        }
+    }
+
+    /**
+     * @dataProvider provideSeqOfNaturalNumbers
      */
     public function testCasts(Seq $seq): void
     {
@@ -27,7 +42,7 @@ final class SeqTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestCastsData
+     * @dataProvider provideSeqOfNaturalNumbers
      */
     public function testCount(Seq $seq): void
     {
