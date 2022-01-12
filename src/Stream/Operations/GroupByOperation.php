@@ -9,14 +9,15 @@ use Whsv26\Functional\Collection\Map\HashTable;
 use Whsv26\Functional\Collection\Seq;
 use Whsv26\Functional\Collection\Seq\LinkedList;
 use Whsv26\Functional\Collection\Seq\Nil;
+use Whsv26\Functional\Stream\AbstractStreamOperation;
 use Whsv26\Functional\Stream\Stream;
 
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class GroupByOperation extends AbstractOperation
+class GroupByOperation extends AbstractStreamOperation
 {
     /**
      * @template TKeyOut

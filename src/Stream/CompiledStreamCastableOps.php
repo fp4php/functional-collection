@@ -15,7 +15,7 @@ use Whsv26\Functional\Core\Option;
  * @psalm-immutable
  * @template-covariant TValue
  */
-interface StreamCastableOps
+interface CompiledStreamCastableOps
 {
     /**
      * ```php
@@ -48,7 +48,7 @@ interface StreamCastableOps
      *
      * @template TKeyIn of array-key
      * @template TValueIn
-     * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
+     * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
      * @psalm-return array<TKeyIn, TValueIn>
      */
     public function toArray(): array;
@@ -64,7 +64,7 @@ interface StreamCastableOps
      *
      * @template TKeyIn of array-key
      * @template TValueIn
-     * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
+     * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
      * @psalm-return Option<non-empty-array<TKeyIn, TValueIn>>
      */
     public function toNonEmptyArray(): Option;
@@ -109,7 +109,7 @@ interface StreamCastableOps
      *
      * @template TKeyIn
      * @template TValueIn
-     * @psalm-if-this-is StreamCastableOps<array{TKeyIn, TValueIn}>
+     * @psalm-if-this-is CompiledStreamCastableOps<array{TKeyIn, TValueIn}>
      * @psalm-return HashMap<TKeyIn, TValueIn>
      */
     public function toHashMap(): HashMap;

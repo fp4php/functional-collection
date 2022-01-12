@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
-use Whsv26\Functional\Core\Option;
 use Generator;
+use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\AbstractStreamOperation;
 
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class FilterMapOperation extends AbstractOperation
+class FilterMapOperation extends AbstractStreamOperation
 {
     /**
      * @psalm-pure

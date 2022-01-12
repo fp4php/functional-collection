@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Whsv26\Functional\Stream\Operations;
+namespace Whsv26\Functional\Stream;
 
 use Generator;
 
@@ -12,7 +12,7 @@ use Generator;
  * @psalm-consistent-constructor
  * @psalm-consistent-templates
  */
-class AbstractOperation
+class AbstractStreamOperation
 {
     /**
      * @param Generator<int, TValue> $gen

@@ -6,13 +6,14 @@ namespace Whsv26\Functional\Stream\Operations;
 
 use Generator;
 use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\AbstractStreamOperation;
 
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class FilterOfOperation extends AbstractOperation
+class FilterOfOperation extends AbstractStreamOperation
 {
     /**
      * @psalm-pure

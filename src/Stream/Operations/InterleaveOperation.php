@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Generator;
+use Whsv26\Functional\Stream\AbstractStreamOperation;
 
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class InterleaveOperation extends AbstractOperation
+class InterleaveOperation extends AbstractStreamOperation
 {
     /**
      * @template TValueIn

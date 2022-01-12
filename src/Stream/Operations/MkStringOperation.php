@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
+use Whsv26\Functional\Stream\AbstractStreamOperation;
+
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class MkStringOperation extends AbstractOperation
+class MkStringOperation extends AbstractStreamOperation
 {
     public function __invoke(string $start, string $sep, string $end): string
     {

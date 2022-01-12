@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Whsv26\Functional\Stream\Operations;
 
 use Whsv26\Functional\Core\Option;
+use Whsv26\Functional\Stream\AbstractStreamOperation;
 use Whsv26\Functional\Stream\Stream;
 
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class EveryMapOperation extends AbstractOperation
+class EveryMapOperation extends AbstractStreamOperation
 {
     /**
      * @template TValueIn

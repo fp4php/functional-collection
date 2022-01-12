@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Stream\Operations;
 
+use Whsv26\Functional\Stream\AbstractStreamOperation;
+
 /**
  * @template TValue
  * @psalm-immutable
- * @extends AbstractOperation<TValue>
+ * @extends AbstractStreamOperation<TValue>
  */
-class EveryOfOperation extends AbstractOperation
+class EveryOfOperation extends AbstractStreamOperation
 {
     /**
      * @template TValueIn

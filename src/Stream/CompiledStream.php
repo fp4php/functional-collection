@@ -33,10 +33,10 @@ use Whsv26\Functional\Stream\Operations\ReduceOperation;
  *
  * @psalm-immutable
  * @template-covariant TValue
- * @implements StreamTerminalOps<TValue>
- * @implements StreamCastableOps<TValue>
+ * @implements CompiledStreamTerminalOps<TValue>
+ * @implements CompiledStreamCastableOps<TValue>
  */
-final class CompiledStream implements StreamTerminalOps, StreamCastableOps
+final class CompiledStream implements CompiledStreamTerminalOps, CompiledStreamCastableOps
 {
     /**
      * @var Generator<int, TValue>

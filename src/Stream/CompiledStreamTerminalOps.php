@@ -10,7 +10,7 @@ use Whsv26\Functional\Core\Option;
  * @psalm-immutable
  * @template-covariant TValue
  */
-interface StreamTerminalOps
+interface CompiledStreamTerminalOps
 {
     /**
      * Returns true if every stream element satisfy the condition
