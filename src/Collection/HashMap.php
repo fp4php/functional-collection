@@ -191,7 +191,7 @@ final class HashMap implements Map
     public function get(mixed $key): Option
     {
         $elem = null;
-        $hash = (string) HashComparator::computeHash($key);
+        $hash = (string) HashComparator::tryToHash($key);
 
         $bucket = $this->hashTable->table[$hash] ?? [];
 

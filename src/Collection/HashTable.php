@@ -28,7 +28,7 @@ final class HashTable
      */
     public static function get(HashTable $hashTable, mixed $key): Option
     {
-        $hash = (string) HashComparator::computeHash($key);
+        $hash = (string) HashComparator::tryToHash($key);
         $elem = null;
 
         foreach ($hashTable->table[$hash] ?? [] as [$k, $v]) {
@@ -51,7 +51,7 @@ final class HashTable
      */
     public static function update(HashTable $hashTable, mixed $key, mixed $value): HashTable
     {
-        $hash = (string) HashComparator::computeHash($key);
+        $hash = (string) HashComparator::tryToHash($key);
 
         if (!isset($hashTable->table[$hash])) {
             $hashTable->table[$hash] = [];

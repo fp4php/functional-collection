@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Whsv26\Functional\Collection;
 
+use Whsv26\Functional\Stream\Stream;
+
 /**
  * @internal
  */
@@ -11,35 +13,33 @@ final class HashComparator
 {
     public static function hashEquals(mixed $lhs, mixed $rhs): bool
     {
-        return match (true) {
-            $lhs instanceof HashContract => $lhs->equals($rhs),
-            $rhs instanceof HashContract => $rhs->equals($lhs),
-            default => self::computeHash($lhs) === self::computeHash($rhs),
-        };
+        if ($lhs instanceof HashContract) {
+            return $lhs->equals($rhs);
+        } elseif ($rhs instanceof HashContract) {
+            return $rhs->equals($lhs);
+        } else {
+            return self::tryToHash($lhs) === self::tryToHash($rhs);
+        }
     }
 
-    public static function computeHash(mixed $subject): mixed
+    /**
+     * @template T
+     * @param T $subject
+     * @return T|string
+     */
+    public static function tryToHash(mixed $subject): mixed
     {
-        return match (true) {
-            is_object($subject) => self::computeHashForObject($subject),
-            is_array($subject) => self::computeHashForArray($subject),
-            default => $subject,
-        };
-    }
-
-    public static function computeHashForObject(object $object): string
-    {
-        return $object instanceof HashContract
-            ? $object->hashCode()
-            : spl_object_hash($object);
-    }
-
-    public static function computeHashForArray(array $arr): string
-    {
-        $list = LinkedList::collect($arr)
-            ->map(fn($elem): mixed => self::computeHash($elem))
-            ->toList();
-
-        return json_encode($list) ?: '';
+        if (is_object($subject)) {
+            return $subject instanceof HashContract
+                ? $subject->hashCode()
+                : spl_object_hash($subject);
+        } elseif (is_array($subject)) {
+            return Stream::emits($subject)
+                ->map(fn($elem): mixed => self::tryToHash($elem))
+                ->compile()
+                ->mkString('[', ',', ']');
+        } else {
+            return $subject;
+        }
     }
 }
