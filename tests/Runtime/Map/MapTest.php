@@ -14,8 +14,8 @@ final class MapTest extends TestCase
     public function testCasts(): void
     {
         $this->assertEquals(
-            [['a', 1], ['b', 2]],
-            HashMap::collectPairs([['a', 1], ['b', 2]])->stream()->compile()->toList(),
+            ['a' => 1, 'b' => 2],
+            HashMap::collectPairs([['a', 1], ['b', 2]])->toArray(),
         );
     }
 
