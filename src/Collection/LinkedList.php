@@ -21,7 +21,7 @@ abstract class LinkedList implements Seq
     /**
      * @psalm-allow-private-mutation
      */
-    private ?int $knownSize;
+    private ?int $knownSize = null;
 
     /**
      * @inheritDoc
